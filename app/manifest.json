@@ -1,0 +1,30 @@
+{
+    "name": "__MSG_appName__",
+    "description": "__MSG_appDescription__",
+    "version": "2.0.1",
+    "manifest_version": 2,
+    "minimum_chrome_version": "29",
+    "default_locale": "en",
+    "permissions": [
+        "alarms",
+        "geolocation",
+        "identity",
+        "https://accounts.google.com/*",
+        "https://www.googleapis.com/*",
+        "http://localhost:3000/",
+        "storage"
+    ],
+    "icons": {
+        "16": "images/icon-16.png",
+        "128": "images/icon-128.png"
+    },
+    "app": {
+        "background": {
+            "scripts": [
+                "scripts/chromereload.js",
+                "scripts/lib/jquery-2.0.3.min.js",
+                "scripts/background.js"
+            ]
+        }
+    }
+}
