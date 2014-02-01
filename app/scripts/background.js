@@ -153,7 +153,16 @@ var alarmInfo = {
 	periodInMinutes: 5
 };
 var alarmCallbacks = {};
-alarmCallbacks[alarmKey] = function() {
+alarmCallbacks[alarmKey] = run;
+
+var alarm = chrome.alarms.create(alarmKey, alarmInfo);
+chrome.alarms.onAlarm.addListener(function(aInfo) {
+	alarmCallbacks[aInfo.name]();
+});
+
+run();
+
+var run = function() {
 	if (!initialized && !isAuthenticating) {
 		init();
 	} else if(!isAuthenticating && initialized) {
@@ -162,11 +171,6 @@ alarmCallbacks[alarmKey] = function() {
 		});
 	}
 };
-
-var alarm = chrome.alarms.create(alarmKey, alarmInfo);
-chrome.alarms.onAlarm.addListener(function(aInfo) {
-	alarmCallbacks[aInfo.name]();
-});
 
 var init = function() {
 	if(!lastTokenTryOut) {
