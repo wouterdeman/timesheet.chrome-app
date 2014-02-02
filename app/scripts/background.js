@@ -4,6 +4,7 @@ var manifest = chrome.runtime.getManifest();
 var isAuthenticating = false;
 var lastTokenTryOut = false;
 var isInitializing = false;
+var initialized = false;
 
 var saveToken = function saveToken(token) {
 	chrome.storage.sync.set({
@@ -146,30 +147,16 @@ var postGeoLocation = function() {
 	return dfd;
 };
 
-var initialized = false;
-var alarmKey = "servicePostAlarm";
-//locally you can set this lower than 1 (eg: for debugging, set 0.1)
-var alarmInfo = {
-	periodInMinutes: 5
-};
-var alarmCallbacks = {};
-alarmCallbacks[alarmKey] = run;
-
-var alarm = chrome.alarms.create(alarmKey, alarmInfo);
-chrome.alarms.onAlarm.addListener(function(aInfo) {
-	alarmCallbacks[aInfo.name]();
-});
-
-run();
-
 var run = function() {
 	if (!initialized && !isAuthenticating) {
 		init();
+		return false;
 	} else if(!isAuthenticating && initialized) {
 		postGeoLocation().fail(function() {
 			init();
-		});
+		});		
 	}
+	return true;	
 };
 
 var init = function() {
@@ -185,4 +172,22 @@ var init = function() {
 		authenticateUser();
 		initialized = true;
 	}
+}
+
+var alarmKey = "servicePostAlarm";
+//locally you can set this lower than 1 (eg: for debugging, set 0.1)
+var alarmInfo = {
+	periodInMinutes: 5
+};
+var alarmCallbacks = {};
+alarmCallbacks[alarmKey] = run;
+
+var alarm = chrome.alarms.create(alarmKey, alarmInfo);
+chrome.alarms.onAlarm.addListener(function(aInfo) {
+	alarmCallbacks[aInfo.name]();
+});
+
+var res = run();
+if(!res) {
+	run();
 }
