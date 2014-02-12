@@ -11,7 +11,8 @@ Required:
 1. Install node package => npm install
 2. Add the key entry in devkey.txt to the manifest
 3. Add the extension to you chrome://extensions
-4. Happy building and debugging
+4. Debug using the task: grunt debug
+5. Happy building and debugging
 
 ## Deployment guidelines
 
