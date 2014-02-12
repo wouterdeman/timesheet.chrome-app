@@ -148,6 +148,7 @@ var postGeoLocation = function() {
 };
 
 var run = function() {
+	return;
 	if (!initialized && !isAuthenticating) {
 		init();
 		return false;

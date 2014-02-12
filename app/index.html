@@ -3,15 +3,28 @@
     <head>
         <meta charset="utf-8">
         <title>Timesheet.bITe</title>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <!-- build:css styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
     </head>
-    <body>
-        <h1>'Allo</h1>
+    <body ng-app="timesheetApp">
+        <nav>
+            <button class="btn" id="close-button" title="Close">x</button>
+            <h2>Time.bITe assistant</h2>            
+        </nav>     
+
+        <div class="container" ng-view=""></div> 
 
         <!-- build:js scripts/index.js -->
         <script src="scripts/index.js"></script>
         <!-- endbuild -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/home.js"></script>
+        <script src="scripts/controllers/location.js"></script>
     </body>
 </html>

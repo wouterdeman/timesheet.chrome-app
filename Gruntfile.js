@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.livereload.options.livereload %>'
                 },
                 files: [
-                    '<%= yeoman.app %>/*.html',
+                    '<%= yeoman.app %>/{,*/}*.html',
                     '<%= yeoman.app %>/styles/{,*/}*.css',
                     '<%= yeoman.app %>/scripts/{,*/}*.js',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',

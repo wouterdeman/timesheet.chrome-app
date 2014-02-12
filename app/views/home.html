@@ -1,0 +1,46 @@
+ <a href="#/addlocation" class="btn btn-default" role="button">Add Location</a>
+ 
+ <br/><br/>
+
+<table class="table table-striped">
+ 	<tr>
+ 		<td>Latitude</td>
+ 		<td>{{currentPosition.latitude}}</td>
+ 	</tr>
+ 	<tr>
+ 		<td>Longitude</td>
+ 		<td>{{currentPosition.longitude}}</td>
+ 	</tr>
+ 	<tr>
+ 		<td>Speed</td>
+ 		<td>{{currentPosition.speed}}</td>
+ 	</tr>
+ 	<tr>
+ 		<td>Accuracy</td>
+ 		<td>{{currentPosition.accuracy}}</td>
+ 	</tr>
+ 	<tr>
+ 		<td>Google maps</td>
+ 		<td><a href="http://maps.google.com/maps?z=15&t=m&q={{currentPosition.latitude}},{{currentPosition.longitude}}" target="_blank">Maps</a>
+</table>
+
+<div class="alert alert-warning">
+	You're current location is not a registered location.<br/>
+	Add the location if it means something to you (e.g home, workplace, etc...).
+</div>
+ <br/>
+
+ <section>
+ 	<div class="well">
+ 		This is a small demo to show the last 10 entries (will be gone soon! ;))
+<br/><br/>
+ 		  <ul class="list-unstyled">
+      <li ng-repeat="entry in last10">
+       <span>{{entry.user}} ({{entry.time | date:'dd/MM/yy @ HH:mm:ss'}})</span>
+      <span><a href="http://maps.google.com/maps?z=15&t=m&q={{entry.loc[0]}},{{entry.loc[1]}}" target="_blank">Maps</a></span>
+      </li>
+    </ul>
+ 	</div>
+
+  
+</section>

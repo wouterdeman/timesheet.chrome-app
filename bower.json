@@ -1,6 +1,10 @@
 {
   "name": "timesheet-chrome-app",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular": "~1.2.11",
+    "angular-route": "~1.2.11",
+    "bootstrap": "~3.1.0"
+  },
   "devDependencies": {}
 }
