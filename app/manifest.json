@@ -11,7 +11,7 @@
         "identity",
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
-        "http://localhost:3000/",
+        "http://localhost:3000/*",
         "storage"
     ],
     "icons": {
