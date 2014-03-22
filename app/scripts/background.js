@@ -5,20 +5,41 @@ var isAuthenticating = false;
 var lastTokenTryOut = false;
 var isInitializing = false;
 var initialized = false;
+var lastIdleState = 'active';
 
 var saveToken = function saveToken(token) {
 	chrome.storage.sync.set({
 		'token': token
 	}, function () {
-		console.log("token set");
+		console.log('token set');
 	});
-}
+};
 
 var getLastToken = function getLastToken() {
 	var dfd = new $.Deferred();
 
 	chrome.storage.sync.get('token', function (result) {
 		dfd.resolve(result.token);
+	});
+
+	return dfd;
+};
+
+var getOrCreateClientHash = function getOrCreateClientHash() {
+	var dfd = new $.Deferred();
+
+	chrome.storage.local.get('clienthash', function (result) {
+		if(!result.clienthash) {
+			var newClientHash = CryptoJS.SHA256(new Date().toISOString()).toString();
+			chrome.storage.local.set({
+				'clienthash': newClientHash
+			}, function () {
+				console.log('client hash set');
+			});
+			dfd.resolve(newClientHash);
+		} else {
+			dfd.resolve(result.clienthash);
+		}
 	});
 
 	return dfd;
@@ -52,38 +73,38 @@ var authenticateUser = function () {
 				dfd.resolve(new Error(chrome.runtime.lastError));
 				return;
 			}
-			var querystring = responseUrl.substring(responseUrl.indexOf("?") + 1);
+			var querystring = responseUrl.substring(responseUrl.indexOf('?') + 1);
 			var params = deparam(querystring);
 
-			var tokenurl = "https://accounts.google.com/o/oauth2/token";
+			var tokenurl = 'https://accounts.google.com/o/oauth2/token';
 
 			var data = {
 				code: params.code,
-				client_id: "607292229862-b0na3ohf67isteoqtfpaoal9j3j3al3h.apps.googleusercontent.com",
-				client_secret: "PfpT2sY3tLOlztx9J5FE2gdR",
+				client_id: '607292229862-b0na3ohf67isteoqtfpaoal9j3j3al3h.apps.googleusercontent.com',
+				client_secret: 'PfpT2sY3tLOlztx9J5FE2gdR',
 				redirect_uri: redirectUrl,
-				grant_type: "authorization_code",
+				grant_type: 'authorization_code',
 			};
 
 			$.post(tokenurl, data).done(function (res) {
-				//var requestTokenUrl = "http://timesheetservice.herokuapp.com/auth/token"; 
-				var requestTokenUrl = "http://localhost:3000/auth/token";
+				//var requestTokenUrl = 'http://timesheetservice.herokuapp.com/auth/token';
+				var requestTokenUrl = 'http://localhost:3000/auth/token';
 				var tokenRequestData = {
 					refreshtoken: res.refresh_token,
-					provider: "google"
+					provider: 'google'
 				};
 
 				$.post(requestTokenUrl, tokenRequestData).done(function (res) {
-					console.table("POST SUCCES", res, data);
+					console.table('POST SUCCES', res, data);
 					isAuthenticating = false;
 					saveToken(res);
 					dfd.resolve(res);
 				}).fail(function (a, b, c, d) {
-					console.log("POST failed", a, b, c, d);
+					console.log('POST failed', a, b, c, d);
 					dfd.fail();
 				});
 			}).fail(function (a, b, c, d) {
-				console.log("POST failed", a, b, c, d);
+				console.log('POST failed', a, b, c, d);
 				dfd.fail();
 			});
 		});
@@ -103,7 +124,7 @@ var deparam = function (querystring) {
 	}
 
 	return params;
-}
+};
 
 var getLocation = function () {
 	var dfd = new $.Deferred();
@@ -111,36 +132,37 @@ var getLocation = function () {
 		dfd.resolve(position.coords);
 	}, function (err) {
 		dfd.reject(err);
-		console.log("Error getting current position", err);
+		console.log('Error getting current position', err);
 	});
 	return dfd;
-}
+};
 
 var postGeoLocation = function () {
 	var dfd = new $.Deferred();
-
 	getLastToken().then(function (token) {
-		getLocation().then(function (coords) {
-			var loc = [coords.latitude, coords.longitude];
-			//var url = "http://timesheetservice.herokuapp.com/entry";
-			var url = "http://localhost:3000/entry";
-			var data = {
-				type: 'locationinfo',
-				userinfo: {
-					deviceid: manifest.name + "-" + manifest.version,
-					devicetype: 'Chrome',
-				},
-				loc: loc,
-				token: token
-			};
+		getOrCreateClientHash().then(function(clientToken) {
+			getLocation().then(function (coords) {
+				var loc = [coords.latitude, coords.longitude];
+				//var url = 'http://timesheetservice.herokuapp.com/entry';
+				var url = 'http://localhost:3000/entry';
+				var data = {					
+					objectdetails: {
+						appversion: manifest.name + '-' + manifest.version,
+						devicetype: 'Chrome',
+						devicestate: lastIdleState
+					},
+					objectid: clientToken,
+					loc: loc,
+					token: token
+				};
 
-			$.post(url, data).done(function (d) {
-				console.table("POST SUCCES", d, data);
-			}).fail(function (a, b, c, d) {
-				dfd.reject();
+				$.post(url, data).done(function (d) {
+					console.table('POST SUCCES', d, data);
+				}).fail(function () {
+					dfd.reject();
+				});
 			});
 		});
-
 	}).fail(function () {
 		dfd.reject();
 	});
@@ -173,9 +195,10 @@ var init = function () {
 		authenticateUser();
 		initialized = true;
 	}
-}
+};
 
-var alarmKey = "servicePostAlarm";
+/******************** ALARMS *********************/
+var alarmKey = 'servicePostAlarm';
 //locally you can set this lower than 1 (eg: for debugging, set 0.1)
 var alarmInfo = {
 	periodInMinutes: 5
@@ -183,9 +206,15 @@ var alarmInfo = {
 var alarmCallbacks = {};
 alarmCallbacks[alarmKey] = run;
 
-var alarm = chrome.alarms.create(alarmKey, alarmInfo);
+chrome.alarms.create(alarmKey, alarmInfo);
 chrome.alarms.onAlarm.addListener(function (aInfo) {
 	alarmCallbacks[aInfo.name]();
+});
+
+/******************* IDLE STATE ******************/
+
+chrome.idle.queryState(60, function(newState) {
+	lastIdleState = newState;
 });
 
 var res = run();
