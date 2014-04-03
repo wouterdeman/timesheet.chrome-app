@@ -1,0 +1,11 @@
+  <h2>Change customer</h2>
+    <div>   
+      <form ng-submit="changeCustomer()">          
+          <div class="form-group">
+            <label for="name">Customer</label>
+            <select class="form-control" ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
+          </div>         
+        <input class="btn btn-primary" type="submit" value="Change">
+        <a class="btn btn-default" href="#/">Cancel</a>
+      </form>
+    </div>

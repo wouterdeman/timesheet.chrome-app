@@ -1,7 +1,7 @@
 {
     "name": "__MSG_appName__",
     "description": "__MSG_appDescription__",
-    "version": "2.0.4",
+    "version": "2.0.3",
     "manifest_version": 2,
     "minimum_chrome_version": "29",
     "default_locale": "en",
@@ -13,7 +13,8 @@
         "https://www.googleapis.com/*",
         "http://localhost:3000/*",
         "storage",
-        "idle"
+        "idle",
+        "notifications"
     ],
     "icons": {
         "16": "images/icon-16.png",
@@ -26,7 +27,9 @@
                 "scripts/chromereload.js",
                 "scripts/lib/jquery-2.0.3.min.js",
                 "scripts/lib/sha256.js",
-                "scripts/background.js"
+                "scripts/background.js",
+                "scripts/chromeApp.js",
+                "scripts/main.js"
             ]
         }
     }

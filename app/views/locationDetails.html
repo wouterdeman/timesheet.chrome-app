@@ -1,0 +1,23 @@
+<a class="btn btn-default" href="#/">Back</a>
+<h2>Location details</h2>
+<table class="table table-striped" ng-controller="LocationDetailsController">
+    <tr>
+        <td>Latitude</td>
+        <td>{{currentPosition.latitude}}</td>
+    </tr>
+    <tr>
+        <td>Longitude</td>
+        <td>{{currentPosition.longitude}}</td>
+    </tr>
+    <tr>
+        <td>Speed</td>
+        <td>{{currentPosition.speed}}</td>
+    </tr>
+    <tr>
+        <td>Accuracy</td>
+        <td>{{currentPosition.accuracy}}</td>
+    </tr>
+    <tr>
+        <td>Google maps</td>
+        <td><a href="http://maps.google.com/maps?z=15&t=m&q={{currentPosition.latitude}},{{currentPosition.longitude}}" target="_blank">Maps</a>
+</table>
