@@ -12,6 +12,7 @@
         "https://accounts.google.com/*",
         "https://www.googleapis.com/*",
         "http://localhost:3000/*",
+        "http://timesheetservice.herokuapp.com/*",
         "storage",
         "idle",
         "notifications"

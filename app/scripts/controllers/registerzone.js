@@ -3,8 +3,8 @@
 angular.module('timesheetApp')
     .controller('RegisterZoneController', function($scope, $http, $location) {        
         chromeApp.getLastToken().then(function(token) {
-            //var url = 'http://timesheetservice.herokuapp.com/entry';
-            var url = 'http://localhost:3000/customers/all';
+            var url = 'http://timesheetservice.herokuapp.com/customers/all';
+            //var url = 'http://localhost:3000/customers/all';
             var data = {
                 token: token
             };
@@ -33,7 +33,8 @@ angular.module('timesheetApp')
                         customer: $scope.customer._id
                     };
 
-                    var url = 'http://localhost:3000/zones/register';
+                    var url = 'http://timesheetservice.herokuapp.com/zones/register';
+                    //var url = 'http://localhost:3000/zones/register';
                     $http.post(url, data).success(function () {                 
                         chromeApp.showMessage('Zone registered', 'New zone ' + $scope.name + ' registered.');
                         $location.path("/");

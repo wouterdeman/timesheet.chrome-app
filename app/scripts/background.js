@@ -87,8 +87,8 @@ var authenticateUser = function () {
 			};
 
 			$.post(tokenurl, data).done(function (res) {
-				//var requestTokenUrl = 'http://timesheetservice.herokuapp.com/auth/token';
-				var requestTokenUrl = 'http://localhost:3000/auth/token';
+				var requestTokenUrl = 'http://timesheetservice.herokuapp.com/auth/token';
+				//var requestTokenUrl = 'http://localhost:3000/auth/token';
 				var tokenRequestData = {
 					refreshtoken: res.refresh_token,
 					provider: 'google'
@@ -143,8 +143,8 @@ var postGeoLocation = function () {
 		getOrCreateClientHash().then(function(clientToken) {
 			getLocation().then(function (coords) {
 				var loc = [coords.latitude, coords.longitude];
-				//var url = 'http://timesheetservice.herokuapp.com/entry';
-				var url = 'http://localhost:3000/entry';
+				var url = 'http://timesheetservice.herokuapp.com/entry';
+				//var url = 'http://localhost:3000/entry';
 				var data = {					
 					objectdetails: {
 						appversion: manifest.name + '-' + manifest.version,

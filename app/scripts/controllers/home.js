@@ -6,8 +6,8 @@ angular.module('timesheetApp')
 		chromeApp.getLastToken().then(function (token) {
 			chromeApp.getLocation().then(function (coords) {
 				var loc = [coords.latitude, coords.longitude];
-				//var url = 'http://timesheetservice.herokuapp.com/entry';
-				var url = 'http://localhost:3000/zones/current';
+				var url = 'http://timesheetservice.herokuapp.com/zones/current';
+				//var url = 'http://localhost:3000/zones/current';
 				var data = {
 					loc: loc,
 					token: token
