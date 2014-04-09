@@ -1,0 +1,17 @@
+  <h2>Change zone details</h2>
+    <div>   
+      <form name="form" ng-submit="updateZone(form.$valid)" novalidate>
+          <div control-group label="Name">
+            <input type="text" id="name" name="name" class="form-control" ng-model="name" placeholder="Enter name" required></input>       
+          </div>
+          <div control-group label="Description">            
+            <textarea class="form-control" name="description" id="description" ng-model="description" placeholder="Description" required></textarea>      
+          </div>          
+          <div class="form-group">
+            <label for="name">Customer</label>
+            <select class="form-control" ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
+          </div>         
+        <input class="btn btn-primary" type="submit" value="Update">
+        <a class="btn btn-default" href="#/">Cancel</a>
+      </form>
+    </div>

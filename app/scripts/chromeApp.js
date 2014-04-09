@@ -32,8 +32,7 @@ var chromeApp = {
         chrome.notifications.create(title, options, function (notificationId) {});
         chrome.notifications.onClicked.addListener(function (notificationId) {
             console.log(notificationId);
-            if(notificationId == title) {
-                console.log('we got a match');
+            if(notificationId == title) {                
                 deferred.resolve();
             }
         });

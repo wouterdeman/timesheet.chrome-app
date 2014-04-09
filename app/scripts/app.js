@@ -14,6 +14,10 @@ var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($
         controller:'ChangeCustomerController',
         templateUrl:'views/changecustomer.html'
       })
+      .when('/changezone', {
+        controller:'ChangeZoneController',
+        templateUrl:'views/changezone.html'
+      })
       .when('/locationDetails', {
         controller:'LocationDetailsController',
         templateUrl:'views/locationDetails.html'
