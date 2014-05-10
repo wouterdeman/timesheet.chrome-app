@@ -1,0 +1,24 @@
+<a class="btn btn-default" href="#/">Back</a>
+
+<h2>Manage activities</h2>
+
+<div ng-controller="ManageActivitiesController">
+
+
+<form ng-submit="getTrackedTime()">          
+    <div class="form-group">
+      <label for="name">maand</label>
+      <select  class="form-control" data-ng-options="o.name for o in months" data-ng-model="selectedMonth"></select>
+    </div>
+     <div class="form-group">
+      <label for="name">Jaar</label>
+      <select  class="form-control" data-ng-options="o for o in years" data-ng-model="selectedYear"></select>
+    </div>             
+  <input class="btn btn-primary" type="submit" value="Zoeken">
+</form>
+
+
+
+
+
+</dvi>
