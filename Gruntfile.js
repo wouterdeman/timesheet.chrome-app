@@ -90,7 +90,7 @@ module.exports = function (grunt) {
                 }
             }
         },
-         // Compiles Sass to CSS and generates necessary files if requested
+        // Compiles Sass to CSS and generates necessary files if requested
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -206,7 +206,17 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         'images/{,*/}*.{webp,gif}',
                         '_locales/{,*/}*.json',
-                        'styles/fonts/{,*/}*.*'
+                        'styles/fonts/{,*/}*.*',
+                        'bower_components/jquery/jquery.js',
+                        'bower_components/bootstrap/dist/js/bootstrap.js',
+                        'bower_components/angular/angular.js',
+                        'bower_components/angular-route/angular-route.js',
+                        'bower_components/lodash/dist/lodash.js',
+                        'scripts/app.js',
+                        'scripts/chromeApp.js',
+                        'scripts/controllers/*.js',
+                        'bower_components/bootstrap/dist/css/bootstrap.css',
+                        'views/*.html'
                     ]
                 }]
             }
