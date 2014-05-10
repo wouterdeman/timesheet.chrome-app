@@ -22,6 +22,10 @@ var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($
         controller:'LocationDetailsController',
         templateUrl:'views/locationDetails.html'
       })
+      .when('/manageActivities',{
+        controller:'ManageActivitiesController',
+        templateUrl:'views/manageActivities.html'        
+      })
       .otherwise({
         redirectTo: '/'
       });
