@@ -19,6 +19,34 @@
 
 
 
+<table class="table">
+	<thead>
+		<tr>
+			<th> Datum</th>
+			<th> Klant</th>
+			<th> Duration</th>
+			<th> <select  class="form-control" data-ng-options="device.id as device.name for device in devices" data-ng-model="selectedDevice"></select></th>
+		</th>
+	</thead>
+
+	<tbody ng-repeat="trackedTime in trackedTimesForDevice()">
+		<tr>
+			<td>
+				{{trackedTime.date}}
+			</td>
+			<td>
+				<select class="form-control" ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer">
+				</select>
+			</td>
+			<td>
+				 {{trackedTime.duration}}</td>
+			<td>
+				<button type="button" class="btn btn-primary btn-sm" ng-click="saveActivity(trackedTime)" >Opslaan</button> 
+			</td>
+		</tr>
+	</tbody>
+
+</table>
 
 
 </dvi>
