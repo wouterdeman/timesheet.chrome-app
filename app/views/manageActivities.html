@@ -32,7 +32,7 @@
 	<tbody ng-repeat="trackedTime in trackedTimesForDevice()">
 		<tr>
 			<td>
-				{{trackedTime.date}}
+				{{trackedTime.formattedDate}}  <span class="badge"  ng-if="trackedTime.isWeekend">Weekend</span>
 			</td>
 			<td>
 				<select class="form-control" ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer">

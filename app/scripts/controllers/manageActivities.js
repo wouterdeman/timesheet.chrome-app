@@ -51,7 +51,11 @@ angular.module('timesheetApp')
 
 	            $http.post(urls.customers.trackedTimeAndCustomer, getCustomerData).success(function (trackedTime) {
 	                console.log("trackedTime",trackedTime);
-	                $scope.trackedTimes=trackedTime;
+	                $scope.trackedTimes= _.forEach(trackedTime,function(tt){
+	                	tt.date=new Date(tt.date);
+	                	tt.isWeekend=tt.date.getDay()%6==0;
+	                	tt.formattedDate=tt.date.getDate()+" "+monthNames[tt.date.getMonth()]+" "+tt.date.getFullYear();
+	                });;
 
 	                var grouped=_.groupBy(trackedTime,'device');
 	               	var deviceIds=_.keys(grouped);
@@ -70,7 +74,7 @@ angular.module('timesheetApp')
 
 
         $scope.saveActivity = function(trackedTimeForDevice){
-        	var date=new Date(trackedTimeForDevice.date);
+        	var date=trackedTimeForDevice.date;
 			chromeApp.getLastToken().then(function (token) {
 	            var updateCustomerData = {
 	                token: token,
