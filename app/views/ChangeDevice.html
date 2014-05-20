@@ -1,0 +1,12 @@
+
+<a class="btn btn-default" href="#/">Back</a>
+  <h2>Change Device</h2>
+    <div ng-controller="ChangeDeviceController">   
+      <form ng-submit="changeDevice(devicename)">          
+          <div class="form-group">
+            <label for="name">Device name</label>
+            <input type="text" ng-model="devicename" />
+          </div>         
+        <input class="btn btn-primary" type="submit" value="Change">
+      </form>
+    </div>

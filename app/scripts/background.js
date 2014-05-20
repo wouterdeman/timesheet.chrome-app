@@ -137,7 +137,7 @@ var getLocation = function () {
 	return dfd;
 };
 
-var postGeoLocation = function () {
+var postGeoLocation = function (deciceName) {
 	var dfd = new $.Deferred();
 	getLastToken().then(function (token) {
 		getOrCreateClientHash().then(function(clientToken) {
@@ -149,7 +149,8 @@ var postGeoLocation = function () {
 					objectdetails: {
 						appversion: manifest.name + '-' + manifest.version,
 						devicetype: 'Chrome',
-						devicestate: lastIdleState
+						devicestate: lastIdleState,
+						devicename:deciceName
 					},
 					objectid: clientToken,
 					loc: loc,
@@ -175,9 +176,15 @@ var run = function () {
 		init();
 		return false;
 	} else if (!isAuthenticating && initialized) {
-		postGeoLocation().fail(function () {
-			init();
+
+		chrome.storage.local.get("devicename",function(value){
+			var val=value["devicename"];
+			postGeoLocation(val).fail(function () {
+				init();
+			});
 		});
+
+
 	}
 	return true;
 };

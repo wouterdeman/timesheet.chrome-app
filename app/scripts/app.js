@@ -26,6 +26,10 @@ var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($
       controller: 'ManageActivitiesController',
       templateUrl: 'views/manageActivities.html'
     })
+    .when('/changedevicename', {
+      controller: 'ChangeDeviceController',
+      templateUrl: 'views/ChangeDevice.html'
+    })
     .otherwise({
       redirectTo: '/'
     });

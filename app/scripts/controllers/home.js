@@ -3,6 +3,7 @@
 angular.module('timesheetApp')
 	.controller('HomeController', function($scope, $http, $location, chromeApp) {
 		$scope.loading = true;
+
 		chromeApp.getLastToken().then(function (token) {
 			chromeApp.getLocation().then(function (coords) {
 				var loc = [coords.latitude, coords.longitude];
@@ -29,5 +30,11 @@ angular.module('timesheetApp')
 					$scope.loading = false;
 				});
 			});
+		});
+
+
+		chrome.storage.local.get("devicename",function(value){
+			var val=value["devicename"];
+			$scope.deviceName=val || "";
 		});
 	});
