@@ -1,5 +1,7 @@
 body {
     padding: 20px;
+    height: 650px;
+    overflow-y: auto;
 }
 
 nav:hover #close-button {

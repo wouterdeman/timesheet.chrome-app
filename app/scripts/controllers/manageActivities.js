@@ -55,6 +55,16 @@ angular.module('timesheetApp')
 	                	tt.date=new Date(tt.date);
 	                	tt.isWeekend=tt.date.getDay()%6==0;
 	                	tt.formattedDate=tt.date.getDate()+" "+monthNames[tt.date.getMonth()]+" "+tt.date.getFullYear();
+
+                        var cd = 24 * 60 * 60 * 1000,
+                            ch = 60 * 60 * 1000,
+                            d = Math.floor(tt.duration / cd),
+                            h = '0' + Math.floor( (tt.duration - d * cd) / ch),
+                            m = '0' + Math.round( (tt.duration - d * cd - h * ch) / 60000);
+                        tt.formattedDuration = [h.substr(-2), m.substr(-2)].join(':');
+                        if(tt.suggestedCustomer) {
+                            tt.customer = tt.suggestedCustomer;
+                        }
 	                });;
 
 	                var grouped=_.groupBy(trackedTime,'device');

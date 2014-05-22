@@ -37,9 +37,10 @@
 			<td>
 				<select class="form-control" ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer">
 				</select>
+                {{trackedTime.suggestedCustomer}}
 			</td>
 			<td>
-				 {{trackedTime.duration}}</td>
+				 {{trackedTime.formattedDuration}}u</td>
 			<td>
 				<button type="button" class="btn btn-primary btn-sm" ng-click="saveActivity(trackedTime)" >Opslaan</button> 
 			</td>
