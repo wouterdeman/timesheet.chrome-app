@@ -71,6 +71,10 @@ angular.module('timesheetApp')
 	               	var deviceIds=_.keys(grouped);
 	               	var devices=_.map(deviceIds,function(deviceId){
 	               		var name=_.first(grouped[deviceId]).devicedetails.devicetype;
+	               		var deciveName = _.last(grouped[deviceId]).devicedetails.devicename;
+	               		if(deciveName){
+	               			name=name +" - "+deciveName;
+	               		}
 	               		if(deviceId===currentDevice)
 	               			name+=" (huidig)";
 	               		return {id: deviceId, name:name};
