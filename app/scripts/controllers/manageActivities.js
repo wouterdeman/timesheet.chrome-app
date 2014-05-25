@@ -16,14 +16,16 @@ angular.module('timesheetApp')
         $scope.selectedMonth=$scope.months[today.getMonth()];
         $scope.customers=[];
         $scope.trackedTimes=[];
-         $scope.devices=[];
-         $scope.selectedDevice;
+        $scope.devices=[];
+        $scope.selectedDevice;         
+        $scope.copydate;
+        $scope.copycustomer;
+        var selectedTrackedTime;
 
-         $scope.trackedTimesForDevice=function(){
-         	var deviceId= $scope.selectedDevice;
-         	return _.filter( $scope.trackedTimes,{device:deviceId});
-         };
-
+        $scope.trackedTimesForDevice=function(){
+            var deviceId= $scope.selectedDevice;
+            return _.filter( $scope.trackedTimes,{device:deviceId});
+        };
 
          //INIT
         chromeApp.getLastToken().then(function (token) {
@@ -104,4 +106,52 @@ angular.module('timesheetApp')
 	            });
 	        });
         }
+
+        $scope.copyActivity = function(trackedTime){
+            selectedTrackedTime = trackedTime;
+            var date = selectedTrackedTime.date;
+            var month = date.getMonth() + 1;
+            $scope.copydate = date.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
+            $('#copydialog').modal('show');
+        }
+
+        $scope.saveCopy = function() {
+            var date = new Date($scope.copydate);
+            chromeApp.getLastToken().then(function (token) {
+                var copyData = {
+                    token: token,
+                    day: date.getDate(),
+                    month: date.getMonth(),
+                    year: date.getFullYear(),                     
+                    customer: $scope.copycustomer._id,
+                    reference: selectedTrackedTime.reference
+                };
+
+                $http.post(urls.customers.copyReferencedTrackedTime, copyData).success(function (response) {                    
+                    $('#copydialog').modal('hide');
+                    chromeApp.showMessage('Copy', 'New copy saved.');
+                    $scope.getTrackedTime();
+                });
+            });
+        }
+
+        $scope.showDeleteDialog = function(trackedTime) {
+            selectedTrackedTime = trackedTime;
+            $('#deletedialog').modal('show');
+        };
+
+        $scope.deleteByReference = function() {
+            chromeApp.getLastToken().then(function (token) {
+                var deleteData = {
+                    token: token,
+                    reference: selectedTrackedTime.reference
+                };
+
+                $http.post(urls.customers.deleteReferencedTrackedTime, deleteData).success(function (response) {                    
+                    $('#deletedialog').modal('hide');
+                    chromeApp.showMessage('Delete', 'Item deleted.');
+                    $scope.getTrackedTime();
+                });
+            });
+        };
     });

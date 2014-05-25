@@ -36,12 +36,14 @@ var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($
 
 
   $provide.factory('urls', function() {
-    var environment = "DEV";
+    var environment = "PRD";
     var urls = {
       customers: {
         all: "customers/all",
         trackedTimeAndCustomer: "customers/trackedTimeAndCustomer",
-        updateCustomerForTrackedTime: "customers/updateCustomerForTrackedTime"
+        updateCustomerForTrackedTime: "customers/updateCustomerForTrackedTime",
+        copyReferencedTrackedTime: "customers/copyReferencedTrackedTime",
+        deleteReferencedTrackedTime: "customers/deleteReferencedTrackedTime"
       }
     };
     var domain = {
