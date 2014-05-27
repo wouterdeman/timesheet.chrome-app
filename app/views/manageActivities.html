@@ -5,21 +5,21 @@
 <div ng-controller="ManageActivitiesController">
 
 
-<form ng-submit="getTrackedTime()">          
+<form ng-submit="getTrackedTime()" class="form-horizontal">          
     <div class="form-group">
-      <label for="name">maand</label>
-      <select  class="form-control" data-ng-options="o.name for o in months" data-ng-model="selectedMonth"></select>
+      <label for="name" class="form-label col-sm-2">Maand</label>
+      <div class="col-sm-4"><select class="form-control" data-ng-options="o.name for o in months" data-ng-model="selectedMonth"></select></div>
     </div>
      <div class="form-group">
-      <label for="name">Jaar</label>
-      <select  class="form-control" data-ng-options="o for o in years" data-ng-model="selectedYear"></select>
+      <label for="name" class="form-label col-sm-2">Jaar</label>
+      <div class="col-sm-4"><select  class="form-control" data-ng-options="o for o in years" data-ng-model="selectedYear"></select></div>
     </div>             
   <input class="btn btn-primary" type="submit" value="Zoeken">
 </form>
 
 
 
-<table class="table">
+<table class="table" ng-show="trackedTimes.length">
 	<thead>
 		<tr>
 			<th> Datum</th>

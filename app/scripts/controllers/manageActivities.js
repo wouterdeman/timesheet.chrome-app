@@ -83,7 +83,9 @@ angular.module('timesheetApp')
 	               	});
 
 	                $scope.devices=devices;
-	                $scope.selectedDevice=currentDevice;
+                    if(!$scope.selectedDevice) {
+	                   $scope.selectedDevice=currentDevice;
+                    }
 	            });
 	        });
         };
@@ -102,7 +104,8 @@ angular.module('timesheetApp')
 	            };
 
 	            $http.post(urls.customers.updateCustomerForTrackedTime, updateCustomerData).success(function (response) {
-	                console.log("updated",response);
+	                chromeApp.showMessage('Activity saved', 'Activity details saved.');
+                    $scope.getTrackedTime();
 	            });
 	        });
         }
@@ -149,7 +152,7 @@ angular.module('timesheetApp')
 
                 $http.post(urls.customers.deleteReferencedTrackedTime, deleteData).success(function (response) {                    
                     $('#deletedialog').modal('hide');
-                    chromeApp.showMessage('Delete', 'Item deleted.');
+                    chromeApp.showMessage('Delete', 'Item deleted.');                    
                     $scope.getTrackedTime();
                 });
             });

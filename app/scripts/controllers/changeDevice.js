@@ -14,7 +14,7 @@ angular.module('timesheetApp')
 
     	$scope.changeDevice=function(theValue){
 			chrome.storage.local.set({'devicename': theValue}, function() {
-	          // Notify that we saved.
+	          chromeApp.showMessage('Device', 'Device details saved.');
 	        });
     	};
 
