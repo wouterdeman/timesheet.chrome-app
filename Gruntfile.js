@@ -207,7 +207,7 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         '_locales/{,*/}*.json',
                         'styles/fonts/{,*/}*.*',
-                        'bower_components/jquery/jquery.js',
+                        'bower_components/jquery/dist/jquery.js',
                         'bower_components/bootstrap/dist/js/bootstrap.js',
                         'bower_components/angular/angular.js',
                         'bower_components/angular-route/angular-route.js',
@@ -216,6 +216,7 @@ module.exports = function (grunt) {
                         'scripts/chromeApp.js',
                         'scripts/controllers/*.js',
                         'bower_components/bootstrap/dist/css/bootstrap.css',
+                        'bower_components/angular/angular-csp.css',
                         'views/*.html'
                     ]
                 }]
