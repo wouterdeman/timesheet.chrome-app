@@ -3,6 +3,7 @@
 angular.module('timesheetApp')
 	.controller('HomeController', function($scope, $http, $location, chromeApp) {
 		$scope.loading = true;
+		$scope.deviceName = '';
 
 		chromeApp.getLastToken().then(function (token) {
 			chromeApp.getLocation().then(function (coords) {
