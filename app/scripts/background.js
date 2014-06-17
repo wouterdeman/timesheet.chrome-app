@@ -171,18 +171,43 @@ var postGeoLocation = function (deciceName) {
 	return dfd;
 };
 
+var shouldSend=function(s){
+	var currentDate=new Date();
+	var currentDay=currentDate.getDay();
+	var currentHour=currentDate.getHours();
+	if(currentDay>0 && currentDay<6){
+		if(!s.weekdays.track)
+			return false;
+		return s.weekdays.from <= currentHour && s.weekdays.to>=currentHour;
+	}
+	if(!s.weekend.track)
+		return false;
+	return s.weekend.from  <= currentHour && s.weekend.to>=currentHour;
+};
+
 var run = function () {
 	if (!initialized && !isAuthenticating) {
 		init();
 		return false;
 	} else if (!isAuthenticating && initialized) {
 
-		chrome.storage.local.get("devicename",function(value){
-			var val=value["devicename"];
-			postGeoLocation(val).fail(function () {
-				init();
+
+
+        chrome.storage.local.get("settings",function(settingsValue){
+        	var send=shouldSend(settingsValue.settings);
+        	console.log("settings are ",settingsValue.settings,send);
+        	if(!send)
+        		return;
+			chrome.storage.local.get("devicename",function(value){
+				var val=value["devicename"];
+				postGeoLocation(val).fail(function () {
+					init();
+				});
 			});
-		});
+        });
+
+
+
 
 
 	}
