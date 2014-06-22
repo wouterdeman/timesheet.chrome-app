@@ -188,7 +188,19 @@ var run = function () {
 		init();
 		return false;
 	} else if (!isAuthenticating && initialized) {
+<<<<<<< HEAD
 		getLocation().then(function (coords) {
+			chrome.storage.local.get("devicename",function(value){
+				var val = value["devicename"];
+				postGeoLocation(val, coords).fail(function () {
+					init();
+				});
+			});
+
+			locationDetection.detectlocationunknown(coords);
+		});
+=======
+
 
 
         chrome.storage.local.get("settings",function(settingsValue){
@@ -197,17 +209,16 @@ var run = function () {
         	if(!send)
         		return;
 			chrome.storage.local.get("devicename",function(value){
-			var val=value["devicename"];
-				postGeoLocation(val, coords).fail(function () {
+				var val=value["devicename"];
+				postGeoLocation(val).fail(function () {
 					init();
 				});
 			});
-
-			locationDetection.detectlocationunknown(coords);
         });
 
 
 
+>>>>>>> 7270e0d9b1d9085778c0bcc468bc31b39b5e1c6d
 
 
 	}

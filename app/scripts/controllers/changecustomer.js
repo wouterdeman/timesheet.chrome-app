@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 angular.module('timesheetApp')
     .controller('ChangeCustomerController', function($scope, $http, $location) {        
