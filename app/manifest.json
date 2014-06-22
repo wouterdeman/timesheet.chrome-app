@@ -25,10 +25,14 @@
     "app": {
         "background": {
             "scripts": [
+                "scripts/chromeApp.js",
                 "scripts/chromereload.js",
                 "scripts/lib/jquery-2.0.3.min.js",
+                "bower_components/moment/min/moment.min.js",
+                "bower_components/geolib/dist/geolib.min.js",
                 "scripts/lib/sha256.js",
                 "scripts/background.js",
+                "scripts/locationdetection.js",
                 "scripts/main.js"
             ]
         }

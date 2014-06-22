@@ -137,32 +137,30 @@ var getLocation = function () {
 	return dfd;
 };
 
-var postGeoLocation = function (deciceName) {
+var postGeoLocation = function (deciceName, coords) {
 	var dfd = new $.Deferred();
 	getLastToken().then(function (token) {
-		getOrCreateClientHash().then(function(clientToken) {
-			getLocation().then(function (coords) {
-				var loc = [coords.latitude, coords.longitude];
-				var url = 'http://timesheetservice.herokuapp.com/entry';
-				//var url = 'http://localhost:3000/entry';
-				var data = {					
-					objectdetails: {
-						appversion: manifest.name + '-' + manifest.version,
-						devicetype: 'Chrome',
-						devicestate: lastIdleState,
-						devicename:deciceName
-					},
-					objectid: clientToken,
-					loc: loc,
-					token: token
-				};
+		getOrCreateClientHash().then(function(clientToken) {			
+			var loc = [coords.latitude, coords.longitude];
+			var url = 'http://timesheetservice.herokuapp.com/entry';
+			//var url = 'http://localhost:3000/entry';
+			var data = {					
+				objectdetails: {
+					appversion: manifest.name + '-' + manifest.version,
+					devicetype: 'Chrome',
+					devicestate: lastIdleState,
+					devicename:deciceName
+				},
+				objectid: clientToken,
+				loc: loc,
+				token: token
+			};
 
-				$.post(url, data).done(function (d) {
-					console.table('POST SUCCES', d, data);
-				}).fail(function () {
-					dfd.reject();
-				});
-			});
+			$.post(url, data).done(function (d) {
+				console.table('POST SUCCES', d, data);
+			}).fail(function () {
+				dfd.reject();
+			});			
 		});
 	}).fail(function () {
 		dfd.reject();
@@ -176,12 +174,15 @@ var run = function () {
 		init();
 		return false;
 	} else if (!isAuthenticating && initialized) {
-
-		chrome.storage.local.get("devicename",function(value){
-			var val=value["devicename"];
-			postGeoLocation(val).fail(function () {
-				init();
+		getLocation().then(function (coords) {
+			chrome.storage.local.get("devicename",function(value){
+				var val = value["devicename"];
+				postGeoLocation(val, coords).fail(function () {
+					init();
+				});
 			});
+
+			locationDetection.detectlocationunknown(coords);
 		});
 
 

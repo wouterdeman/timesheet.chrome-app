@@ -47,5 +47,33 @@ var chromeApp = {
         });
 
         return dfd;
+    },
+    storeLocally: function storeLocally(key, data) {
+        var dfd = new $.Deferred();
+
+        chrome.storage.local.set({
+            'reminderCount': JSON.stringify(data)
+        }, function () {
+            console.log('localStorage set');
+        });
+
+        return dfd;
+    },
+    retrieveLocally: function retrieveLocally(key) {
+        var dfd = new $.Deferred();
+
+        chrome.storage.local.get(key, function (result) {
+            dfd.resolve(JSON.parse(result[key]));
+        });
+
+        return dfd;
+    },
+    show: function show() {
+        var mainWindow = chrome.app.window.get('main');
+        if(mainWindow) {
+            mainWindow.show();
+            return;
+        }
+        startupApp();
     }
 };

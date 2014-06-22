@@ -16,13 +16,14 @@ angular.module('timesheetApp')
 				};
 
 				$http.post(url, data).success(function (zone) {
-					$scope.zone = zone;
-					if (zone) {
+					if (zone && zone !== "0") {
+						$scope.zone = zone;
 						$scope.activity = _.find(zone.activities, {
 							'active': true
 						});
 						chromeApp.showMessage('Zone found', 'You are now at ' + zone.zoneDetails.name);
 					} else {
+						$scope.zone = undefined;
 						chromeApp.showMessage('Zone not found', 'Click here to register your current location as a zone if it means something to you (e.g home, workplace, etc...).').then(function () {							
 							$location.path("/registerzone");
 							$scope.$apply();
