@@ -1,18 +1,23 @@
 var locationDetection = {
     detectlocationunknown: function (loc) {
-        var storeNew = function (loc) {
-            chromeApp.storeLocally('reminderCount', {
-                latitude: loc.latitude,
-                longitude: loc.longitude,
-                startDate: new Date()
+        var storeNew = function (loc) {            
+            chrome.storage.local.set({
+                'reminderCount': JSON.stringify({
+                    latitude: loc.latitude,
+                    longitude: loc.longitude,
+                    startDate: new Date()
+                })
             });
         }
 
-        var storeExisting = function (reminderCount) {
-            chromeApp.storeLocally('reminderCount', reminderCount);
+        var storeExisting = function (reminderCount) {            
+            chrome.storage.local.set({
+                'reminderCount': JSON.stringify(reminderCount)
+            });
         }
 
-        chromeApp.retrieveLocally('reminderCount').then(function (data) {
+        chrome.storage.local.get('reminderCount', function (data) {
+            data = (data['reminderCount'] && JSON.parse(data['reminderCount'])) || '';
             if (!data) {
                 storeNew(loc);
                 return;
@@ -48,7 +53,7 @@ var locationDetection = {
                     console.log('zone check');
                     if (!zone) {
                         chromeApp.showMessage('Unregistered zone found', 'Click here to register your current location as a zone if it means something to you (e.g home, workplace, etc...).').then(function () {
-                            chromeApp.show();                
+                            chromeApp.show();
                             storeNew(loc);
                         });
                     }

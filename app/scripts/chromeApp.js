@@ -52,7 +52,7 @@ var chromeApp = {
         var dfd = new $.Deferred();
 
         chrome.storage.local.set({
-            'reminderCount': JSON.stringify(data)
+            key: JSON.stringify(data)
         }, function () {
             console.log('localStorage set');
         });

@@ -1,44 +1,69 @@
 'use strict'
 
-var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($routeProvider, $provide) {
-  $routeProvider
-    .when('/', {
-      templateUrl: 'views/home.html',
-      controller: 'HomeController'
+var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function($provide, $stateProvider, $urlRouterProvider) {
+  $stateProvider
+    .state('gretel', {
+      url: "/gretel",
+      abstract: true,
+      templateUrl: "views/menu.html"
     })
-    .when('/registerzone', {
-      controller: 'RegisterZoneController',
-      templateUrl: 'views/registerzone.html'
+    .state('gretel.home', {
+      url: "/home",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/home.html",
+          controller: "HomeController"
+        }
+      }
+    })    
+    .state('gretel.locationdetails', {
+      url: "/locationdetails",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/locationDetails.html",
+          controller: "LocationDetailsController"
+        }
+      }     
     })
-    .when('/changecustomer', {
-      controller: 'ChangeCustomerController',
-      templateUrl: 'views/changecustomer.html'
+    .state('gretel.manageactivities', {
+      url: "/manageactivities",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/manageActivities.html",
+          controller: "ManageActivitiesController"
+        }
+      }
     })
-    .when('/changezone', {
-      controller: 'ChangeZoneController',
-      templateUrl: 'views/changezone.html'
+    .state('gretel.settings', {
+      url: "/settings",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/settings.html",
+          controller: "settingsController"
+        }
+      }     
     })
-    .when('/locationDetails', {
-      controller: 'LocationDetailsController',
-      templateUrl: 'views/locationDetails.html'
+    .state('gretel.registerzone', {
+      url: "/registerzone",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/registerzone.html",
+          controller: "RegisterZoneController"
+        }
+      }     
     })
-    .when('/manageActivities', {
-      controller: 'ManageActivitiesController',
-      templateUrl: 'views/manageActivities.html'
-    })
-    .when('/changedevicename', {
-      controller: 'ChangeDeviceController',
-      templateUrl: 'views/ChangeDevice.html'
-    })
-    .when('/settingwizard', {
-      controller: 'settingwizardController',
-      templateUrl: 'views/settingwizard.html'
-    })
-    .otherwise({
-      redirectTo: '/'
+    .state('gretel.activitylog', {
+      url: "/activitylog",
+      views: {
+        'menuContent' :{
+          templateUrl: "views/activitylog.html",
+          controller: "ActivityLogController"
+        }
+      }     
     });
 
-
+  $urlRouterProvider.otherwise("/gretel/home");
+   
   $provide.factory('urls', function() {
     var environment = "PRD";
     var urls = {
@@ -71,6 +96,53 @@ var timesheetApp = angular.module('timesheetApp', ['ngRoute']).config(function($
     console.log(completeUrls);
     return completeUrls;
   });
+}).controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
+  $scope.attendees = [
+    { firstname: 'Nicolas', lastname: 'Cage' },
+    { firstname: 'Jean-Claude', lastname: 'Van Damme' },
+    { firstname: 'Keanu', lastname: 'Reeves' },
+    { firstname: 'Steven', lastname: 'Seagal' }
+  ];
+  
+  $scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft($scope);
+  };
+})
+
+.controller('CheckinCtrl', function($scope) {
+  $scope.showForm = true;
+  
+  $scope.shirtSizes = [
+    { text: 'Large', value: 'L' },
+    { text: 'Medium', value: 'M' },
+    { text: 'Small', value: 'S' }
+  ];
+  
+  $scope.attendee = {};
+  $scope.submit = function() {
+    if(!$scope.attendee.firstname) {
+      alert('Info required');
+      return;
+    }
+    $scope.showForm = false;
+    $scope.attendees.push($scope.attendee);
+  };
+  
+})
+
+.controller('AttendeesCtrl', function($scope) {
+  
+  $scope.activity = [];
+  $scope.arrivedChange = function(attendee) {
+    var msg = attendee.firstname + ' ' + attendee.lastname;
+    msg += (!attendee.arrived ? ' has arrived, ' : ' just left, '); 
+    msg += new Date().getMilliseconds();
+    $scope.activity.push(msg);
+    if($scope.activity.length > 3) {
+      $scope.activity.splice(0, 1);
+    }
+  };
+  
 });
 timesheetApp.factory('chromeApp', function() {
   return chromeApp;
@@ -116,4 +188,30 @@ timesheetApp.directive("controlGroup", function($compile) {
       return $compile(element.find(":input"))(scope.$parent);
     }
   };
+});
+
+timesheetApp.run(function($rootScope) {
+  // you can inject any instance here
+  $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+  console.log('$stateChangeStart to '+toState.to+'- fired when the transition begins. toState,toParams : \n',toState, toParams);
+  });
+  $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams){
+    console.log('$stateChangeError - fired when an error occurs during transition.');
+    console.log(arguments);
+  });
+  $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
+    console.log('$stateChangeSuccess to '+toState.name+'- fired once the state transition is complete.');
+  });
+  // $rootScope.$on('$viewContentLoading',function(event, viewConfig){
+  //   // runs on individual scopes, so putting it in "run" doesn't work.
+  //   console.log('$viewContentLoading - view begins loading - dom not rendered',viewConfig);
+  // });
+  $rootScope.$on('$viewContentLoaded',function(event){
+    console.log('$viewContentLoaded - fired after dom rendered',event);
+  });
+  $rootScope.$on('$stateNotFound',function(event, unfoundState, fromState, fromParams){
+    console.log('$stateNotFound '+unfoundState.to+'  - fired when a state cannot be found by its name.');
+    console.log(unfoundState, fromState, fromParams);
+  });
+
 });

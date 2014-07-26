@@ -1,0 +1,45 @@
+<ion-view title="Settings">
+    <ion-content>
+        <div ng-controller="settingsController">
+            <ul class="list">
+                <div class="item item-divider">
+                    Tracking hours
+                </div>
+
+                <li class="item item-toggle">
+                    Weekdays
+                    <label class="toggle toggle-balanced">
+                        <input type="checkbox" ng-model="weekdays.track">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </li>
+                <li class="item item-input" ng-class="{ 'hide': !weekdays.track }">
+                    <input type="number" ng-model="weekdays.from" />&nbsp;to&nbsp;
+                    <input type="number" ng-model="weekdays.to" />
+                </li>
+                <li class="item item-toggle">
+                    Weekends
+                    <label class="toggle toggle-balanced">
+                        <input type="checkbox" ng-model="weekend.track">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </li>
+                <li class="item item-input" ng-class="{ 'hide': !weekend.track }">
+                    <input type="number" ng-model="weekend.from" />&nbsp;to&nbsp;
+                    <input type="number" ng-model="weekend.to" />
+                </li>
+                <div class="item item-divider">
+                    Other
+                </div>
+                <li class="item item-input item-stacked-label">
+                    <span class="input-label">Device name</span>
+                    <input type="text" ng-model="devicename" placeholder="Enter a device name..." />
+                </li>
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>

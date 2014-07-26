@@ -29,7 +29,7 @@ var getOrCreateClientHash = function getOrCreateClientHash() {
 	var dfd = new $.Deferred();
 
 	chrome.storage.local.get('clienthash', function (result) {
-		if(!result.clienthash) {
+		if (!result.clienthash) {
 			var newClientHash = CryptoJS.SHA256(new Date().toISOString()).toString();
 			chrome.storage.local.set({
 				'clienthash': newClientHash
@@ -115,7 +115,8 @@ var authenticateUser = function () {
 var deparam = function (querystring) {
 	// remove any preceding url and split
 	querystring = querystring.substring(querystring.indexOf('?') + 1).split('&');
-	var params = {}, pair, d = decodeURIComponent,
+	var params = {},
+		pair, d = decodeURIComponent,
 		i;
 	// march and parse
 	for (i = querystring.length; i > 0;) {
@@ -140,16 +141,16 @@ var getLocation = function () {
 var postGeoLocation = function (deciceName, coords) {
 	var dfd = new $.Deferred();
 	getLastToken().then(function (token) {
-		getOrCreateClientHash().then(function(clientToken) {			
+		getOrCreateClientHash().then(function (clientToken) {
 			var loc = [coords.latitude, coords.longitude];
 			var url = 'http://timesheetservice.herokuapp.com/entry';
 			//var url = 'http://localhost:3000/entry';
-			var data = {					
+			var data = {
 				objectdetails: {
 					appversion: manifest.name + '-' + manifest.version,
 					devicetype: 'Chrome',
 					devicestate: lastIdleState,
-					devicename:deciceName
+					devicename: deciceName
 				},
 				objectid: clientToken,
 				loc: loc,
@@ -157,10 +158,11 @@ var postGeoLocation = function (deciceName, coords) {
 			};
 
 			$.post(url, data).done(function (d) {
+				activitylogging.logLocationShare();
 				console.table('POST SUCCES', d, data);
 			}).fail(function () {
 				dfd.reject();
-			});			
+			});
 		});
 	}).fail(function () {
 		dfd.reject();
@@ -169,18 +171,18 @@ var postGeoLocation = function (deciceName, coords) {
 	return dfd;
 };
 
-var shouldSend=function(s){
-	var currentDate=new Date();
-	var currentDay=currentDate.getDay();
-	var currentHour=currentDate.getHours();
-	if(currentDay>0 && currentDay<6){
-		if(!s.weekdays.track)
+var shouldSend = function (s) {
+	var currentDate = new Date();
+	var currentDay = currentDate.getDay();
+	var currentHour = currentDate.getHours();
+	if (currentDay > 0 && currentDay < 6) {
+		if (!s.weekdays.track)
 			return false;
-		return s.weekdays.from <= currentHour && s.weekdays.to>=currentHour;
+		return s.weekdays.from <= currentHour && s.weekdays.to >= currentHour;
 	}
-	if(!s.weekend.track)
+	if (!s.weekend.track)
 		return false;
-	return s.weekend.from  <= currentHour && s.weekend.to>=currentHour;
+	return s.weekend.from <= currentHour && s.weekend.to >= currentHour;
 };
 
 var run = function () {
@@ -189,30 +191,42 @@ var run = function () {
 		return false;
 	} else if (!isAuthenticating && initialized) {
 		getLocation().then(function (coords) {
+			chrome.storage.local.get("settings", function (settingsValue) {
+				var send = shouldSend(settingsValue.settings);
+				console.log("settings are ", settingsValue.settings, send);
+				if (!send) {
+					backgroundservice.stop();
+					return;
+				}
 
+				chrome.storage.local.get("devicename", function (value) {
+					var val = value["devicename"];
+					if (!backgroundservice.available) {
+						postGeoLocation(val, coords).fail(function () {
+							init();
+						});
+					} else {
+						getLastToken().then(function (token) {
+							getOrCreateClientHash().then(function (clientToken) {
+								var objectdetails = {
+									appversion: manifest.name + '-' + manifest.version,
+									devicetype: 'Chrome',
+									devicestate: lastIdleState,
+									devicename: deciceName
+								};
 
-        chrome.storage.local.get("settings",function(settingsValue){
-        	var send=shouldSend(settingsValue.settings);
-        	console.log("settings are ",settingsValue.settings,send);
-        	if(!send)
-        		return;
-			chrome.storage.local.get("devicename",function(value){
-			var val=value["devicename"];
-				postGeoLocation(val, coords).fail(function () {
-					init();
+								backgroundservice.start(objectdetails, token, clientToken);
+							});
+
+							locationDetection.detectlocationunknown(coords);
+						});
+					};
+					return true;
 				});
 			});
-
-			locationDetection.detectlocationunknown(coords);
-        });
-
-
-
-
-
+		});
 	}
-	return true;
-};
+}
 
 var init = function () {
 	if (!lastTokenTryOut) {
@@ -230,22 +244,25 @@ var init = function () {
 };
 
 /******************** ALARMS *********************/
-var alarmKey = 'servicePostAlarm';
-//locally you can set this lower than 1 (eg: for debugging, set 0.1)
-var alarmInfo = {
-	periodInMinutes: 5
-};
-var alarmCallbacks = {};
-alarmCallbacks[alarmKey] = run;
+// We make use of the alarms if can't make use of the background service (phonegap)
+if (!backgroundservice.available) {
+	var alarmKey = 'servicePostAlarm';
+	//locally you can set this lower than 1 (eg: for debugging, set 0.1)
+	var alarmInfo = {
+		periodInMinutes: 5
+	};
+	var alarmCallbacks = {};
+	alarmCallbacks[alarmKey] = run;
 
-chrome.alarms.create(alarmKey, alarmInfo);
-chrome.alarms.onAlarm.addListener(function (aInfo) {
-	alarmCallbacks[aInfo.name]();
-});
+	chrome.alarms.create(alarmKey, alarmInfo);
+	chrome.alarms.onAlarm.addListener(function (aInfo) {
+		alarmCallbacks[aInfo.name]();
+	});
+}
 
 /******************* IDLE STATE ******************/
 
-chrome.idle.queryState(60, function(newState) {
+chrome.idle.queryState(60, function (newState) {
 	lastIdleState = newState;
 });
 

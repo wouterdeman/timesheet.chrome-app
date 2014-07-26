@@ -1,13 +1,13 @@
-<a href="#/locationDetails" class="btn btn-default" role="button">Location Details</a>
-<a href="#/manageActivities" class="btn btn-default" role="button">Manage activities</a>
 
-<br/><br/>
+
+ <ion-view title="Welcome {{deviceName}}">
+        <ion-content padding="true">
 
 <div class="alert alert-warning" ng-if="!zone && !loading">
-	You're current location is not a registered zone.<br/>
-	Register your current location as a zone if it means something to you (e.g home, workplace, etc...).    
+    You're current location is not a registered zone.<br/>
+    Register your current location as a zone if it means something to you (e.g home, workplace, etc...).    
     <br/><br/>
-    <a href="#/registerzone" class="btn btn-warning" role="button">Register zone</a>
+    <a href="#/gretel/registerzone" class="button icon-left ion-flag button-energized">Register zone</a>
 </div>
 
 <div class="alert alert-success" ng-if="zone && !loading">
@@ -20,15 +20,5 @@
     <a href="#/changezone" class="btn btn-success" role="button">Change zone details</a>
 </div>
 
-<div class="alert alert-info">
-    Device: {{deviceName}} <a href="#/changedevicename" class="btn btn-info" role="button">Change Device Name</a>
-</div>
-
-<a href="#/settingwizard" class="btn btn-success" role="button">
-    Settings Wizard 
-
-    <div>
-        {{trackingStatus()}}
-    </div>
-</a> 
-<br/>
+        </ion-content>
+      </ion-view>

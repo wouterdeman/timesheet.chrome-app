@@ -1,23 +1,39 @@
-<a class="btn btn-default" href="#/">Back</a>
-<h2>Location details</h2>
-<table class="table table-striped" ng-controller="LocationDetailsController">
-    <tr>
-        <td>Latitude</td>
-        <td>{{currentPosition.latitude}}</td>
-    </tr>
-    <tr>
-        <td>Longitude</td>
-        <td>{{currentPosition.longitude}}</td>
-    </tr>
-    <tr>
-        <td>Speed</td>
-        <td>{{currentPosition.speed}}</td>
-    </tr>
-    <tr>
-        <td>Accuracy</td>
-        <td>{{currentPosition.accuracy}}</td>
-    </tr>
-    <tr>
-        <td>Google maps</td>
-        <td><a href="http://maps.google.com/maps?z=15&t=m&q={{currentPosition.latitude}},{{currentPosition.longitude}}" target="_blank">Maps</a>
-</table>
+<ion-view title="Location details">
+    <ion-content>
+        <ul class="list" ng-controller="LocationDetailsController">
+            <li class="item item-icon-left">
+                <i class="icon ion-android-earth"></i>
+                Latitude
+                <span class="item-note">
+                    {{currentPosition.latitude}}
+                </span>
+            </li>
+            <li class="item item-icon-left">
+                <i class="icon ion-android-earth"></i>
+                Longitude
+                <span class="item-note">
+                    {{currentPosition.longitude}}
+                </span>
+            </li>
+            <li class="item item-icon-left">
+                <i class="icon ion-navigate"></i>
+                Speed
+                <span class="item-note">
+                    {{currentPosition.speed}}
+                </span>
+            </li>
+            <li class="item item-icon-left">
+                <i class="icon ion-pin"></i>
+                Accuracy
+                <span class="item-note">
+                    {{currentPosition.accuracy}}
+                </span>
+            </li>
+            <a class="item item-icon-left item-icon-right" href="http://maps.google.com/maps?z=15&t=m&q={{currentPosition.latitude}},{{currentPosition.longitude}}" target="_blank">
+                <i class="icon ion-map"></i>
+                Google maps                
+                <i class="icon ion-arrow-right-c"></i>
+            </a>
+        </ul>
+    </ion-content>
+</ion-view>
