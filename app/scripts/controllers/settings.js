@@ -4,8 +4,6 @@
 angular.module('timesheetApp')
     .controller('settingsController', function ($scope, $http, $location) {
 
-
-
         chrome.storage.local.get("settings", function (value) {
             var val = value["settings"] || {};
             val.weekdays = val.weekdays || {
@@ -69,6 +67,15 @@ angular.module('timesheetApp')
                 }, function () {
                     chromeApp.showMessage('Device', 'Device details saved.');
                 });
+            }
+        });
+
+        $scope.debug = backgroundservice.debug;
+
+        $scope.$watch('debug', function (newValue, oldValue) {
+            if (newValue !== oldValue) {    
+                backgroundservice.stop();
+                backgroundservice.start(null, null, null, newValue);
             }
         });
     });

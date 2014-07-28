@@ -5,14 +5,19 @@
 //
 
 var backgroundservice = {
-    available: function() {
-        return window.plugins && window.plugins.backgroundGeoLocation;
+    available: function () {
+        var result = window.plugins && window.plugins.backgroundGeoLocation
+
+        return result;
     },
-    start: function (objectdetails, token, clientToken) {
-        if (!backgroundservice.available) {
+    debug: true,
+    start: function (objectdetails, token, clientToken, debug) {
+        if (!backgroundservice.available()) {
             console.log('Backgroundservice not initialised, backgroundGeoLocation is not available (phonegap)');
             return;
         }
+
+        backgroundservice.debug = debug;
 
         // Your app must execute AT LEAST ONE call for the current position via standard Cordova geolocation,
         // in order to prompt the user for Location permission.
@@ -41,7 +46,7 @@ var backgroundservice = {
         var callbackFn = function (location) {
             console.log('[js] BackgroundGeoLocation callback:  ' + location.latitude + ',' + location.longitude);
             // Do your HTTP request here to POST location to your server.
-            
+
 
 
             yourAjaxCallback.call(this);
@@ -61,20 +66,26 @@ var backgroundservice = {
                 loc: loc,
                 token: token*/
 
-        // BackgroundGeoLocation is highly configurable.
-        bgGeo.configure(callbackFn, failureFn, {
-            url: 'http://timesheetservice.herokuapp.com/entry', // <-- Android ONLY:  your server url to send locations to 
-            params: { //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
+        if (token) {
+            backgroundservice.lastparams = { //  <-- Android ONLY:  HTTP POST params sent to your server when persisting locations.
                 objectdetails: objectdetails,
                 objectid: clientToken,
                 token: token
-            },
+            };
+        }
+
+        // BackgroundGeoLocation is highly configurable.
+        bgGeo.configure(callbackFn, failureFn, {
+            url: 'http://timesheetservice.herokuapp.com/entry', // <-- Android ONLY:  your server url to send locations to 
+            params: backgroundservice.lastparams,
             headers: { // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations                
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json;charset=UTF-8'
             },
             desiredAccuracy: 10,
             stationaryRadius: 20,
             distanceFilter: 30,
-            debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+            debug: debug, // <-- enable this hear sounds for background-geolocation life-cycle.
             notificationTitle: 'Background tracking', // <-- android only, customize the title of the notification
             notificationText: 'ENABLED' // <-- android only, customize the text of the notification
         });
@@ -85,8 +96,8 @@ var backgroundservice = {
         // If you wish to turn OFF background-tracking, call the #stop method.
         // bgGeo.stop()
     },
-    stop: function() {
-        if (!backgroundservice.available) {
+    stop: function () {
+        if (!backgroundservice.available()) {
             console.log('Backgroundservice not initialised, backgroundGeoLocation is not available (phonegap)');
             return;
         }

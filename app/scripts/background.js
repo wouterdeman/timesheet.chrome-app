@@ -194,14 +194,13 @@ var run = function () {
 			chrome.storage.local.get("settings", function (settingsValue) {
 				var send = shouldSend(settingsValue.settings);
 				console.log("settings are ", settingsValue.settings, send);
-				if (!send) {
-					backgroundservice.stop();
+				if (!send) {					
 					return;
 				}
 
-				chrome.storage.local.get("devicename", function (value) {
+				/*chrome.storage.local.get("devicename", function (value) {
 					var val = value["devicename"];
-					if (!backgroundservice.available) {
+					if (!backgroundservice.available) {						
 						postGeoLocation(val, coords).fail(function () {
 							init();
 						});
@@ -222,7 +221,7 @@ var run = function () {
 						});
 					};
 					return true;
-				});
+				});*/
 			});
 		});
 	}

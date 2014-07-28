@@ -48,6 +48,25 @@ var chromeApp = {
 
         return dfd;
     },
+    getOrCreateClientHash: function getOrCreateClientHash() {
+        var dfd = new $.Deferred();
+
+        chrome.storage.local.get('clienthash', function (result) {
+            if (!result.clienthash) {
+                var newClientHash = CryptoJS.SHA256(new Date().toISOString()).toString();
+                chrome.storage.local.set({
+                    'clienthash': newClientHash
+                }, function () {
+                    console.log('client hash set');
+                });
+                dfd.resolve(newClientHash);
+            } else {
+                dfd.resolve(result.clienthash);
+            }
+        });
+
+        return dfd;
+    },
     storeLocally: function storeLocally(key, data) {
         var dfd = new $.Deferred();
 
@@ -70,10 +89,20 @@ var chromeApp = {
     },
     show: function show() {
         var mainWindow = chrome.app.window.get('main');
-        if(mainWindow) {
+        if (mainWindow) {
             mainWindow.show();
             return;
         }
         startupApp();
+    },
+    getDeviceName: function getDeviceName() {
+        var dfd = new $.Deferred();
+
+        chrome.storage.local.get("devicename", function (value) {
+            var val = value["devicename"];
+            dfd.resolve(val);
+        });
+
+        return dfd;
     }
 };
