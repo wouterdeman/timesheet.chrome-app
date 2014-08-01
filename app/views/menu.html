@@ -1,40 +1,38 @@
- <ion-side-menus>
-        
-  <ion-side-menu-content>
-    <ion-nav-bar class="bar-dark">
-      <ion-nav-back-button class="button-icon ion-arrow-left-c">
-      </ion-nav-back-button>      
-    </ion-nav-bar>
-    <ion-nav-buttons side="left">
-      <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()">
-      </button>
-    </ion-nav-buttons>   
-    <ion-nav-buttons side="right">
-      <a href="#/gretel/settings" class="button button-icon button-clear ion-gear-b" ng-class="{ 'button-balanced': currentlyTracking, 'button-assertive': !currentlyTracking }"></a>
-    </ion-nav-buttons>   
-    <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
-  </ion-side-menu-content> 
-  
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-assertive">
-      <h1 class="title">Gretel</h1>
-    </ion-header-bar>
-    <ion-content>
-      <ul class="list">
-        <a class="item item-icon-left" href="#/gretel/locationdetails" menu-close>
-          <i class="icon ion-location"></i>
-          Location details
-        </a>        
-        <a class="item item-icon-left" href="#/gretel/manageactivities" menu-close>
-          <i class="icon ion-clipboard"></i>
-          Manage activities
-        </a> 
-        <a class="item item-icon-left" href="#/gretel/activitylog" menu-close>
-          <i class="icon ion-stats-bars"></i>
-          Activity log
-        </a>         
-      </ul>
-    </ion-content>
-  </ion-side-menu>
-  
+<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-dark">
+            <ion-nav-back-button class="button-icon ion-arrow-left-c">
+            </ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <a href="#/gretel/settings" class="button button-icon button-clear ion-gear-b" ng-class="{ 'button-balanced': currentlyTracking, 'button-assertive': !currentlyTracking }"></a>
+        </ion-nav-buttons>
+        <ion-nav-view name="mainContent" animation="slide-left-right"></ion-nav-view>
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-assertive">
+            <h1 class="title">Gretel</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ul class="list">
+                <a class="item item-icon-left" href="#/gretel/locationdetails" menu-close>
+                    <i class="icon ion-location"></i>
+                    Location details
+                </a>
+                <a class="item item-icon-left" href="#/gretel/manageactivities" menu-close>
+                    <i class="icon ion-clipboard"></i>
+                    Manage activities
+                </a>
+                <a class="item item-icon-left" href="#/gretel/activitylog" menu-close>
+                    <i class="icon ion-stats-bars"></i>
+                    Activity log
+                </a>
+            </ul>
+        </ion-content>
+    </ion-side-menu>
 </ion-side-menus>

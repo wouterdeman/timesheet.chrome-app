@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('settingsController', function ($scope, $http, $location) {
+    .controller('settingsController', function ($scope, $http, $location, $ionicLoading) {
 
         chrome.storage.local.get("settings", function (value) {
             var val = value["settings"] || {};
@@ -40,9 +40,7 @@ angular.module('timesheetApp')
             chrome.storage.local.set({
                 'settings': data
             }, function () {
-
                 $scope.$emit("settingschanged", data);
-                chromeApp.showMessage('Settings', 'Settings saved.');
             });
         };
 
@@ -64,9 +62,7 @@ angular.module('timesheetApp')
             if (newValue !== oldValue) {                
                 chrome.storage.local.set({
                     'devicename': $scope.devicename
-                }, function () {
-                    chromeApp.showMessage('Device', 'Device details saved.');
-                });
+                }, function () { });
             }
         });
 

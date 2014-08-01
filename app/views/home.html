@@ -1,24 +1,34 @@
+<ion-view title="Welcome {{deviceName}}" class="stable-bg">
+    <ion-content padding="true">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="list card" ng-if="!zone && !loading">
+            <div class="item">
+                <h2>You're current location is not a registered zone.</h2>
+                <p>Register your current location as a zone if it means something to you (e.g home, workplace, etc...).</p>
+            </div>
 
+            <a class="item item-icon-left royal" href="#/gretel/registerzone">
+                <i class="icon ion-compose"></i>
+                Register zone
+            </a>
+        </div>
 
- <ion-view title="Welcome {{deviceName}}">
-        <ion-content padding="true">
+        <div class="list card" ng-if="zone && !loading">
+            <div class="item">
+                <h2>You are at <b class="royal">{{zone.zoneDetails.name}}</b>.</h2>
+                <p>Customer: <b>{{activity.activityDetails.name}}</p>
+            </div>
 
-<div class="alert alert-warning" ng-if="!zone && !loading">
-    You're current location is not a registered zone.<br/>
-    Register your current location as a zone if it means something to you (e.g home, workplace, etc...).    
-    <br/><br/>
-    <a href="#/gretel/registerzone" class="button icon-left ion-flag button-energized">Register zone</a>
-</div>
+            <a href="#/gretel/changecustomer" class="item item-icon-left dark" role="button">
+                <i class="icon ion-briefcase"></i>
+                Change customer
+            </a>
+            <a href="#/gretel/changezone" class="item item-icon-left dark" role="button">
+                <i class="icon ion-edit"></i>
+                Change zone details
+            </a>
+        </div>
 
-<div class="alert alert-success" ng-if="zone && !loading">
-    You are at <b>{{zone.zoneDetails.name}}</b>.<br/>
-    {{zone.zoneDetails.description}}<br/><br/>
-
-    Customer: <b>{{activity.activityDetails.name}}</b>
-    <br/><br/>
-    <a href="#/changecustomer" class="btn btn-success" role="button">Change customer</a>
-    <a href="#/changezone" class="btn btn-success" role="button">Change zone details</a>
-</div>
-
-        </ion-content>
-      </ion-view>
+    </ion-content>
+</ion-view>

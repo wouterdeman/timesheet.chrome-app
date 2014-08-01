@@ -1,12 +1,13 @@
 <ion-view title="Activity log">
     <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
         <ul class="list" ng-controller="ActivityLogController">
-            <li class="item item-divider" ng-repeat-start="item in activitylog">
-                {{item.key}}
-            </li>
-            <li class="item" ng-repeat-end ng-repeat="entry in item.values">                
-                {{entry.formattedTime}} {{entry.message}}
-            </li>
+             <a ng-repeat="item in activitylog" class="item item-icon-left item-icon-right" href="http://maps.google.com/maps?z=15&t=m&q={{item.loc[0]}},{{item.loc[1]}}" target="_blank">
+                <i class="icon ion-map"></i>
+                {{item.formattedTime}} <b class="royal">{{item.zonedetails.name}}</b>
+                <i class="icon ion-arrow-right-c"></i>
+            </a>
         </ul>
     </ion-content>
 </ion-view>

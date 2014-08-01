@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('RegisterZoneController', function($scope, $http, $location) {        
+    .controller('RegisterZoneController', function($scope, $http, $location) {       
         chromeApp.getLastToken().then(function(token) {
             var url = 'http://timesheetservice.herokuapp.com/customers/all';
             //var url = 'http://localhost:3000/customers/all';

@@ -1,130 +1,87 @@
- <ion-view title="Manage activities">
-        <ion-content>
+<ion-view title="Manage activities">
+    <ion-content>
+        <div ng-controller="ManageActivitiesController">
 
-<div ng-controller="ManageActivitiesController">
+            <form ng-submit="getTrackedTime()">
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Maand
+                        </div>
+                        <select data-ng-options="o.name for o in months" data-ng-model="selectedMonth"></select>
+                    </label>
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Jaar
+                        </div>
+                        <select data-ng-options="o for o in years" data-ng-model="selectedYear"></select>
+                    </label>
+                    <div class="padding">
+                        <button class="button button-block button-dark" type="submit">Zoeken</button>
+                    </div>
+                </div>
+            </form>
 
-<form ng-submit="getTrackedTime()">    
-<div class="list">
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Maand
-    </div>
-   <select data-ng-options="o.name for o in months" data-ng-model="selectedMonth"></select>
-  </label>
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Jaar
-    </div>
-   <select data-ng-options="o for o in years" data-ng-model="selectedYear"></select>
-  </label>
-  <div class="padding">
-  <button class="button button-block button-dark" type="submit">Zoeken</button>
-</div>
-</div>
-</form>
+            <div class="list" ng-show="trackedTimes.length">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Device
+                    </div>
+                    <select data-ng-options="device.id as device.name for device in devices" data-ng-model="selectedDevice"></select>
+                </label>
+                <div class="item item-button-right" ng-repeat="trackedTime in trackedTimesForDevice()">
+                    <div class="row">
+                        <div class="col col-25">{{trackedTime.formattedDate}}
+                            <span class="badge badge-assertive" ng-if="trackedTime.isWeekend">Weekend</span>{{trackedTime.formattedDuration}}u</div>
+                        <div class="col col-67 item-input item-select">
+                            <select ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer"></select>
+                        </div>
+                        <div class="col col-20">
+                            <button type="button" class="button button-small button-balanced" ng-click="saveActivity(trackedTime)"><i class="icon ion-checkmark-round"></i>
+                            </button>
+                            <button type="button" class="button button-small button-energized" ng-click="copyActivity(trackedTime)"><i class="icon ion-plus-round"></i>
+                            </button>
+                            <button type="button" class="button button-small button-assertive" ng-click="showDeleteDialog(trackedTime)"><i class="icon ion-trash-a"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<div class="list" ng-show="trackedTimes.length">
-   <label class="item item-input item-select">
-    <div class="input-label">
-      Device
-    </div>
-   <select data-ng-options="device.id as device.name for device in devices" data-ng-model="selectedDevice"></select>
-  </label>
-  <div class="item item-button-right" ng-repeat="trackedTime in trackedTimesForDevice()">
-    <div class="row">
-  <div class="col col-25">{{trackedTime.formattedDate}} <span class="badge badge-assertive" ng-if="trackedTime.isWeekend">Weekend</span> {{trackedTime.formattedDuration}}u</div>
-  <div class="col col-67 item-input item-select"><select ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer"></select></div>
-  <div class="col col-20">
-    <button type="button" class="button button-small button-balanced" ng-click="saveActivity(trackedTime)"><i class="icon ion-checkmark-round"></i></button>
-    <button type="button" class="button button-small button-energized" ng-click="copyActivity(trackedTime)"><i class="icon ion-plus-round"></i></button>
-    <button type="button" class="button button-small button-assertive" ng-click="showDeleteDialog(trackedTime)"><i class="icon ion-trash-a"></i></button>
-  </div>
-</div>
-    
-  </div>
-</div>
-
-<script id="copy-modal.html" type="text/ng-template">
-  <div class="modal">
-  <ion-header-bar>
-      <h1 class="title">Kopie maken</h1>
-    </ion-header-bar>
-      <ion-content>
-        <div class="list">
-  <label class="item item-input">
-<div class="input-label">
-      Date
-    </div>
+            <script id="copy-modal.html" type="text/ng-template">
+            < div class = "modal" >
+                < ion - header - bar >
+                < h1 class = "title" > Kopie maken < /h1>
+    </ion - header - bar >
+                < ion - content >
+                < div class = "list" >
+                < label class = "item item-input" >
+                < div class = "input-label" >
+                Date < /div>
      <input type="date" 
                ng-model="copydate" 
                value="{{ date | date: 'yyyy-MM-dd' }}"
-               placeholder="Datum" />
-  </label>
+               placeholder="Datum" / >
+                < /label>
   <label class="item item-input item-select">
   <div class="input-label">
       Customer
-    </div>
-     <select ng-model="copycustomer" ng-options="c.name for c in customers" placeholder="Customer"></select>
-  </label>
-  <div class="padding">  
-        <button type="button" class="button button-block button-balanced" ng-click="saveCopy()">Maak kopie</button>
-        <button type="button" class="button button-block button-dark" ng-click="closeCopyModal()">Sluiten</button>
-</div>
-</div>    
+    </div >
+                < select ng - model = "copycustomer"
+            ng - options = "c.name for c in customers"
+            placeholder = "Customer" > < /select>
+  </label >
+                < div class = "padding" >
+                < button type = "button"
+            class = "button button-block button-balanced"
+            ng - click = "saveCopy()" > Maak kopie < /button>
+        <button type="button" class="button button-block button-dark" ng-click="closeCopyModal()">Sluiten</button >
+                < /div>
+</div >
+                < /ion-content>
+  </div >
+                < /div>
+            </script>
+
     </ion-content>
-  </div>
-</div>
-</script>
-
-<!--script id="delete-modal.html" type="text/ng-template">
-  <div class="modal">
-  <ion-header-bar>
-      <h1 class="title">Verwijderen</h1>
-    </ion-header-bar>
-      <ion-content>
-        <div class="list">
-  <label class="item item-input">
-<div class="input-label">
-      Date
-    </div>
-     <input type="date" 
-               ng-model="copydate" 
-               value="{{ date | date: 'yyyy-MM-dd' }}"
-               placeholder="Datum" />
-  </label>
-  <label class="item item-input item-select">
-  <div class="input-label">
-      Customer
-    </div>
-     <select ng-model="copycustomer" ng-options="c.name for c in customers" placeholder="Customer"></select>
-  </label>
-  <div class="padding">  
-        <button type="button" class="button button-block button-balanced" ng-click="saveCopy()">Maak kopie</button>
-        <button type="button" class="button button-block button-dark" ng-click="closeCopyModal()">Sluiten</button>
-</div>
-</div>    
-    </ion-content>
-  </div>
-</div>
-</script-->
-
-<!--div class="modal" id="deletedialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Verwijderen</h4>
-      </div>
-      <div class="modal-body">
-         Bent u zeker dat u deze gegevens wilt verwijderen?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
-        <button type="button" class="btn btn-primary" ng-click="deleteByReference()">Verwijder</button>
-      </div>
-    </div>
-  </div>
-</div-->
-
-</ion-content>
-      </ion-view>
+</ion-view>

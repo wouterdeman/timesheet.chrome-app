@@ -1,11 +1,18 @@
-  <h2>Change customer</h2>
-    <div>   
-      <form ng-submit="changeCustomer()">          
-          <div class="form-group">
-            <label for="name">Customer</label>
-            <select class="form-control" ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
-          </div>         
-        <input class="btn btn-primary" type="submit" value="Change">
-        <a class="btn btn-default" href="#/">Cancel</a>
-      </form>
-    </div>
+<ion-view title="Change customer">
+    <ion-content ng-controller="ChangeCustomerController">
+        <form ng-submit="changeCustomer()">
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Customer
+                    </div>
+                    <select ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
+                </label>
+                 <div class="padding">
+                    <button class="button button-block button-positive" type="submit">Change</button>
+                    <a class="button button-block" href="#/">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

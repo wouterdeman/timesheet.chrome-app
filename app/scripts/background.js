@@ -194,8 +194,18 @@ var run = function () {
 			chrome.storage.local.get("settings", function (settingsValue) {
 				var send = shouldSend(settingsValue.settings);
 				console.log("settings are ", settingsValue.settings, send);
-				if (!send) {					
+				if (!send) {
 					return;
+				}
+
+				if (!backgroundservice.available()) {
+					chrome.storage.local.get("devicename", function (value) {
+						var val = value["devicename"];
+						postGeoLocation(val, coords).fail(function () {
+							init();
+						});
+					});
+					return true;
 				}
 
 				/*chrome.storage.local.get("devicename", function (value) {

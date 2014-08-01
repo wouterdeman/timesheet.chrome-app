@@ -6,10 +6,42 @@ angular.module('timesheetApp')
         $scope.activitylog = [];
 
         $ionicLoading.show({
-          template: 'Loading...'
+            template: 'Loading...'
         });
 
-        chrome.storage.local.get('activitylog', function (data) {
+        $scope.doRefresh = function () {
+            chromeApp.getLastToken().then(function (token) {
+                chromeApp.getOrCreateClientHash().then(function (clientToken) {
+                    var url = 'http://timesheetservice.herokuapp.com/activitylog/last20';
+                    //var url = 'http://localhost:3000/activitylog/last20';
+                    var data = {
+                        token: token,
+                        object: clientToken
+                    };
+
+                    $http.post(url, data).success(function (activitylog) {
+                        activitylog = _.map(activitylog, function (item) {
+                            var t = new Date(item.endtime);
+                            item.formattedTime = t.getDate() + "/" + (t.getMonth() + 1) + "/" + t.getFullYear() + ' ' + t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
+                            return item;
+                        });
+
+
+                        $scope.activitylog = activitylog;
+                        $ionicLoading.hide();
+                    }).error(function () {
+                        $ionicLoading.hide();
+                    }).finally(function () {
+                        // Stop the ion-refresher from spinning
+                        $scope.$broadcast('scroll.refreshComplete');
+                    });
+                });
+            });
+        };
+
+        $scope.doRefresh();
+
+        /*chrome.storage.local.get('activitylog', function (data) {
             data = (data['activitylog'] && JSON.parse(data['activitylog'])) || [];
 
             data = _.map(data, function (item) {
@@ -37,5 +69,5 @@ angular.module('timesheetApp')
                 $scope.activitylog = result;
             });
             $ionicLoading.hide();
-        });
+        });*/
     });

@@ -1,27 +1,30 @@
- <ion-view title="Register zone">
-        <ion-content>
-    
-<form name="form" ng-submit="registerZone(form.$valid)" novalidate>    
-<div class="list">
-  <label class="item item-input">
-    <div class="input-label">
-      Name
-    </div>
-   <input type="text" id="name" name="name" ng-model="name" placeholder="Enter name" required></input>  
-  </label>
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Customer
-    </div>
-   <select ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
-  </label>
-  <div class="padding">
-  <button class="button button-block button-balanced" type="submit">Register</button>
-  <a class="button button-block button-dark" href="#/">Cancel</a>
-</div>
-</div>
-</form>   
-
-
-  </ion-content>
+<ion-view title="Register zone">
+    <ion-content ng-controller="RegisterZoneController">
+        <form name="form" ng-submit="registerZone(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input">
+                    <div class="input-label">
+                        Name
+                    </div>
+                    <input type="text" id="name" name="name" ng-model="name" placeholder="Enter name" required></input>
+                </label>
+                <label class="item item-input">
+                    <div class="input-label">
+                        Description
+                    </div>
+                    <textarea rows="5" id="description" name="description" ng-model="description" placeholder="Enter description" required></textarea>
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Customer
+                    </div>
+                    <select ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>
+                </label>
+                <div class="padding">
+                    <button class="button button-block button-positive" type="submit">Register</button>
+                    <a class="button button-block" href="#/">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </ion-content>
 </ion-view>

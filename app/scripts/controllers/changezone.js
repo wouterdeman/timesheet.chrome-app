@@ -16,7 +16,6 @@ angular.module('timesheetApp')
                 }
             });
 
-
             chromeApp.getLocation().then(function (coords) {
                 var loc = [coords.latitude, coords.longitude];
                 var getZoneUrl = 'http://timesheetservice.herokuapp.com/zones/current';
@@ -61,8 +60,7 @@ angular.module('timesheetApp')
 
                     var url = 'http://timesheetservice.herokuapp.com/zones/update';
                     //var url = 'http://localhost:3000/zones/update';
-                    $http.post(url, data).success(function () {
-                        chromeApp.showMessage('Zone updated', 'Zone ' + $scope.name + ' updated.');
+                    $http.post(url, data).success(function () {                        
                         $location.path("/");
                     });
                 });

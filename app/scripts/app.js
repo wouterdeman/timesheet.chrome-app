@@ -10,7 +10,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     .state('gretel.home', {
       url: "/home",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/home.html",
           controller: "HomeController"
         }
@@ -19,7 +19,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     .state('gretel.locationdetails', {
       url: "/locationdetails",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/locationDetails.html",
           controller: "LocationDetailsController"
         }
@@ -28,7 +28,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     .state('gretel.manageactivities', {
       url: "/manageactivities",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/manageActivities.html",
           controller: "ManageActivitiesController"
         }
@@ -37,7 +37,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     .state('gretel.settings', {
       url: "/settings",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/settings.html",
           controller: "settingsController"
         }
@@ -46,16 +46,34 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     .state('gretel.registerzone', {
       url: "/registerzone",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/registerzone.html",
           controller: "RegisterZoneController"
+        }
+      }
+    })
+    .state('gretel.changecustomer', {
+      url: "/changecustomer",
+      views: {
+        'mainContent': {
+          templateUrl: "views/changecustomer.html",
+          controller: "ChangeCustomerController"
+        }
+      }
+    })
+    .state('gretel.changezone', {
+      url: "/changezone",
+      views: {
+        'mainContent': {
+          templateUrl: "views/changezone.html",
+          controller: "ChangeZoneController"
         }
       }
     })
     .state('gretel.activitylog', {
       url: "/activitylog",
       views: {
-        'menuContent': {
+        'mainContent': {
           templateUrl: "views/activitylog.html",
           controller: "ActivityLogController"
         }
