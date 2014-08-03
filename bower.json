@@ -5,7 +5,8 @@
     "bootstrap": "~3.1.0",
     "geolib": "~2.0.9",
     "moment": "~2.7.0",
-    "ionic": "~0.9.27"
+    "ionic": "~0.9.27",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {}
 }

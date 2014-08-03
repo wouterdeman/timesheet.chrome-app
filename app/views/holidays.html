@@ -1,0 +1,18 @@
+  <ion-view title="Holidays">
+    <ion-content ng-controller="HolidaysController">
+       <ion-list show-delete="shouldShowDelete">
+          <ion-item ng-repeat="holiday in holidays" class="item-thumbnail-left">
+
+            <h2>{{holiday.name}}</h2>
+            <p>{{holiday.date}}</p>
+
+
+            <ion-option-button class="button-info" ng-click="edit(item)">
+              Edit
+            </ion-option-button>
+            <ion-delete-button class="ion-minus-circled">
+             Delete
+            </ion-delete-button>
+        </ion-list>
+    </icon-content>
+</ion-view>
