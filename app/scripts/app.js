@@ -123,66 +123,8 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
     console.log(completeUrls);
     return completeUrls;
   });
-}).controller('MainCtrl', function ($scope, $ionicSideMenuDelegate) {
-  $scope.attendees = [{
-    firstname: 'Nicolas',
-    lastname: 'Cage'
-  }, {
-    firstname: 'Jean-Claude',
-    lastname: 'Van Damme'
-  }, {
-    firstname: 'Keanu',
-    lastname: 'Reeves'
-  }, {
-    firstname: 'Steven',
-    lastname: 'Seagal'
-  }];
-
-  $scope.toggleLeft = function () {
-    $ionicSideMenuDelegate.toggleLeft($scope);
-  };
-})
-
-.controller('CheckinCtrl', function ($scope) {
-  $scope.showForm = true;
-
-  $scope.shirtSizes = [{
-    text: 'Large',
-    value: 'L'
-  }, {
-    text: 'Medium',
-    value: 'M'
-  }, {
-    text: 'Small',
-    value: 'S'
-  }];
-
-  $scope.attendee = {};
-  $scope.submit = function () {
-    if (!$scope.attendee.firstname) {
-      alert('Info required');
-      return;
-    }
-    $scope.showForm = false;
-    $scope.attendees.push($scope.attendee);
-  };
-
-})
-
-.controller('AttendeesCtrl', function ($scope) {
-
-  $scope.activity = [];
-  $scope.arrivedChange = function (attendee) {
-    var msg = attendee.firstname + ' ' + attendee.lastname;
-    msg += (!attendee.arrived ? ' has arrived, ' : ' just left, ');
-    msg += new Date().getMilliseconds();
-    $scope.activity.push(msg);
-    if ($scope.activity.length > 3) {
-      $scope.activity.splice(0, 1);
-    }
-  };
-
 });
+
 timesheetApp.factory('chromeApp', function () {
   return chromeApp;
 });
@@ -229,7 +171,7 @@ timesheetApp.directive("controlGroup", function ($compile) {
   };
 });
 
-timesheetApp.run(function ($rootScope) {
+timesheetApp.run(function ($rootScope, $state) {
   // you can inject any instance here
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     console.log('$stateChangeStart to ' + toState.to + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
@@ -271,4 +213,5 @@ timesheetApp.run(function ($rootScope) {
       });
     });
   }
+
 });
