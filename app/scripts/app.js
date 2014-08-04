@@ -70,14 +70,28 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
+    //http://codepen.io/darrenahunter/pen/oDKid?editors=101
     .state('gretel.holidays', {
+      // With abstract set to true, that means this state can not be explicitly activated.
+      // It can only be implicitly activated by activating one of it's children.
+      abstract: true,
+      // This abstract state will prepend '/contacts' onto the urls of all its children.
       url: "/holidays",
       views: {
         'mainContent': {
-          templateUrl: "views/holidays.html",
-          controller: "HolidaysController"
+          templateUrl: "views/holidays/holidays.html"
         }
       }
+    })
+    .state('gretel.holidays.list', {
+      url: "",
+      templateUrl: "views/holidays/list.html",
+      controller:"HolidaysController"
+    })
+    .state('gretel.holidays.edit', {
+      url: "/edit/:id",
+      templateUrl: "views/holidays/edit.html",
+      controller:"HolidaysDetailController"
     })
     .state('gretel.activitylog', {
       url: "/activitylog",
@@ -184,7 +198,8 @@ timesheetApp.run(function ($rootScope, $state) {
     console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
     
     chrome.storage.local.set({
-      'latestState': toState.name
+      'latestState': toState.name,
+      'latestParms':JSON.stringify(toParams)
     });
 
 
@@ -223,9 +238,11 @@ timesheetApp.run(function ($rootScope, $state) {
 
   //automaticly go to latest route (handy when debugging with livereload)
   chrome.storage.local.get('latestState', function (result) {
-    console.log("local ",result);
-     $state.go(result.latestState)
+    chrome.storage.local.get('latestParms', function (res) {
+       $state.go(result.latestState, JSON.parse(res['latestParms']));
+    });
   });
-
+  //when you screwed up, go back to default state :)
+  //$state.go("gretel.home");
   
 });

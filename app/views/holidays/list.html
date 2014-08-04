@@ -1,5 +1,5 @@
   <ion-view title="Holidays">
-    <ion-content ng-controller="HolidaysController">
+    <ion-content>
         <div class="item item-button-right" ng-repeat="holiday in holidays">
             <div class="row">
                 <div class="col col-90">
@@ -7,9 +7,9 @@
                      {{holiday.date |date:fullDate}}
                 </div>
                 <div class="col col-10">
-                    <button type="button" class="button button-small button-balanced" ng-click="edit(holiday)">
-                        <i class="icon ion-checkmark-round"></i>
-                    </button>
+                    <a class="button button-small button-balanced" ui-sref="gretel.holidays.edit({id:holiday.id})">
+                        <i class="icon ion-edit"></i>
+                    </a>
                     <button type="button" class="button button-small button-assertive" ng-click="remove(trackedTime)">
                         <i class="icon ion-trash-a"></i>
                     </button>
