@@ -15,7 +15,9 @@ angular.module('timesheetApp')
         $scope.edit=function(item){
 
         };
+        $scope.remove=function(item){
 
+        };
         $scope.shouldShowDelete=true;
 
         $ionicLoading.hide();
