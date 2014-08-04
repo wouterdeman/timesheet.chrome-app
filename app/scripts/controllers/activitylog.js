@@ -2,9 +2,7 @@
 
 angular.module('timesheetApp')
     .controller('ActivityLogController', function ($scope, $http, $location, $ionicLoading) {
-
-        $scope.activitylog = [];
-
+        
         $ionicLoading.show({
             template: 'Loading...'
         });
