@@ -2,12 +2,8 @@
 
 angular.module('timesheetApp')
 	.controller('HomeController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate, $ionicLoading) {
-		$scope.loading = true;
+		$scope.loading = false;
 		$scope.deviceName = '';
-
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
 
 		$scope.doRefresh = function () {
 			chromeApp.getLastToken().then(function (token) {
@@ -20,8 +16,7 @@ angular.module('timesheetApp')
 						token: token
 					};
 
-					$http.post(url, data).success(function (zone) {
-						$ionicLoading.hide();
+					$http.post(url, data).success(function (zone) {						
 						if (zone && zone !== "0") {
 							$scope.zone = zone;
 							$scope.activity = _.find(zone.activities, {
@@ -33,10 +28,8 @@ angular.module('timesheetApp')
 								$location.path("/registerzone");
 								$scope.$apply();
 							});
-						}
-						$scope.loading = false;
+						}						
 					}).error(function () {
-						$ionicLoading.hide();
 					}).finally(function () {
 						// Stop the ion-refresher from spinning
 						$scope.$broadcast('scroll.refreshComplete');
@@ -45,7 +38,9 @@ angular.module('timesheetApp')
 			});
 		};
 
-		$scope.doRefresh();
+		if(!$scope.zone) {		
+			$scope.doRefresh();
+		}
 
 		chrome.storage.local.get("devicename", function (value) {
 			var val = value["devicename"];
