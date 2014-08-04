@@ -182,6 +182,12 @@ timesheetApp.run(function ($rootScope, $state) {
   });
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
     console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
+    
+    chrome.storage.local.set({
+      'latestState': toState.name
+    });
+
+
   });
   // $rootScope.$on('$viewContentLoading',function(event, viewConfig){
   //   // runs on individual scopes, so putting it in "run" doesn't work.
@@ -214,4 +220,12 @@ timesheetApp.run(function ($rootScope, $state) {
     });
   }
 
+
+  //automaticly go to latest route (handy when debugging with livereload)
+  chrome.storage.local.get('latestState', function (result) {
+    console.log("local ",result);
+     $state.go(result.latestState)
+  });
+
+  
 });
