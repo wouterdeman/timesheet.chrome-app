@@ -93,6 +93,11 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
       templateUrl: "views/holidays/edit.html",
       controller:"HolidaysDetailController"
     })
+    .state('gretel.holidays.add', {
+      url: "/add",
+      templateUrl: "views/holidays/edit.html",
+      controller:"HolidaysDetailController"
+    })
     .state('gretel.activitylog', {
       url: "/activitylog",
       views: {

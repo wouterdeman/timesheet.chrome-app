@@ -1,18 +1,20 @@
 <ion-view title="Holidays">
     <ion-content>
-        <div class="list">
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Naam</span>
-            <input type="text" placeholder="Naam feestdag" ng-model="holiday.name">
-          </label>
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Datum  {{holiday.date }}</span>
-             <input type="date" name="input" ng-model="holiday.date" placeholder="yyyy-MM-dd"   />
-          </label>
-        </div>
-        <button class="button button-positive">
-          Save
-        </button>
-
+        <form name="form" ng-submit="saveHoliday(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Naam</span>
+                    <input type="text" placeholder="Naam feestdag" ng-model="holiday.name" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Datum</span>
+                    <input type="date" ng-model="holiday.date" placeholder="yyyy-MM-dd" required />
+                </label>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Save</button>
+                <a class="button button-block" ui-sref="gretel.holidays.list">Cancel</a>
+            </div>
+        </form>
     </ion-content>
 </ion-view>

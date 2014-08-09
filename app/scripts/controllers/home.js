@@ -33,7 +33,7 @@ angular.module('timesheetApp')
 					}).finally(function () {
 						// Stop the ion-refresher from spinning
 						$scope.$broadcast('scroll.refreshComplete');
-					});;
+					});
 				});
 			});
 		};

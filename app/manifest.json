@@ -1,7 +1,7 @@
 {
     "name": "Gretel",
     "description": "Gretel drops crumbles",
-    "version": "2.0.17",
+    "version": "2.0.18",
     "manifest_version": 2,
     "minimum_chrome_version": "29",
     "default_locale": "en",
