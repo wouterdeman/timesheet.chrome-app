@@ -1,0 +1,20 @@
+<ion-view title="Users">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.users.add()"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="item item-button-right" ng-repeat="user in users">
+            {{user.firstname}} {{user.lastname}}
+            <div class="buttons">
+                <button class="button button-clear" ui-sref="gretel.users.edit({id:user._id})">
+                    <i class="icon ion-edit"></i>
+                </button>
+                <button type="button" class="button button-clear" ng-click="remove(user._id)">
+                    <i class="icon ion-trash-a"></i>
+                </button>
+            </div>
+        </div>
+        </icon-content>
+</ion-view>

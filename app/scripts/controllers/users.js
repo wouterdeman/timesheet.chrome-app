@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .service('HolidayService', ['$http', '$q',
+    .service('UserService', ['$http', '$q',
         function ($http, q) {
             return {
                 getAll: function () {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/holidays').success(function (holidays) {
-                        deferred.resolve(holidays);
+                    $http.get('http://timesheetservice.herokuapp.com/userstore/users').success(function (users) {
+                        deferred.resolve(users);
                     }).error(function (err) {
                         deferred.reject(err);
                     });
@@ -15,8 +15,8 @@ angular.module('timesheetApp')
                 },
                 getById: function (id) {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id).success(function (holiday) {
-                        deferred.resolve(holiday);
+                    $http.get('http://timesheetservice.herokuapp.com/userstore/users/' + id).success(function (user) {
+                        deferred.resolve(user);
                     }).error(function (err) {
                         deferred.reject(err);
                     });
@@ -24,7 +24,7 @@ angular.module('timesheetApp')
                 },
                 save: function (holiday) {
                     var deferred = q.defer();
-                    $http.post('http://timesheetservice.herokuapp.com/timeandwork/holidays', holiday).success(function () {
+                    $http.post('http://timesheetservice.herokuapp.com/userstore/users', holiday).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -33,7 +33,7 @@ angular.module('timesheetApp')
                 },
                 update: function (id, holiday) {
                     var deferred = q.defer();
-                    $http.put('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id, holiday).success(function () {
+                    $http.put('http://timesheetservice.herokuapp.com/userstore/users/' + id, holiday).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -42,7 +42,7 @@ angular.module('timesheetApp')
                 },
                 remove: function (id) {
                     var deferred = q.defer();
-                    $http.delete('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id).success(function () {
+                    $http.delete('http://timesheetservice.herokuapp.com/userstore/users/' + id).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -51,14 +51,14 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('HolidaysController', function ($scope, $http, $location, $ionicLoading, HolidayService, $ionicPopup) {
+    ]).controller('UsersController', function ($scope, $http, $location, $ionicLoading, UserService, $ionicPopup) {
         //todo: refactor loading stuff in decorator
         $ionicLoading.show({
             template: 'Loading...'
         });
         $scope.doRefresh = function () {
-            HolidayService.getAll().then(function (holidays) {
-                $scope.holidays = holidays;
+            UserService.getAll().then(function (users) {
+                $scope.users = users;
                 $ionicLoading.hide();
             }).finally(function () {
                 // Stop the ion-refresher from spinning
@@ -71,51 +71,69 @@ angular.module('timesheetApp')
         $scope.remove = function (id) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete',
-                template: 'Are you sure you want to delete this holiday?'
+                template: 'Are you sure you want to delete this user?'
             });
             confirmPopup.then(function (res) {
                 if (res) {
-                    HolidayService.remove(id).then(function () {
+                    UserService.remove(id).then(function () {
                         $scope.doRefresh();
                     });
                 }
             });
         };
-    }).controller('HolidaysDetailController', function ($stateParams, $scope, HolidayService, dateFilter, $state) {
+    }).controller('UsersDetailController', function ($stateParams, $scope, UserService, dateFilter, $state) {
         var id = $stateParams.id;
-        $scope.holiday = {
-            name: '',
-            date: ''
+        $scope.user = {
+            firstname: '',
+            lastname: '',
+            emails: [{
+                email: ''
+            }]
         };
         if (id) {
-            HolidayService.getById(id).then(function (holiday) {
-                holiday.date = dateFilter(new Date(holiday.date), 'yyyy-MM-dd');
-                $scope.holiday = holiday;
+            UserService.getById(id).then(function (user) {
+                user.emails = _.map(user.emails, function (item) {
+                    return {
+                        email: item
+                    };
+                })
+                $scope.user = user;
             });
         }
 
-        $scope.saveHoliday = function (valid) {
+        $scope.saveUser = function (valid) {
             $scope.submitted = true;
             if (!valid) {
                 return;
             }
-            var holiday = $scope.holiday;
+            var user = $scope.user;
             var data = {
-                name: holiday.name,
-                year: dateFilter(new Date(holiday.date), 'yyyy'),
-                month: dateFilter(new Date(holiday.date), 'MM'),
-                day: dateFilter(new Date(holiday.date), 'dd')
+                firstname: user.firstname,
+                lastname: user.lastname,
+                emails: _.map(user.emails, function (item) {
+                    return item.email;
+                })
             };
 
-            //existing holiday
-            if (holiday._id) {
-                HolidayService.update(holiday._id, data).then(function () {
-                    $state.go('gretel.holidays.list');
+            //existing user
+            if (user._id) {
+                UserService.update(user._id, data).then(function () {
+                    $state.go('gretel.users.list');
                 });
             } else {
-                HolidayService.save(data).then(function () {
-                    $state.go('gretel.holidays.list');
+                UserService.save(data).then(function () {
+                    $state.go('gretel.users.list');
                 });
             }
+        };
+
+        $scope.addEmail = function () {
+            $scope.user.emails.push({
+                email: ''
+            });
+        };
+
+        $scope.removeEmail = function (index) {
+            $scope.user.emails.splice(index, 1);
         };
     });

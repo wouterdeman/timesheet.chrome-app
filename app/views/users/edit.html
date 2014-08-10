@@ -1,0 +1,37 @@
+<ion-view title="Users">
+    <ion-content>
+        <form name="form" ng-submit="saveUser(form.$valid)" novalidate>
+            <div class="list">
+                <div class="item item-icon-left item-divider">
+                    <i class="icon ion-document-text"></i>
+                    General
+                </div>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Firstname</span>
+                    <input type="text" placeholder="Lastname" ng-model="user.firstname" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Lastname</span>
+                    <input type="text" placeholder="Firstname" ng-model="user.lastname" required>
+                </label>
+                <div class="item item-icon-left item-divider item-button-right">
+                    <button class="button button-clear" style="top: 3px;right: 19px;" ng-click="addEmail()">
+                        <i class="icon ion-ios7-plus-outline"></i>
+                    </button>
+                    <i class="icon ion-email"></i>
+                    Emails
+                </div>
+                <div class="item item-input item-button-right" ng-repeat="item in user.emails track by $index">
+                    <input type="email" ng-model="item.email" placeholder="E-mail" required />
+                    <button class="button button-clear" ng-click="removeEmail($index)">
+                        <i class="icon ion-trash-a"></i>
+                    </button>
+                </div>               
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Save</button>
+                <a class="button button-block" ui-sref="gretel.users.list">Cancel</a>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

@@ -1,5 +1,38 @@
 'use strict'
 
+var condigCrudRoutes = function (stateprovider, name) {
+  var nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
+  //http://codepen.io/darrenahunter/pen/oDKid?editors=101
+  stateprovider.state('gretel.' + name, {
+    // With abstract set to true, that means this state can not be explicitly activated.
+    // It can only be implicitly activated by activating one of it's children.
+    abstract: true,
+    // This abstract state will prepend '/contacts' onto the urls of all its children.
+    url: '/' + name,
+    views: {
+      'mainContent': {
+        templateUrl: 'views/' + name + '/' + name + '.html'
+      }
+    }
+  })
+    .state('gretel.' + name + '.list', {
+      url: "",
+      templateUrl: 'views/' + name + '/list.html',
+      controller: nameCapitalized + 'Controller'
+    })
+    .state('gretel.' + name + '.edit', {
+      url: "/edit/:id",
+      templateUrl: 'views/' + name + '/edit.html',
+      controller: nameCapitalized + 'DetailController'
+    })
+    .state('gretel.' + name + '.add', {
+      url: "/add",
+      templateUrl: 'views/' + name + '/edit.html',
+      controller: nameCapitalized + 'DetailController'
+    });
+}
+
 var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($provide, $stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('gretel', {
@@ -70,34 +103,6 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
-    //http://codepen.io/darrenahunter/pen/oDKid?editors=101
-    .state('gretel.holidays', {
-      // With abstract set to true, that means this state can not be explicitly activated.
-      // It can only be implicitly activated by activating one of it's children.
-      abstract: true,
-      // This abstract state will prepend '/contacts' onto the urls of all its children.
-      url: "/holidays",
-      views: {
-        'mainContent': {
-          templateUrl: "views/holidays/holidays.html"
-        }
-      }
-    })
-    .state('gretel.holidays.list', {
-      url: "",
-      templateUrl: "views/holidays/list.html",
-      controller:"HolidaysController"
-    })
-    .state('gretel.holidays.edit', {
-      url: "/edit/:id",
-      templateUrl: "views/holidays/edit.html",
-      controller:"HolidaysDetailController"
-    })
-    .state('gretel.holidays.add', {
-      url: "/add",
-      templateUrl: "views/holidays/edit.html",
-      controller:"HolidaysDetailController"
-    })
     .state('gretel.activitylog', {
       url: "/activitylog",
       views: {
@@ -107,6 +112,9 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     });
+
+  condigCrudRoutes($stateProvider, 'holidays');
+  condigCrudRoutes($stateProvider, 'users');
 
   $urlRouterProvider.otherwise("/gretel/home");
 
@@ -201,10 +209,10 @@ timesheetApp.run(function ($rootScope, $state) {
   });
   $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
     console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
-    
+
     chrome.storage.local.set({
       'latestState': toState.name,
-      'latestParms':JSON.stringify(toParams)
+      'latestParms': JSON.stringify(toParams)
     });
 
 
@@ -244,10 +252,10 @@ timesheetApp.run(function ($rootScope, $state) {
   //automaticly go to latest route (handy when debugging with livereload)
   chrome.storage.local.get('latestState', function (result) {
     chrome.storage.local.get('latestParms', function (res) {
-       $state.go(result.latestState, JSON.parse(res['latestParms']));
+      $state.go(result.latestState, JSON.parse(res['latestParms']));
     });
   });
   //when you screwed up, go back to default state :)
   //$state.go("gretel.home");
-  
+
 });
