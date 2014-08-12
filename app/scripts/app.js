@@ -25,7 +25,7 @@ var condigCrudRoutes = function (stateprovider, name) {
       url: "/edit/:id",
       templateUrl: 'views/' + name + '/edit.html',
       controller: nameCapitalized + 'DetailController'
-    })    
+    })
     .state('gretel.' + name + '.add', {
       url: "/add/:entity",
       templateUrl: 'views/' + name + '/edit.html',
@@ -199,7 +199,7 @@ timesheetApp.directive("controlGroup", function ($compile) {
   };
 });
 
-timesheetApp.run(function ($rootScope, $state) {
+timesheetApp.run(function ($rootScope, $state, $http) {
   // you can inject any instance here
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     console.log('$stateChangeStart to ' + toState.to + '- fired when the transition begins. toState,toParams : \n', toState, toParams);
@@ -230,10 +230,10 @@ timesheetApp.run(function ($rootScope, $state) {
     console.log(unfoundState, fromState, fromParams);
   });
 
-  // Start background service
-  if (backgroundservice.available()) {
-    chromeApp.getDeviceName().then(function (deviceName) {
-      chromeApp.getLastToken().then(function (token) {
+  var startupBackgroundService = function (token) {
+    // Start background service
+    if (backgroundservice.available()) {
+      chromeApp.getDeviceName().then(function (deviceName) {
         chromeApp.getOrCreateClientHash().then(function (clientToken) {
 
           var objectdetails = {
@@ -246,9 +246,23 @@ timesheetApp.run(function ($rootScope, $state) {
           backgroundservice.start(objectdetails, token, clientToken, true);
         });
       });
-    });
-  }
+    }
+  };
 
+  chromeApp.getLastToken().then(function (token) {
+    $http.defaults.headers.common.token = token;
+
+    $http.get('http://timesheetservice.herokuapp.com/authstore/verify').success(function (valid) {
+      if (!valid) {
+        chromeApp.authenticateUser().then(function (token) {
+          $http.defaults.headers.common.token = token;
+          startupBackgroundService(token);
+        });
+      } else {
+        startupBackgroundService(token);
+      }
+    });
+  });
 
   //automaticly go to latest route (handy when debugging with livereload)
   chrome.storage.local.get('latestState', function (result) {

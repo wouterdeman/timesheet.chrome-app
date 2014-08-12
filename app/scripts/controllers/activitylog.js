@@ -24,8 +24,8 @@ angular.module('timesheetApp')
                             return item;
                         });
 
-
                         $scope.activitylog = activitylog;
+                        $scope.$apply();
                         $ionicLoading.hide();
                     }).error(function () {
                         $ionicLoading.hide();
