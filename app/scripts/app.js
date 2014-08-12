@@ -25,9 +25,9 @@ var condigCrudRoutes = function (stateprovider, name) {
       url: "/edit/:id",
       templateUrl: 'views/' + name + '/edit.html',
       controller: nameCapitalized + 'DetailController'
-    })
+    })    
     .state('gretel.' + name + '.add', {
-      url: "/add",
+      url: "/add/:entity",
       templateUrl: 'views/' + name + '/edit.html',
       controller: nameCapitalized + 'DetailController'
     });
@@ -115,6 +115,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
 
   condigCrudRoutes($stateProvider, 'holidays');
   condigCrudRoutes($stateProvider, 'users');
+  condigCrudRoutes($stateProvider, 'absencerights');
 
   $urlRouterProvider.otherwise("/gretel/home");
 

@@ -1,0 +1,30 @@
+<ion-view title="Absence rights">
+    <ion-content>
+        <form name="form" ng-submit="save(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        User
+                    </div>
+                    <select ng-model="absenceright.entity" ng-options="u._id as u.firstname + ' ' + u.lastname for u in users" placeholder="User" required></select>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Name</span>
+                    <input type="text" placeholder="Name absence right" ng-model="absenceright.name" required>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Amount</span>
+                    <input type="number" ng-model="absenceright.amount" min="0" required />
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Year</span>
+                    <input type="number" ng-model="absenceright.year" min="2014" required />
+                </label>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Save</button>
+                <a class="button button-block" ui-sref="gretel.absencerights.list">Cancel</a>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

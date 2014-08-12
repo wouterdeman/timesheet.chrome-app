@@ -1,0 +1,153 @@
+'use strict';
+
+angular.module('timesheetApp')
+    .service('AbsenceRightService', ['$http', '$q',
+        function ($http, q) {
+            return {
+                getAll: function () {
+                    var deferred = q.defer();
+                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/absencerights').success(function (absencerights) {
+                        deferred.resolve(absencerights);
+                    }).error(function (err) {
+                        deferred.reject(err);
+                    });
+                    return deferred.promise;
+                },
+                getById: function (id) {
+                    var deferred = q.defer();
+                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id).success(function (absenceright) {
+                        deferred.resolve(absenceright);
+                    }).error(function (err) {
+                        deferred.reject(err);
+                    });
+                    return deferred.promise;
+                },
+                save: function (absenceright) {
+                    var deferred = q.defer();
+                    $http.post('http://timesheetservice.herokuapp.com/timeandwork/absencerights', absenceright).success(function () {
+                        deferred.resolve();
+                    }).error(function (err) {
+                        deferred.reject(err);
+                    });
+                    return deferred.promise;
+                },
+                update: function (id, absenceright) {
+                    var deferred = q.defer();
+                    $http.put('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id, absenceright).success(function () {
+                        deferred.resolve();
+                    }).error(function (err) {
+                        deferred.reject(err);
+                    });
+                    return deferred.promise;
+                },
+                remove: function (id) {
+                    var deferred = q.defer();
+                    $http.delete('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id).success(function () {
+                        deferred.resolve();
+                    }).error(function (err) {
+                        deferred.reject(err);
+                    });
+                    return deferred.promise;
+                }
+            };
+        }
+    ]).controller('AbsencerightsController', function ($scope, $http, $location, $ionicLoading, AbsenceRightService, $ionicPopup, UserService) {
+        //todo: refactor loading stuff in decorator
+        $ionicLoading.show({
+            template: 'Loading...'
+        });
+        $scope.doRefresh = function () {
+            AbsenceRightService.getAll().then(function (absencerights) {
+                UserService.getAll().then(function (users) {
+                    absencerights = _.map(absencerights, function (absenceright) {
+                        absenceright.user = _.find(users, {
+                            '_id': absenceright.entity
+                        });
+                        return absenceright;
+                    });
+
+                    absencerights = _.groupBy(absencerights, function (absenceright) {
+                        return absenceright.user.firstname + ' ' + absenceright.user.lastname;
+                    });
+
+                    var result = [];
+                    for (var k in absencerights) {
+                        result.push({
+                            user: k,
+                            rights: absencerights[k]
+                        });
+                    }
+
+                    $scope.absencerights = result;
+                    $ionicLoading.hide();
+                }).finally(function () {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
+            });
+        };
+
+        $scope.doRefresh();
+
+        $scope.remove = function (id) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete',
+                template: 'Are you sure you want to delete this absenceright?'
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    AbsenceRightService.remove(id).then(function () {
+                        $scope.doRefresh();
+                    });
+                }
+            });
+        };
+    }).controller('AbsencerightsDetailController', function ($stateParams, $scope, AbsenceRightService, dateFilter, $state, UserService, $ionicLoading) {
+        var id = $stateParams.id;
+        var entity = $stateParams.entity;
+        $scope.absenceright = {
+            name: '',
+            amount: '',
+            year: '',
+            entity: entity
+        };
+
+        if (id) {
+            AbsenceRightService.getById(id).then(function (absenceright) {
+                $scope.absenceright = absenceright;
+            });
+        }
+
+        $ionicLoading.show({
+            template: 'Loading...'
+        });
+        UserService.getAll().then(function (users) {
+            $scope.users = users;
+            $ionicLoading.hide();
+        });
+
+        $scope.save = function (valid) {
+            $scope.submitted = true;
+            if (!valid) {
+                return;
+            }
+            var absenceright = $scope.absenceright;
+            var data = {
+                name: absenceright.name,
+                amount: absenceright.amount,
+                year: absenceright.year,
+                entity: absenceright.entity
+            };
+
+            //existing absenceright
+            if (absenceright._id) {
+                AbsenceRightService.update(absenceright._id, data).then(function () {
+                    $state.go('gretel.absencerights.list');
+                });
+            } else {
+                AbsenceRightService.save(data).then(function () {
+                    $state.go('gretel.absencerights.list');
+                });
+            }
+        };
+    });

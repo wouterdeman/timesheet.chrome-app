@@ -1,0 +1,26 @@
+<ion-view title="Absence rights">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absencerights.add()"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="item item-divider item-button-right" ng-repeat-start="absenceright in absencerights">
+            <button class="button button-clear" style="top: 3px;right: 19px;"  ui-sref="gretel.absencerights.add({entity:absenceright.rights[0].entity })">
+                <i class="icon ion-ios7-plus-outline"></i>
+            </button>
+            <b>{{absenceright.user}}</b>
+        </div>
+        <div class="item item-button-right" ng-repeat-end ng-repeat="right in absenceright.rights">
+            {{right.name}} {{right.year}} ({{right.amount}} d)
+            <div class="buttons">
+                <button class="button button-clear" ui-sref="gretel.absencerights.edit({id:right._id})">
+                    <i class="icon ion-edit"></i>
+                </button>
+                <button type="button" class="button button-clear" ng-click="remove(right._id)">
+                    <i class="icon ion-trash-a"></i>
+                </button>
+            </div>
+        </div>
+        </icon-content>
+</ion-view>
