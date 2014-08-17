@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .service('AbsenceRightService', ['$http', '$q',
-        function ($http, q) {
+    .service('AbsenceRightService', ['$http', '$q','urls',
+        function ($http, q, urls) {
+            var index=urls.absencerights.index;
+            var detail=urls.absencerights.detail;
             return {
                 getAll: function () {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/absencerights').success(function (absencerights) {
+                    $http.get(index).success(function (absencerights) {
                         deferred.resolve(absencerights);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -15,7 +17,7 @@ angular.module('timesheetApp')
                 },
                 getById: function (id) {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id).success(function (absenceright) {
+                    $http.get(detail + id).success(function (absenceright) {
                         deferred.resolve(absenceright);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -24,7 +26,7 @@ angular.module('timesheetApp')
                 },
                 save: function (absenceright) {
                     var deferred = q.defer();
-                    $http.post('http://timesheetservice.herokuapp.com/timeandwork/absencerights', absenceright).success(function () {
+                    $http.post(detail, absenceright).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -33,7 +35,7 @@ angular.module('timesheetApp')
                 },
                 update: function (id, absenceright) {
                     var deferred = q.defer();
-                    $http.put('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id, absenceright).success(function () {
+                    $http.put(detail + id, absenceright).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -42,7 +44,7 @@ angular.module('timesheetApp')
                 },
                 remove: function (id) {
                     var deferred = q.defer();
-                    $http.delete('http://timesheetservice.herokuapp.com/timeandwork/absencerights/' + id).success(function () {
+                    $http.delete(detail + id).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);

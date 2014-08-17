@@ -103,6 +103,15 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
+    .state('gretel.error',{
+       url: "/error/:message",
+      views: {
+        'mainContent': {
+          templateUrl: "views/error.html",
+          controller: "ErrorController"
+        }
+      }     
+    })
     .state('gretel.activitylog', {
       url: "/activitylog",
       views: {
@@ -137,6 +146,17 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         updateCustomerForTrackedTime: "customers/updateCustomerForTrackedTime",
         copyReferencedTrackedTime: "customers/copyReferencedTrackedTime",
         deleteReferencedTrackedTime: "customers/deleteReferencedTrackedTime"
+      },
+      absencerights:{
+        index:"timeandwork/absencerights",
+        detail: 'timeandwork/absencerights/'
+      },
+      holidays:{
+        index:"timeandwork/holidays",
+        detail: 'timeandwork/holidays/'
+      },
+      activitylog:{
+        last20:"activitylog/last20"
       }
     };
     var domain = {
@@ -270,6 +290,8 @@ timesheetApp.run(function ($rootScope, $state, $http) {
       } else {
         startupBackgroundService(token);
       }
+    }).error(function(data, status, headers, config) {
+      $state.go("gretel.error", {message:"Unable to verify. Service is not available. Status "+status});
     });
   });
 

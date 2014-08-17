@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .service('HolidayService', ['$http', '$q',
-        function ($http, q) {
+    .service('HolidayService', ['$http', '$q', 'urls',
+        function ($http, q, urls) {
+            var index=urls.holidays.index;
+            var detail=urls.holidays.detail;
             return {
                 getAll: function () {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/holidays').success(function (holidays) {
+                    $http.get(index).success(function (holidays) {
                         deferred.resolve(holidays);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -15,7 +17,7 @@ angular.module('timesheetApp')
                 },
                 getById: function (id) {
                     var deferred = q.defer();
-                    $http.get('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id).success(function (holiday) {
+                    $http.get(detail + id).success(function (holiday) {
                         deferred.resolve(holiday);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -24,7 +26,7 @@ angular.module('timesheetApp')
                 },
                 save: function (holiday) {
                     var deferred = q.defer();
-                    $http.post('http://timesheetservice.herokuapp.com/timeandwork/holidays', holiday).success(function () {
+                    $http.post(index, holiday).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -33,7 +35,7 @@ angular.module('timesheetApp')
                 },
                 update: function (id, holiday) {
                     var deferred = q.defer();
-                    $http.put('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id, holiday).success(function () {
+                    $http.put(detail + id, holiday).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);
@@ -42,7 +44,7 @@ angular.module('timesheetApp')
                 },
                 remove: function (id) {
                     var deferred = q.defer();
-                    $http.delete('http://timesheetservice.herokuapp.com/timeandwork/holidays/' + id).success(function () {
+                    $http.delete(detail + id).success(function () {
                         deferred.resolve();
                     }).error(function (err) {
                         deferred.reject(err);

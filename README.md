@@ -4,7 +4,7 @@ This is our chrome app that will authenticate a user and start posting location 
 
 ## Development guidelines
 
-Required:
+Required tools:
 - Node.js
 - Yeoman 1.0+ (Bower, Grunt, Yeoman)
 
