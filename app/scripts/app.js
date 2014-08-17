@@ -103,6 +103,15 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
+    .state('gretel.error',{
+       url: "/error/:message",
+      views: {
+        'mainContent': {
+          templateUrl: "views/error.html",
+          controller: "ErrorController"
+        }
+      }     
+    })
     .state('gretel.activitylog', {
       url: "/activitylog",
       views: {
@@ -261,6 +270,8 @@ timesheetApp.run(function ($rootScope, $state, $http) {
       } else {
         startupBackgroundService(token);
       }
+    }).error(function(data, status, headers, config) {
+      $state.go("gretel.error", {message:"Unable to verify. Service is not available. Status "+status});
     });
   });
 
