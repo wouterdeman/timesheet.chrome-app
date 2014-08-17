@@ -102,6 +102,19 @@ angular.module('timesheetApp')
                 }
             });
         };
+
+        $scope.showReorder = false;
+
+        $scope.moveItem = function (right, rights, fromIndex, toIndex) {            
+            rights.splice(fromIndex, 1);
+            rights.splice(toIndex, 0, right);
+            _.forEach(rights, function(r, index) {
+                if(r.seqnr != index) {
+                    r.seqnr = index;
+                    AbsenceRightService.update(r._id, r);
+                }
+            });
+        };
     }).controller('AbsencerightsDetailController', function ($stateParams, $scope, AbsenceRightService, dateFilter, $state, UserService, $ionicLoading) {
         var id = $stateParams.id;
         var entity = $stateParams.entity;
@@ -109,7 +122,9 @@ angular.module('timesheetApp')
             name: '',
             amount: '',
             year: '',
-            entity: entity
+            entity: entity,
+            monthly: false,
+            seqnr: 0
         };
 
         if (id) {
@@ -136,7 +151,9 @@ angular.module('timesheetApp')
                 name: absenceright.name,
                 amount: absenceright.amount,
                 year: absenceright.year,
-                entity: absenceright.entity
+                entity: absenceright.entity,
+                monthy: absenceright.monthly,
+                seqnr: absenceright.seqnr
             };
 
             //existing absenceright

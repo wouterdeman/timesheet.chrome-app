@@ -58,7 +58,7 @@ angular.module('timesheetApp')
                 };
 
                 $ionicLoading.show({
-                  template: 'Loading...'
+                    template: 'Loading...'
                 });
 
                 $http.post(urls.customers.trackedTimeAndCustomer, getCustomerData).success(function (trackedTime) {
@@ -144,7 +144,7 @@ angular.module('timesheetApp')
             selectedTrackedTime = trackedTime;
             var date = selectedTrackedTime.date;
             var month = date.getMonth() + 1;
-            $scope.copydate = date.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())            
+            $scope.copydate = date.getFullYear() + '-' + (month < 10 ? '0' + month : month) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
             $scope.copymodal.show();
 
         }
@@ -162,37 +162,37 @@ angular.module('timesheetApp')
                 };
 
                 $http.post(urls.customers.copyReferencedTrackedTime, copyData).success(function (response) {
-                    $scope.copymodal.hide();                    
+                    $scope.copymodal.hide();
                     chromeApp.showMessage('Copy', 'New copy saved.');
                     $scope.getTrackedTime();
                 });
             });
         }
 
-         $scope.showDeleteConfirm = function() {
-           var confirmPopup = $ionicPopup.confirm({
-             title: 'Delete',
-             template: 'Are you sure you want to delete this record?'
-           });
-           confirmPopup.then(function(res) {
-             if(res) {
-               chromeApp.getLastToken().then(function (token) {
-                var deleteData = {
-                    token: token,
-                    reference: selectedTrackedTime.reference
-                };
+        $scope.showDeleteConfirm = function () {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete',
+                template: 'Are you sure you want to delete this record?'
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    chromeApp.getLastToken().then(function (token) {
+                        var deleteData = {
+                            token: token,
+                            reference: selectedTrackedTime.reference
+                        };
 
-                $http.post(urls.customers.deleteReferencedTrackedTime, deleteData).success(function (response) {                    
-                    chromeApp.showMessage('Delete', 'Item deleted.');
-                    $scope.getTrackedTime();
-                });
-                });
-             }
-           });
-         };
+                        $http.post(urls.customers.deleteReferencedTrackedTime, deleteData).success(function (response) {
+                            chromeApp.showMessage('Delete', 'Item deleted.');
+                            $scope.getTrackedTime();
+                        });
+                    });
+                }
+            });
+        };
 
         $scope.showDeleteDialog = function (trackedTime) {
             selectedTrackedTime = trackedTime;
-            $scope.showDeleteConfirm();            
+            $scope.showDeleteConfirm();
         };
     });

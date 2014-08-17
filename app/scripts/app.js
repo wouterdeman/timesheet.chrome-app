@@ -111,6 +111,15 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
           controller: "ActivityLogController"
         }
       }
+    })
+    .state('gretel.enterabsence', {
+      url: "/enterabsence",
+      views: {
+        'mainContent': {
+          templateUrl: "views/enterabsence.html",
+          controller: "EnterAbsenceController"
+        }
+      }
     });
 
   condigCrudRoutes($stateProvider, 'holidays');

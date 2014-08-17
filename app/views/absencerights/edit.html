@@ -20,6 +20,15 @@
                     <span class="input-label">Year</span>
                     <input type="number" ng-model="absenceright.year" min="2014" required />
                 </label>
+                <li class="item item-toggle">
+                    Monthly
+                    <label class="toggle toggle-positive">
+                        <input type="checkbox" ng-model="absenceright.monthly">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </li>
             </div>
             <div class="padding">
                 <button class="button button-block button-positive" type="submit">Save</button>

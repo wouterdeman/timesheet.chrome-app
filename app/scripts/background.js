@@ -210,7 +210,7 @@ var run = function () {
 
 				/*chrome.storage.local.get("devicename", function (value) {
 					var val = value["devicename"];
-					if (!backgroundservice.available) {						
+					if (!backgroundservice.available) {
 						postGeoLocation(val, coords).fail(function () {
 							init();
 						});

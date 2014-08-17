@@ -1,26 +1,33 @@
 <ion-view title="Absence rights">
     <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-navicon" ng-click="showReorder = !showReorder"></a>
         <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absencerights.add()"></a>
     </ion-nav-buttons>
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="item item-divider item-button-right" ng-repeat-start="absenceright in absencerights">
-            <button class="button button-clear" style="top: 3px;right: 19px;"  ui-sref="gretel.absencerights.add({entity:absenceright.rights[0].entity })">
+        <div class="item item-divider item-button-right" ng-repeat-start="absenceright in absencerights | orderBy: absenceright.user">
+            <button class="button button-clear" style="top: 3px;right: 19px;" ui-sref="gretel.absencerights.add({entity:absenceright.rights[0].entity })">
                 <i class="icon ion-ios7-plus-outline"></i>
             </button>
             <b>{{absenceright.user}}</b>
         </div>
-        <div class="item item-button-right" ng-repeat-end ng-repeat="right in absenceright.rights">
-            {{right.name}} {{right.year}} ({{right.amount}} d)
-            <div class="buttons">
-                <button class="button button-clear" ui-sref="gretel.absencerights.edit({id:right._id})">
-                    <i class="icon ion-edit"></i>
-                </button>
-                <button type="button" class="button button-clear" ng-click="remove(right._id)">
-                    <i class="icon ion-trash-a"></i>
-                </button>
-            </div>
+        <div ng-repeat-end>
+            <ion-list show-reorder="showReorder">
+                <ion-item style="padding-right: 0px;" class="item item-button-right" ng-repeat="right in absenceright.rights | orderBy: right.seqnr">
+                    {{right.name}} {{right.year}} ({{right.amount}} d)
+                    <div class="buttons" padding->
+                        <button class="button button-clear" ui-sref="gretel.absencerights.edit({id:right._id})">
+                            <i class="icon ion-edit"></i>
+                        </button>
+                        <button type="button" class="button button-clear" ng-click="remove(right._id)">
+                            <i class="icon ion-trash-a"></i>
+                        </button>
+                        <ion-reorder-button class="ion-navicon" on-reorder="moveItem(right, absenceright.rights, $fromIndex, $toIndex)">
+                        </ion-reorder>
+                    </div>
+                </ion-item>
+            </ion-list>
         </div>
         </icon-content>
 </ion-view>

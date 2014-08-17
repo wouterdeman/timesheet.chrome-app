@@ -1,0 +1,20 @@
+<ion-view title="Enter absence">
+    <ion-content>
+        <form name="form" ng-submit="save(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">From</span>
+                    <input type="date" ng-model="absence.from" placeholder="yyyy-MM-dd" required />
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">To</span>
+                    <input type="date" ng-model="absence.to" placeholder="yyyy-MM-dd" required />
+                </label>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Enter</button>
+                <a class="button button-block" href="#/">Cancel</a>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
