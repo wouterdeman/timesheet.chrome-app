@@ -137,6 +137,17 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         updateCustomerForTrackedTime: "customers/updateCustomerForTrackedTime",
         copyReferencedTrackedTime: "customers/copyReferencedTrackedTime",
         deleteReferencedTrackedTime: "customers/deleteReferencedTrackedTime"
+      },
+      absencerights:{
+        index:"timeandwork/absencerights",
+        detail: 'timeandwork/absencerights/'
+      },
+      holidays:{
+        index:"timeandwork/holidays",
+        detail: 'timeandwork/holidays/'
+      },
+      activitylog:{
+        last20:"activitylog/last20"
       }
     };
     var domain = {
