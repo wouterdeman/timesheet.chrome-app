@@ -154,7 +154,7 @@ angular.module('timesheetApp')
                 amount: absenceright.amount,
                 year: absenceright.year,
                 entity: absenceright.entity,
-                monthy: absenceright.monthly,
+                monthly: absenceright.monthly,
                 seqnr: absenceright.seqnr
             };
 

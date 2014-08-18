@@ -103,14 +103,14 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
-    .state('gretel.error',{
-       url: "/error/:message",
+    .state('gretel.error', {
+      url: "/error/:message",
       views: {
         'mainContent': {
           templateUrl: "views/error.html",
           controller: "ErrorController"
         }
-      }     
+      }
     })
     .state('gretel.activitylog', {
       url: "/activitylog",
@@ -121,12 +121,12 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
-    .state('gretel.enterabsence', {
-      url: "/enterabsence",
+    .state('gretel.saldo', {
+      url: "/saldo",
       views: {
         'mainContent': {
-          templateUrl: "views/enterabsence.html",
-          controller: "EnterAbsenceController"
+          templateUrl: "views/saldo.html",
+          controller: "SaldoController"
         }
       }
     });
@@ -134,6 +134,7 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
   condigCrudRoutes($stateProvider, 'holidays');
   condigCrudRoutes($stateProvider, 'users');
   condigCrudRoutes($stateProvider, 'absencerights');
+  condigCrudRoutes($stateProvider, 'absences');
 
   $urlRouterProvider.otherwise("/gretel/home");
 
@@ -147,16 +148,23 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         copyReferencedTrackedTime: "customers/copyReferencedTrackedTime",
         deleteReferencedTrackedTime: "customers/deleteReferencedTrackedTime"
       },
-      absencerights:{
-        index:"timeandwork/absencerights",
+      absencerights: {
+        index: 'timeandwork/absencerights',
         detail: 'timeandwork/absencerights/'
       },
-      holidays:{
-        index:"timeandwork/holidays",
+      holidays: {
+        index: 'timeandwork/holidays',
         detail: 'timeandwork/holidays/'
       },
-      activitylog:{
-        last20:"activitylog/last20"
+      activitylog: {
+        last20: 'activitylog/last20'
+      },
+      saldo: {
+        index: 'timeandwork/saldo'
+      },
+      absences: {
+        index: 'timeandwork/absences',
+        detail: 'timeandwork/absences/'
       }
     };
     var domain = {
@@ -290,8 +298,10 @@ timesheetApp.run(function ($rootScope, $state, $http) {
       } else {
         startupBackgroundService(token);
       }
-    }).error(function(data, status, headers, config) {
-      $state.go("gretel.error", {message:"Unable to verify. Service is not available. Status "+status});
+    }).error(function (data, status, headers, config) {
+      $state.go("gretel.error", {
+        message: "Unable to verify. Service is not available. Status " + status
+      });
     });
   });
 

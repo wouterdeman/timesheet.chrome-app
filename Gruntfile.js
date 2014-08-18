@@ -208,14 +208,13 @@ module.exports = function (grunt) {
                         '_locales/{,*/}*.json',
                         'styles/fonts/{,*/}*.*',
                         'bower_components/jquery/dist/jquery.js',
-                        'bower_components/bootstrap/dist/js/bootstrap.js',
+                        'bower_components/moment/min/moment.min.js',
                         'bower_components/angular/angular.js',
                         'bower_components/angular-route/angular-route.js',
                         'bower_components/lodash/dist/lodash.js',
                         'scripts/app.js',
                         'scripts/chromeApp.js',
-                        'scripts/controllers/*.js',
-                        'bower_components/bootstrap/dist/css/bootstrap.css',
+                        'scripts/controllers/*.js',                        
                         'bower_components/angular/angular-csp.css',
                         'views/*.html'
                     ]

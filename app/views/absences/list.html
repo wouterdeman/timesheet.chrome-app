@@ -1,0 +1,17 @@
+<ion-view title="Absences">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absences.add()"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="item item-button-right" ng-repeat="group in groups">
+                {{group.startdateFormatted}} - {{group.enddateFormatted}} <span class="badge badge-royal">{{group.amount}} {{group.amount === 1 ? 'day' : 'days' }}</span>
+            <div class="buttons">
+                <button type="button" class="button button-clear" ng-click="remove(group.absences)">
+                    <i class="icon ion-trash-a"></i>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
