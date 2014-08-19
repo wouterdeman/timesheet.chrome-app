@@ -74,11 +74,26 @@ angular.module('timesheetApp')
                 });
 
                 groups = _.map(groups, function (group) {
-                    group.startdateFormatted = dateFilter(group.startdate, 'dd/MM/yyyy');
-                    group.enddateFormatted = dateFilter(group.enddate, 'dd/MM/yyyy');
+                    group.startdateFormatted = dateFilter(group.startdate, 'EEE dd/MM/yy');
+                    group.enddateFormatted = dateFilter(group.enddate, 'EEE dd/MM/yy');
                     return group;
                 });
-                $scope.groups = groups;
+
+                groups = _.sortBy(groups, function (group) {
+                    var t = new Date(group.startdate);
+                    return -t.getTime();
+                });
+
+                var futureGroups = _.filter(groups, function(group) {
+                    return new Date(group.startdate) >= new Date() || new Date(group.enddate) >= new Date();
+                });
+
+                var pastGroups = _.filter(groups, function(group) {
+                    return new Date(group.startdate) < new Date() && new Date(group.enddate) && new Date();
+                });
+
+                $scope.futureGroups = futureGroups;
+                $scope.pastGroups = pastGroups;
                 $ionicLoading.hide();
             }).finally(function () {
                 // Stop the ion-refresher from spinning
