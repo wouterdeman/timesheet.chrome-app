@@ -176,7 +176,8 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         detail: 'timeandwork/absences/'
       },
       timesheet: {
-        info: 'timeandwork/timesheet'
+        info: 'timeandwork/timesheet',
+        download: 'timeandwork/timesheet/download'
       }
     };
     var domain = {

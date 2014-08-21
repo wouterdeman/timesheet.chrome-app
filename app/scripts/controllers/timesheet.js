@@ -26,11 +26,15 @@ angular.module('timesheetApp')
 				}
 			};
 		}
-	]).controller('TimesheetController', function ($scope, $ionicLoading, TimesheetService, UserService) {
+	]).controller('TimesheetController', function ($scope, $ionicLoading, TimesheetService, UserService, urls, chromeApp) {
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();
 		$scope.customers = [];
 		$scope.customer;
+		$scope.downloadUrl = urls.timesheet.download;
+		chromeApp.getLastToken().then(function (token) {
+			$scope.token = token;
+		});
 		$scope.info = {};
 		$scope.getInfo = function () {
 			var data = {

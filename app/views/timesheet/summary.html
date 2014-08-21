@@ -23,21 +23,26 @@
             </div>
         </form>
 
-        <div class="item">
-            Te factureren
-            <span class="badge badge-royal">{{info.hoursWorked}} uren</span>            
-        </div>
-        <div class="item">
-            Gewerkt
-            <span class="badge badge-royal">{{info.daysWorked}} dagen</span>            
-        </div>
-        <div class="item">
-            Verlof
-            <span class="badge badge-royal">{{info.daysAbsence}} dagen</span>            
-        </div>
-        <div class="item">
-            Tracked
-            <span class="badge badge-royal">{{info.daysTracked}} dagen</span>            
+        <div class="list">
+            <div class="item">
+                Te factureren
+                <span class="badge badge-royal">{{info.hoursWorked}} uren</span>
+            </div>
+            <div class="item">
+                Gewerkt
+                <span class="badge badge-royal">{{info.daysWorked}} dagen</span>
+            </div>
+            <div class="item">
+                Verlof
+                <span class="badge badge-royal">{{info.daysAbsence}} dagen</span>
+            </div>
+            <div class="item">
+                Tracked
+                <span class="badge badge-royal">{{info.daysTracked}} dagen</span>
+            </div>
+            <div class="padding">
+                <a class="button button-block button-positive" ng-href="{{downloadUrl}}/{{year}}/{{month}}/{{customer._id}}/{{token}}" target="_blank"><i class="icon ion-ios7-cloud-download"></i> Download</a>
+            </div>
         </div>
     </ion-content>
 </ion-view>
