@@ -31,10 +31,13 @@
                 </label>
                 <div class="item item-button-right" ng-repeat="trackedTime in trackedTimesForDevice()">
                     <div class="row">
-                        <div class="col col-25">{{trackedTime.formattedDate}}
-                            <span class="badge badge-assertive" ng-if="trackedTime.isWeekend">Weekend</span>{{trackedTime.formattedDuration}}u</div>
+                        <div class="col col-10"><b>{{trackedTime.formattedDate}}</b>
+                        </div>
                         <div class="col col-67 item-input item-select">
                             <select ng-model="trackedTime.customer" ng-options="customer._id as customer.name for customer in customers" placeholder="Customer"></select>
+                        </div>
+                        <div class="col col-20">
+                            <span class="badge badge-assertive" ng-if="trackedTime.isWeekend">W</span>{{trackedTime.formattedDuration}}u
                         </div>
                         <div class="col col-20">
                             <button type="button" class="button button-small button-balanced" ng-click="saveActivity(trackedTime)"><i class="icon ion-checkmark-round"></i>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('ManageActivitiesController', function ($scope, $http, $location, urls, $ionicModal, $ionicPopup, $ionicLoading) {
+    .controller('ManageActivitiesController', function ($scope, $http, $location, urls, $ionicModal, $ionicPopup, $ionicLoading, dateFilter) {
         var monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
@@ -67,7 +67,7 @@ angular.module('timesheetApp')
                     $scope.trackedTimes = _.forEach(trackedTime, function (tt) {
                         tt.date = new Date(tt.date);
                         tt.isWeekend = tt.date.getDay() % 6 == 0;
-                        tt.formattedDate = tt.date.getDate() + " " + monthNames[tt.date.getMonth()] + " " + tt.date.getFullYear();
+                        tt.formattedDate = dateFilter(tt.date, 'dd');
 
                         var cd = 24 * 60 * 60 * 1000,
                             ch = 60 * 60 * 1000,

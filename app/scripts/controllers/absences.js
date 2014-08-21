@@ -52,6 +52,7 @@ angular.module('timesheetApp')
                     group.startdate = absence.date;
                     group.amount = absence.amount;
                     group.enddate = absence.date;
+                    group.prenoon = absence.prenoon;
                     group.absences = [];
                     group.absences.push(absence);
                     groups.push(group);
@@ -84,12 +85,14 @@ angular.module('timesheetApp')
                     return -t.getTime();
                 });
 
-                var futureGroups = _.filter(groups, function(group) {
-                    return new Date(group.startdate) >= new Date() || new Date(group.enddate) >= new Date();
+                var today = moment().startOf('day');
+
+                var futureGroups = _.filter(groups, function (group) {
+                    return new Date(group.startdate) >= today || new Date(group.enddate) >= today;
                 });
 
-                var pastGroups = _.filter(groups, function(group) {
-                    return new Date(group.startdate) < new Date() && new Date(group.enddate) && new Date();
+                var pastGroups = _.filter(groups, function (group) {
+                    return new Date(group.startdate) < today && new Date(group.enddate) && today;
                 });
 
                 $scope.futureGroups = futureGroups;
@@ -119,7 +122,9 @@ angular.module('timesheetApp')
     }).controller('AbsencesDetailController', function ($stateParams, $scope, AbsenceService, dateFilter, $state, $ionicPopup) {
         $scope.absence = {
             from: dateFilter(new Date(), 'yyyy-MM-dd'),
-            to: dateFilter(new Date(), 'yyyy-MM-dd')
+            to: dateFilter(new Date(), 'yyyy-MM-dd'),
+            halfday: false,
+            prenoon: "true"
         };
 
         $scope.save = function (valid) {
@@ -133,12 +138,19 @@ angular.module('timesheetApp')
             for (var d = new Date(absence.from); d <= new Date(absence.to); d.setDate(d.getDate() + 1)) {
                 var dayOfWeek = d.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    data.push({
+                    var absenceToSave = {
                         year: dateFilter(d, 'yyyy'),
                         month: dateFilter(d, 'MM'),
                         day: dateFilter(d, 'dd'),
                         amount: 1
-                    });
+                    };
+
+                    if (absence.halfday) {
+                        absenceToSave.amount = 0.5;
+                        absenceToSave.prenoon = absence.prenoon;
+                    }
+
+                    data.push(absenceToSave);
                 }
             }
 
