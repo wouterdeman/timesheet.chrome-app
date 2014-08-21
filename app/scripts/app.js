@@ -103,6 +103,15 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
         }
       }
     })
+    .state('gretel.timesheet', {
+      url: "/timesheet/summary",
+      views: {
+        'mainContent': {
+          templateUrl: "views/timesheet/summary.html",
+          controller: "TimesheetController"
+        }
+      }
+    })
     .state('gretel.error', {
       url: "/error/:message",
       views: {
@@ -165,6 +174,9 @@ var timesheetApp = angular.module('timesheetApp', ['ionic']).config(function ($p
       absences: {
         index: 'timeandwork/absences',
         detail: 'timeandwork/absences/'
+      },
+      timesheet: {
+        info: 'timeandwork/timesheet'
       }
     };
     var domain = {

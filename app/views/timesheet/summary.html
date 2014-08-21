@@ -1,0 +1,43 @@
+<ion-view title="Timesheet summary">
+    <ion-content ng-controller="TimesheetController">
+        <form name="form" ng-submit="getInfo(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Customer
+                    </div>
+                    <select ng-model="customer" ng-options="c.name for c in customers" placeholder="Klant" required>
+                    </select>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Year</span>
+                    <input type="number" ng-model="year" min="2014" required />
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Month</span>
+                    <input type="number" ng-model="month" min="1" required />
+                </label>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Get</button>
+            </div>
+        </form>
+
+        <div class="item">
+            Te factureren
+            <span class="badge badge-royal">{{info.hoursWorked}} uren</span>            
+        </div>
+        <div class="item">
+            Gewerkt
+            <span class="badge badge-royal">{{info.daysWorked}} dagen</span>            
+        </div>
+        <div class="item">
+            Verlof
+            <span class="badge badge-royal">{{info.daysAbsence}} dagen</span>            
+        </div>
+        <div class="item">
+            Tracked
+            <span class="badge badge-royal">{{info.daysTracked}} dagen</span>            
+        </div>
+    </ion-content>
+</ion-view>
