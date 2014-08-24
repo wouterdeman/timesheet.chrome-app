@@ -98,6 +98,8 @@ angular.module('timesheetApp')
                 $scope.futureGroups = futureGroups;
                 $scope.pastGroups = pastGroups;
                 $ionicLoading.hide();
+            }).catch(function () {
+                $ionicLoading.hide();
             }).finally(function () {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');

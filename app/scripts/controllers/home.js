@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('timesheetApp')
-	.controller('HomeController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate, $ionicLoading) {
+	.controller('HomeController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate, $ionicLoading, $state) {
 		$scope.loading = false;
 		$scope.deviceName = '';
+		$scope.error = '';
 
 		$scope.doRefresh = function () {
 			chromeApp.getLastToken().then(function (token) {
@@ -16,20 +17,21 @@ angular.module('timesheetApp')
 						token: token
 					};
 
-					$http.post(url, data).success(function (zone) {						
+					$http.post(url, data).success(function (zone) {
 						if (zone && zone !== "0") {
 							$scope.zone = zone;
 							$scope.activity = _.find(zone.activities, {
 								'active': true
-							});											
+							});
 						} else {
 							$scope.zone = undefined;
 							chromeApp.showMessage('Zone not found', 'Click here to register your current location as a zone if it means something to you (e.g home, workplace, etc...).').then(function () {
 								$location.path("/registerzone");
 								$scope.$apply();
 							});
-						}						
-					}).error(function () {
+						}
+					}).error(function (a) {
+						$scope.error = "Unable to get " + url + " status " + a;
 					}).finally(function () {
 						// Stop the ion-refresher from spinning
 						$scope.$broadcast('scroll.refreshComplete');
@@ -38,7 +40,7 @@ angular.module('timesheetApp')
 			});
 		};
 
-		if(!$scope.zone) {		
+		if (!$scope.zone) {
 			$scope.doRefresh();
 		}
 

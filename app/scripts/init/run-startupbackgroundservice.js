@@ -23,11 +23,11 @@ angular.module('timesheetApp').run(function ($rootScope, $state, $http) {
     $http.defaults.headers.common.token = token;
 
     $http.get('http://timesheetservice.herokuapp.com/authstore/verify').success(function (valid) {
-      if (!valid) {
+      if (!valid || valid === "false") {
         chromeApp.authenticateUser().then(function (token) {
           $http.defaults.headers.common.token = token;
           startupBackgroundService(token);
-        }).error(function (a, b, c, d) {
+        }).fail(function (a, b, c, d) {
           $state.go("gretel.error", {
             message: "Unable to authenticateUser." + a + b + c + d
           });

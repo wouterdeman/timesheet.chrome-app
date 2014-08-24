@@ -32,6 +32,10 @@
                 Change zone details
             </a>
         </div>
+        <div  ng-if="error">
+               
+            <a ui-sref="gretel.error" > {{error}}</a> 
+        </div>
 
     </ion-content>
 </ion-view>
