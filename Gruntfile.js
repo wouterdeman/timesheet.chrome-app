@@ -15,6 +15,20 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+        //http://www.rrharvey.com/2013/12/insert-script-tags-automatically-using-grunt/
+        fileblocks: {
+            options: {
+                removeFiles: true
+            },
+            timesheetapp: {
+                src: 'app/index.html',
+                blocks: {
+                    'controllers': {
+                        src: 'app/scripts/controllers/*.js'
+                    }
+                }
+            }
+        },
         yeoman: {
             app: 'app',
             dist: 'dist'
@@ -22,6 +36,10 @@ module.exports = function (grunt) {
         watch: {
             options: {
                 spawn: true
+            },
+            blocks: {
+                files: ['js/**/*.js'],
+                tasks: ['fileblocks:todos']
             },
             livereload: {
                 options: {
@@ -214,7 +232,7 @@ module.exports = function (grunt) {
                         'bower_components/lodash/dist/lodash.js',
                         'scripts/app.js',
                         'scripts/chromeApp.js',
-                        'scripts/controllers/*.js',                        
+                        'scripts/controllers/*.js',
                         'bower_components/angular/angular-csp.css',
                         'views/*.html'
                     ]
@@ -267,6 +285,7 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
+            'fileblocks',
             'jshint',
             'connect:livereload',
             'watch'
@@ -292,6 +311,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
+        'fileblocks',
         'jshint',
         'test',
         'build'
