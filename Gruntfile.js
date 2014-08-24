@@ -18,13 +18,18 @@ module.exports = function (grunt) {
         //http://www.rrharvey.com/2013/12/insert-script-tags-automatically-using-grunt/
         fileblocks: {
             options: {
-                removeFiles: true
+                removeFiles: true,
+
             },
             timesheetapp: {
+                options: {
+                    flatten: 'app/'
+                },
                 src: 'app/index.html',
                 blocks: {
                     'controllers': {
-                        src: 'app/scripts/controllers/*.js'
+                        src: 'app/scripts/controllers/*.js',
+                        prefix: 'scripts/controllers/'
                     }
                 }
             }
