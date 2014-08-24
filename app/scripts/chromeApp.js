@@ -178,11 +178,11 @@ var chromeApp = {
                         dfd.resolve(res);
                     }).fail(function (a, b, c, d) {
                         console.log('POST failed', a, b, c, d);
-                        dfd.fail();
+                        dfd.fail(a, b, c, d);
                     });
                 }).fail(function (a, b, c, d) {
                     console.log('POST failed', a, b, c, d);
-                    dfd.fail();
+                    dfd.fail(a, b, c, d);
                 });
             });
 

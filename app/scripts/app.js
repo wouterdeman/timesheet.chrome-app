@@ -307,6 +307,10 @@ timesheetApp.run(function ($rootScope, $state, $http) {
         chromeApp.authenticateUser().then(function (token) {
           $http.defaults.headers.common.token = token;
           startupBackgroundService(token);
+        }).error(function (a, b, c, d) {
+          $state.go("gretel.error", {
+            message: "Unable to authenticateUser." + a + b + c + d
+          });
         });
       } else {
         startupBackgroundService(token);
