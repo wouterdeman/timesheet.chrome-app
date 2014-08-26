@@ -43,6 +43,7 @@ angular.module('timesheetApp')
 			.addSubMenu('Users', 'ion-person-stalker', 'gretel.users.list')
 			.addSubMenu('Holidays', 'ion-plane', 'gretel.holidays.list')
 			.addSubMenu('Absence rights', 'ion-key', 'gretel.absencerights.list')
+			.addSubMenu('Error', 'ion-ios7-pulse-strong', 'gretel.error')
 		];
 
 		var getByParentId = function (id) {

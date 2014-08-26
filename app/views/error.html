@@ -13,6 +13,13 @@
             </div>
 
             <button ng-click="retryAuthenticate()">Retry To Authenticate</button>
+            <br/> <br/> <br/>
+            <button ng-click="clearLogs()">Clear logs</button>
+
+            <div ng-repeat="log in logs">
+              {{log}}
+            </div>  
+
         </div>
     </ion-content>
 </ion-view>
