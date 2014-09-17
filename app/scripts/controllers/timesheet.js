@@ -27,6 +27,7 @@ angular.module('timesheetApp')
 			};
 		}
 	]).controller('TimesheetController', function ($scope, $ionicLoading, TimesheetService, UserService, urls, chromeApp) {
+		$scope.advancedSearch = false;
 		$scope.year = new Date().getFullYear();
 		$scope.month = new Date().getMonth();
 		$scope.customers = [];
@@ -37,6 +38,9 @@ angular.module('timesheetApp')
 		});
 		$scope.info = {};
 		$scope.getInfo = function () {
+			if (!$scope.customer) {
+				return;
+			}
 			var data = {
 				month: $scope.month,
 				year: $scope.year,
@@ -54,4 +58,8 @@ angular.module('timesheetApp')
 
 				$scope.getInfo();
 			});
+
+		$scope.$watch('year', $scope.getInfo);
+		$scope.$watch('month', $scope.getInfo);
+		$scope.$watch('customer', $scope.getInfo);
 	});
