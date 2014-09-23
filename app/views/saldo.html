@@ -6,5 +6,12 @@
             {{saldo.name}}
             <span class="badge badge-royal">{{saldo.amount - saldo.used}} days left</span>            
         </div>
+        <div class="item item-divider" ng-show="saldosNextYear.length">
+            Next year
+        </div>
+        <div class="item" ng-repeat="saldo in saldosNextYear | orderBy: 'seqnr'">
+            {{saldo.name}}
+            <span class="badge badge-royal">{{saldo.amount - saldo.used}} days</span>            
+        </div>
     </icon-content>
 </ion-view>

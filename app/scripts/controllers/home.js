@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-	.controller('HomeController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate, $ionicLoading, $state) {
+	.controller('HomeController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate, $ionicLoading, $state, SaldoService) {
 		$scope.loading = false;
 		$scope.deviceName = '';
 		$scope.error = '';
@@ -16,6 +16,10 @@ angular.module('timesheetApp')
 						loc: loc,
 						token: token
 					};
+
+					SaldoService.getAll().then(function (saldos) {
+						$scope.saldos = saldos;
+					});
 
 					$http.post(url, data).success(function (zone) {
 						if (zone && zone !== "0") {

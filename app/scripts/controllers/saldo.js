@@ -5,9 +5,10 @@ angular.module('timesheetApp')
         function ($http, q, urls) {
             var index = urls.saldo.index;
             return {
-                getAll: function () {
+                getAll: function (year) {
+                    year = year || new Date().getFullYear();
                     var deferred = q.defer();
-                    $http.get(index).success(function (saldos) {
+                    $http.get(index + '/' + year).success(function (saldos) {
                         deferred.resolve(saldos);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -22,12 +23,15 @@ angular.module('timesheetApp')
             template: 'Loading...'
         });
         $scope.doRefresh = function () {
-            SaldoService.getAll().then(function (saldos) {
-                $scope.saldos = saldos;
-                $ionicLoading.hide();
-            }).finally(function () {
-                // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
+            SaldoService.getAll(new Date().getFullYear() + 1).then(function (saldosNextYear) {
+                $scope.saldosNextYear = saldosNextYear;
+                SaldoService.getAll().then(function (saldos) {
+                    $scope.saldos = saldos;
+                    $ionicLoading.hide();
+                }).finally(function () {
+                    // Stop the ion-refresher from spinning
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
             });
         };
 
