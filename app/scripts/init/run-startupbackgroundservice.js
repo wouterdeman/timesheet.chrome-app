@@ -20,7 +20,7 @@ angular.module('timesheetApp').run(function ($rootScope, $state, $http) {
   };
 
   chromeApp.getLastToken().then(function (token) {
-    $http.defaults.headers.common.token = token;
+    $http.defaults.headers.common.token = token || 'dummy';
 
     $http.get('http://timesheetservice.herokuapp.com/authstore/verify').success(function (valid) {
       if (!valid || valid === "false") {

@@ -230,16 +230,22 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         '_locales/{,*/}*.json',
                         'styles/fonts/{,*/}*.*',
+                        'bower_components/ionic/css/ionic.css',
+                        'bower_components/ionic/js/ionic.bundle.js',
+                        'bower_components/ionic/fonts/ionicons.ttf',
+                        'styles/main.css',
+                        'scripts/lib/sha256.js',
+                        'scripts/backgroundservice.js',
                         'bower_components/jquery/dist/jquery.js',
                         'bower_components/moment/min/moment.min.js',
-                        'bower_components/angular/angular.js',
-                        'bower_components/angular-route/angular-route.js',
                         'bower_components/lodash/dist/lodash.js',
+                        'scripts/index.js',
                         'scripts/app.js',
                         'scripts/chromeApp.js',
+                        'scripts/init/*.js',
                         'scripts/controllers/*.js',
                         'bower_components/angular/angular-csp.css',
-                        'views/*.html'
+                        'views/{,*/}*.html'
                     ]
                 }]
             }
