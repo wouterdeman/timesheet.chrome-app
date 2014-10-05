@@ -143,6 +143,7 @@
     condigCrudRoutes($stateProvider, 'users');
     condigCrudRoutes($stateProvider, 'absencerights');
     condigCrudRoutes($stateProvider, 'absences');
+    condigCrudRoutes($stateProvider, 'absencemanagement');
 
     $urlRouterProvider.otherwise("/gretel/home");
 

@@ -1,0 +1,49 @@
+<ion-view title="Enter absence">
+    <ion-content>
+        <form name="form" ng-submit="save(form.$valid)" novalidate>
+            <div class="list">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        User
+                    </div>
+                    <select ng-model="absence.entity" ng-options="u._id as u.firstname + ' ' + u.lastname for u in users" placeholder="User" required></select>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">From</span>
+                    <input type="date" ng-model="absence.from" placeholder="yyyy-MM-dd" required />
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">To</span>
+                    <input type="date" ng-model="absence.to" placeholder="yyyy-MM-dd" required />
+                </label>
+                <label class="item item-toggle" ng-show="absence.from == absence.to">
+                    Half day ?
+                    <label class="toggle toggle-positive">
+                        <input type="checkbox" ng-model="absence.halfday">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </label>
+                <label class="item item-radio" ng-show="absence.halfday && absence.from == absence.to">
+                    <input type="radio" name="group" value="true" ng-model="absence.prenoon">
+                    <div class="item-content">
+                        Prenoon
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+                 <label class="item item-radio" ng-show="absence.halfday && absence.from == absence.to">
+                    <input type="radio" name="group" value="false" ng-model="absence.prenoon">
+                    <div class="item-content">
+                        Afternoon
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+            </div>
+            <div class="padding">
+                <button class="button button-block button-positive" type="submit">Enter</button>
+                <a class="button button-block" ui-sref="gretel.absencemanagement.list">Cancel</a>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
