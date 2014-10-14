@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('ActivityLogController', function ($scope, $http, $location, $ionicLoading, urls) {
-        
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+    .controller('ActivityLogController', function ($scope, $http, $location, urls) {
 
         $scope.doRefresh = function () {
             chromeApp.getLastToken().then(function (token) {
@@ -24,9 +20,6 @@ angular.module('timesheetApp')
                         });
 
                         $scope.activitylog = activitylog;
-                        $ionicLoading.hide();
-                    }).error(function () {
-                        $ionicLoading.hide();
                     }).finally(function () {
                         // Stop the ion-refresher from spinning
                         $scope.$broadcast('scroll.refreshComplete');

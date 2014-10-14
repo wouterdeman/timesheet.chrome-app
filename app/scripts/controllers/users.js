@@ -51,15 +51,10 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('UsersController', function ($scope, $http, $location, $ionicLoading, UserService, $ionicPopup) {
-        //todo: refactor loading stuff in decorator
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+    ]).controller('UsersController', function ($scope, $http, $location, UserService, $ionicPopup) {
         $scope.doRefresh = function () {
             UserService.getAll().then(function (users) {
                 $scope.users = users;
-                $ionicLoading.hide();
             }).finally(function () {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');

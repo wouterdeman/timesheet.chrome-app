@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('settingsController', function ($scope, $http, $location, $ionicLoading) {
+    .controller('settingsController', function ($scope, $http, $location) {
 
         chrome.storage.local.get("settings", function (value) {
             var val = value["settings"] || {};
@@ -29,7 +29,7 @@ angular.module('timesheetApp')
         });
 
         var handleWeekendWeekDaysSettings = function (newValue, oldValue) {
-            if(newValue === oldValue) {
+            if (newValue === oldValue) {
                 return;
             }
 
@@ -59,17 +59,17 @@ angular.module('timesheetApp')
         });
 
         $scope.$watch('devicename', function (newValue, oldValue) {
-            if (newValue !== oldValue) {                
+            if (newValue !== oldValue) {
                 chrome.storage.local.set({
                     'devicename': $scope.devicename
-                }, function () { });
+                }, function () {});
             }
         });
 
         $scope.debug = backgroundservice.debug;
 
         $scope.$watch('debug', function (newValue, oldValue) {
-            if (newValue !== oldValue) {    
+            if (newValue !== oldValue) {
                 backgroundservice.stop();
                 backgroundservice.start(null, null, null, newValue);
             }

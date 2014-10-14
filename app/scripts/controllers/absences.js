@@ -2,38 +2,34 @@
 
 angular.module('timesheetApp')
     .service('AbsenceService', ['$http', '$q', 'urls',
-        function($http, $q, urls) {
+        function ($http, $q, urls) {
             var index = urls.absences.index;
             var detail = urls.absences.detail;
             return {
-                getAll: function() {
+                getAll: function () {
                     var deferred = $q.defer();
-                    $http.get(index).success(function(absences) {
+                    $http.get(index).success(function (absences) {
                         deferred.resolve(absences);
-                    }).error(function(err) {
+                    }).error(function (err) {
                         deferred.reject(err);
                     });
                     return deferred.promise;
                 },
-                save: function(absence) {
+                save: function (absence) {
                     return $http.post(index, absence);
                 },
-                remove: function(absences) {
-                    var promises = absences.map(function(absence) {
+                remove: function (absences) {
+                    var promises = absences.map(function (absence) {
                         return $http.delete(detail + absence._id);
                     });
                     return $q.all(promises);
                 }
             };
         }
-    ]).controller('AbsencesController', function($scope, $http, $location, $ionicLoading, AbsenceService, $ionicPopup, dateFilter, $q) {
-        //todo: refactor loading stuff in decorator
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
-        $scope.doRefresh = function() {
-            AbsenceService.getAll().then(function(absences) {
-                absences = _.sortBy(absences, function(absence) {
+    ]).controller('AbsencesController', function ($scope, $http, $location, AbsenceService, $ionicPopup, dateFilter, $q) {
+        $scope.doRefresh = function () {
+            AbsenceService.getAll().then(function (absences) {
+                absences = _.sortBy(absences, function (absence) {
                     var t = new Date(absence.date);
                     return t.getTime();
                 });
@@ -42,7 +38,7 @@ angular.module('timesheetApp')
                 var lastAbsence;
                 var group = {};
 
-                var initGroup = function(absence) {
+                var initGroup = function (absence) {
                     lastAbsence = absence;
                     group = {};
                     group.startdate = absence.date;
@@ -54,7 +50,7 @@ angular.module('timesheetApp')
                     groups.push(group);
                 };
 
-                _.forEach(absences, function(absence) {
+                _.forEach(absences, function (absence) {
                     if (!lastAbsence) {
                         initGroup(absence);
                     } else {
@@ -70,33 +66,30 @@ angular.module('timesheetApp')
                     }
                 });
 
-                groups = _.map(groups, function(group) {
+                groups = _.map(groups, function (group) {
                     group.startdateFormatted = dateFilter(group.startdate, 'EEE dd/MM/yy');
                     group.enddateFormatted = dateFilter(group.enddate, 'EEE dd/MM/yy');
                     return group;
                 });
 
-                groups = _.sortBy(groups, function(group) {
+                groups = _.sortBy(groups, function (group) {
                     var t = new Date(group.startdate);
                     return -t.getTime();
                 });
 
                 var today = moment().startOf('day');
 
-                var futureGroups = _.filter(groups, function(group) {
+                var futureGroups = _.filter(groups, function (group) {
                     return new Date(group.startdate) >= today || new Date(group.enddate) >= today;
                 });
 
-                var pastGroups = _.filter(groups, function(group) {
+                var pastGroups = _.filter(groups, function (group) {
                     return new Date(group.startdate) < today && new Date(group.enddate) && today;
                 });
 
                 $scope.futureGroups = futureGroups;
                 $scope.pastGroups = pastGroups;
-                $ionicLoading.hide();
-            }).catch(function() {
-                $ionicLoading.hide();
-            }).finally(function() {
+            }).finally(function () {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
@@ -104,20 +97,20 @@ angular.module('timesheetApp')
 
         $scope.doRefresh();
 
-        $scope.remove = function(absences) {
+        $scope.remove = function (absences) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete',
                 template: 'Are you sure you want to delete this absence?'
             });
-            confirmPopup.then(function(res) {
+            confirmPopup.then(function (res) {
                 if (res) {
-                    AbsenceService.remove(absences).then(function() {
+                    AbsenceService.remove(absences).then(function () {
                         $scope.doRefresh();
                     });
                 }
             });
         };
-    }).controller('AbsencesDetailController', function($stateParams, $scope, AbsenceService, dateFilter, $state, $ionicPopup) {
+    }).controller('AbsencesDetailController', function ($stateParams, $scope, AbsenceService, dateFilter, $state, $ionicPopup) {
         $scope.absence = {
             from: dateFilter(new Date(), 'yyyy-MM-dd'),
             to: dateFilter(new Date(), 'yyyy-MM-dd'),
@@ -125,7 +118,7 @@ angular.module('timesheetApp')
             prenoon: "true"
         };
 
-        $scope.save = function(valid) {
+        $scope.save = function (valid) {
             $scope.submitted = true;
             if (!valid) {
                 return;
@@ -147,7 +140,7 @@ angular.module('timesheetApp')
                 absenceToSave.prenoon = absence.prenoon;
             }
 
-            AbsenceService.save(absenceToSave).then(function(result) {
+            AbsenceService.save(absenceToSave).then(function (result) {
                 var success = true;
 
                 if (!result.data.success) {

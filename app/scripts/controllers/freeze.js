@@ -2,39 +2,33 @@
 
 angular.module('timesheetApp')
     .service('FreezeService', ['$http', '$q', 'urls',
-        function($http, $q, urls) {
+        function ($http, $q, urls) {
             var freeze = urls.absencemanagement.freeze;
             var getFrozen = urls.absencemanagement.getFrozen;
             return {
-                get: function() {
+                get: function () {
                     var deferred = $q.defer();
-                    $http.get(getFrozen).success(function(frozen) {
+                    $http.get(getFrozen).success(function (frozen) {
                         deferred.resolve(frozen ? frozen.date : null);
-                    }).error(function(err) {
+                    }).error(function (err) {
                         deferred.reject(err);
                     });
                     return deferred.promise;
                 },
-                save: function(date) {
+                save: function (date) {
                     return $http.post(freeze, date);
                 }
             };
         }
-    ]).controller('FreezeController', function($scope, $http, $location, $ionicLoading, FreezeService, $ionicPopup, dateFilter, $q) {
+    ]).controller('FreezeController', function ($scope, $http, $location, FreezeService, $ionicPopup, dateFilter, $q) {
         var vm = this;
         vm.doRefresh = doRefresh;
         vm.save = save;
 
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
-        var doRefresh = function() {
-            FreezeService.get().then(function(date) {
+        var doRefresh = function () {
+            FreezeService.get().then(function (date) {
                 $scope.date = date ? dateFilter(date, 'yyyy-MM-dd') : date;
-                $ionicLoading.hide();
-            }).catch(function() {
-                $ionicLoading.hide();
-            }).finally(function() {
+            }).finally(function () {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');
             });
@@ -42,7 +36,7 @@ angular.module('timesheetApp')
 
         doRefresh();
 
-        var save = function(valid) {
+        var save = function (valid) {
             $scope.submitted = true;
             if (!valid) {
                 return;
@@ -55,7 +49,7 @@ angular.module('timesheetApp')
                 day: dateFilter(date, 'dd'),
             };
 
-            FreezeService.save(data).then(function(result) {
+            FreezeService.save(data).then(function (result) {
                 var success = true;
 
                 if (!result.data.success) {

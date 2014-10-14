@@ -3,8 +3,8 @@
 angular.module('timesheetApp')
     .service('HolidayService', ['$http', '$q', 'urls',
         function ($http, q, urls) {
-            var index=urls.holidays.index;
-            var detail=urls.holidays.detail;
+            var index = urls.holidays.index;
+            var detail = urls.holidays.detail;
             return {
                 getAll: function () {
                     var deferred = q.defer();
@@ -53,15 +53,10 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('HolidaysController', function ($scope, $http, $location, $ionicLoading, HolidayService, $ionicPopup) {
-        //todo: refactor loading stuff in decorator
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+    ]).controller('HolidaysController', function ($scope, $http, $location, HolidayService, $ionicPopup) {
         $scope.doRefresh = function () {
             HolidayService.getAll().then(function (holidays) {
                 $scope.holidays = holidays;
-                $ionicLoading.hide();
             }).finally(function () {
                 // Stop the ion-refresher from spinning
                 $scope.$broadcast('scroll.refreshComplete');

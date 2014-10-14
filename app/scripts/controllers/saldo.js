@@ -17,17 +17,12 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('SaldoController', function ($scope, $http, $location, $ionicLoading, SaldoService) {
-        //todo: refactor loading stuff in decorator
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+    ]).controller('SaldoController', function ($scope, $http, $location, SaldoService) {
         $scope.doRefresh = function () {
             SaldoService.getAll(new Date().getFullYear() + 1).then(function (saldosNextYear) {
                 $scope.saldosNextYear = saldosNextYear;
                 SaldoService.getAll().then(function (saldos) {
                     $scope.saldos = saldos;
-                    $ionicLoading.hide();
                 }).finally(function () {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');

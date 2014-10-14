@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('ChangeCustomerController', function($scope, $http, $location, $ionicLoading) {        
-        chromeApp.getLastToken().then(function(token) {
+    .controller('ChangeCustomerController', function ($scope, $http, $location) {
+        chromeApp.getLastToken().then(function (token) {
             var url = 'http://timesheetservice.herokuapp.com/customers/all';
             //var url = 'http://localhost:3000/customers/all';
             var data = {
                 token: token
             };
 
-            $http.post(url, data).success(function(customers) {
+            $http.post(url, data).success(function (customers) {
                 $scope.customers = customers;
                 if (customers.length > 0) {
                     $scope.customer = customers[0];
@@ -37,21 +37,21 @@ angular.module('timesheetApp')
             });
         });
 
-        $scope.changeCustomer = function() {
-            chromeApp.getLastToken().then(function(token) {
-                chromeApp.getLocation().then(function(coords) {
+        $scope.changeCustomer = function () {
+            chromeApp.getLastToken().then(function (token) {
+                chromeApp.getLocation().then(function (coords) {
                     var loc = [coords.latitude, coords.longitude];
                     var data = {
                         token: token,
-                        loc: loc,                       
+                        loc: loc,
                         customer: $scope.customer._id
                     };
 
                     var url = 'http://timesheetservice.herokuapp.com/zones/changecustomer';
                     //var url = 'http://localhost:3000/zones/changecustomer';
-                    $http.post(url, data).success(function () {                                         
+                    $http.post(url, data).success(function () {
                         $location.path("/");
-                    });                                    
+                    });
                 });
             });
         };

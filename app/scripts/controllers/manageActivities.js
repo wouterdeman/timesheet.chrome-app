@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('ManageActivitiesController', function ($scope, $http, $location, urls, $ionicModal, $ionicPopup, $ionicLoading, dateFilter) {
+    .controller('ManageActivitiesController', function ($scope, $http, $location, urls, $ionicModal, $ionicPopup, dateFilter) {
         var monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
@@ -57,13 +57,8 @@ angular.module('timesheetApp')
                     year: $scope.selectedYear
                 };
 
-                $ionicLoading.show({
-                    template: 'Loading...'
-                });
-
                 $http.post(urls.customers.trackedTimeAndCustomer, getCustomerData).success(function (trackedTime) {
                     console.log("trackedTime", trackedTime);
-                    $ionicLoading.hide();
                     $scope.trackedTimes = _.forEach(trackedTime, function (tt) {
                         tt.date = new Date(tt.date);
                         tt.isWeekend = tt.date.getDay() % 6 == 0;
@@ -78,7 +73,7 @@ angular.module('timesheetApp')
                         if (tt.suggestedCustomer) {
                             tt.customer = tt.suggestedCustomer;
                         }
-                    });;
+                    });
 
                     var grouped = _.groupBy(trackedTime, 'device');
                     var deviceIds = _.keys(grouped);

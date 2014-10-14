@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .service('AbsenceRightService', ['$http', '$q','urls',
+    .service('AbsenceRightService', ['$http', '$q', 'urls',
         function ($http, q, urls) {
-            var index=urls.absencerights.index;
-            var detail=urls.absencerights.detail;
+            var index = urls.absencerights.index;
+            var detail = urls.absencerights.detail;
             return {
                 getAll: function () {
                     var deferred = q.defer();
@@ -53,11 +53,7 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('AbsencerightsController', function ($scope, $http, $location, $ionicLoading, AbsenceRightService, $ionicPopup, UserService) {
-        //todo: refactor loading stuff in decorator
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+    ]).controller('AbsencerightsController', function ($scope, $http, $location, AbsenceRightService, $ionicPopup, UserService) {
         $scope.doRefresh = function () {
             AbsenceRightService.getAll().then(function (absencerights) {
                 UserService.getAll().then(function (users) {
@@ -81,7 +77,6 @@ angular.module('timesheetApp')
                     }
 
                     $scope.absencerights = result;
-                    $ionicLoading.hide();
                 }).finally(function () {
                     // Stop the ion-refresher from spinning
                     $scope.$broadcast('scroll.refreshComplete');
@@ -107,17 +102,17 @@ angular.module('timesheetApp')
 
         $scope.showReorder = false;
 
-        $scope.moveItem = function (right, rights, fromIndex, toIndex) {            
+        $scope.moveItem = function (right, rights, fromIndex, toIndex) {
             rights.splice(fromIndex, 1);
             rights.splice(toIndex, 0, right);
-            _.forEach(rights, function(r, index) {
-                if(r.seqnr != index) {
+            _.forEach(rights, function (r, index) {
+                if (r.seqnr != index) {
                     r.seqnr = index;
                     AbsenceRightService.update(r._id, r);
                 }
             });
         };
-    }).controller('AbsencerightsDetailController', function ($stateParams, $scope, AbsenceRightService, dateFilter, $state, UserService, $ionicLoading) {
+    }).controller('AbsencerightsDetailController', function ($stateParams, $scope, AbsenceRightService, dateFilter, $state, UserService) {
         var id = $stateParams.id;
         var entity = $stateParams.entity;
         $scope.absenceright = {
@@ -135,12 +130,8 @@ angular.module('timesheetApp')
             });
         }
 
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
         UserService.getAll().then(function (users) {
             $scope.users = users;
-            $ionicLoading.hide();
         });
 
         $scope.save = function (valid) {

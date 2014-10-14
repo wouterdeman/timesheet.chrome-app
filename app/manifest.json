@@ -31,11 +31,11 @@
         "144": "images/icon-144.png",
         "152": "images/icon-152.png"
     },
-"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzKlr3jHCymWc7/wwM4qlPvhojGIZMaM8l+X717yRYXLCab+9GlB0UX+mip9utqdLS/qjB8sM6fBqSGJyxluBXntPGiTJWSQqxIYTIVa3CehvKuRLIOrBvUmgOZxdg4sWHa+GGF8wu7yCOqYSdXtA44c3fzK3vx/0oIahPlhv5/No/Isx9csTcA34uTMDfCaCh1hQX/jQKghldve2pgOrPgBfn6pkfEelL1nFcv3o4qy5Sh7sHkyD09lUGmNkKJEo/7opfcYi4BmhKS4P5XYXCDKPA4yFMie/WarMuNdEDFMXgpOeM7F3YT7ZP8QCHU2JRu+E2qiXiAp8PSAhgI3UQwIDAQAB",
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzKlr3jHCymWc7/wwM4qlPvhojGIZMaM8l+X717yRYXLCab+9GlB0UX+mip9utqdLS/qjB8sM6fBqSGJyxluBXntPGiTJWSQqxIYTIVa3CehvKuRLIOrBvUmgOZxdg4sWHa+GGF8wu7yCOqYSdXtA44c3fzK3vx/0oIahPlhv5/No/Isx9csTcA34uTMDfCaCh1hQX/jQKghldve2pgOrPgBfn6pkfEelL1nFcv3o4qy5Sh7sHkyD09lUGmNkKJEo/7opfcYi4BmhKS4P5XYXCDKPA4yFMie/WarMuNdEDFMXgpOeM7F3YT7ZP8QCHU2JRu+E2qiXiAp8PSAhgI3UQwIDAQAB",
     "app": {
         "background": {
             "scripts": [
-                "bower_compontents/jquery/dist/jquery.min.js",
+                "bower_components/jquery/dist/jquery.min.js",
                 "bower_components/moment/min/moment.min.js",
                 "bower_components/geolib/dist/geolib.min.js",
                 "scripts/chromeApp.js",

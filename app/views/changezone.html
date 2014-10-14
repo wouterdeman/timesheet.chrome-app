@@ -1,4 +1,4 @@
-  <ion-view title="Change zone details">
+<ion-view title="Change zone details">
     <ion-content ng-controller="ChangeZoneController">
         <form name="form" ng-submit="updateZone(form.$valid)" novalidate>
             <div class="list">
@@ -22,7 +22,7 @@
                 </label>
                 <div class="padding">
                     <button class="button button-block button-positive" type="submit">Update</button>
-                    <a class="button button-block" href="#/">Cancel</a>
+                    <a class="button button-block" ui-sref="gretel.home">Cancel</a>
                 </div>
             </div>
         </form>
