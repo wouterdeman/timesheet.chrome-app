@@ -54,6 +54,7 @@ var backgroundservice = {
 
         var failureFn = function (error) {
             console.log('BackgroundGeoLocation error');
+            alert('failure ' + error);
         }
 
         /*objectdetails: {
@@ -76,9 +77,9 @@ var backgroundservice = {
 
         // BackgroundGeoLocation is highly configurable.
         bgGeo.configure(callbackFn, failureFn, {
-            url: 'http://timesheetservice.herokuapp.com/entry', // <-- Android ONLY:  your server url to send locations to 
+            url: 'http://timesheetservice.herokuapp.com/entry', // <-- Android ONLY:  your server url to send locations to
             params: backgroundservice.lastparams,
-            headers: { // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations                
+            headers: { // <-- Android ONLY:  Optional HTTP headers sent to your configured #url when persisting locations
                 'Accept': 'application/json, text/plain, */*',
                 'Content-Type': 'application/json;charset=UTF-8'
             },

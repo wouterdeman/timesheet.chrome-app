@@ -236,7 +236,7 @@ module.exports = function (grunt) {
                         'styles/main.css',
                         'scripts/lib/sha256.js',
                         'scripts/backgroundservice.js',
-                        'bower_components/jquery/dist/jquery.js',
+                        'bower_components/jquery/dist/jquery.min.js',
                         'bower_components/moment/min/moment.min.js',
                         'bower_components/lodash/dist/lodash.js',
                         'scripts/index.js',
