@@ -1,6 +1,6 @@
-(function () {
+(function() {
   //private helper function
-  var condigCrudRoutes = function (stateprovider, name) {
+  var condigCrudRoutes = function(stateprovider, name) {
     var nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
     //http://codepen.io/darrenahunter/pen/oDKid?editors=101
@@ -32,7 +32,7 @@
         controller: nameCapitalized + 'DetailController'
       });
   };
-  angular.module('timesheetApp').config(function ($provide, $stateProvider, $urlRouterProvider) {
+  angular.module('timesheetApp').config(function($provide, $stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('gretel', {
         url: "/gretel",
@@ -135,6 +135,15 @@
           'mainContent': {
             templateUrl: "views/saldo.html",
             controller: "SaldoController"
+          }
+        }
+      })
+      .state('gretel.freeze', {
+        url: "/freeze",
+        views: {
+          'mainContent': {
+            templateUrl: "views/freeze.html",
+            controller: "FreezeController"
           }
         }
       });

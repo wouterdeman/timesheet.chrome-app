@@ -33,7 +33,9 @@ angular.module('timesheetApp').config(function ($provide) {
       },
       absencemanagement: {
         index: 'timeandwork/absencemanagement',
-        detail: 'timeandwork/absencemanagement/'
+        detail: 'timeandwork/absencemanagement/',
+        freeze: 'timeandwork/absencemanagement/freeze',
+        getFrozen: 'timeandwork/absencemanagement/frozen'
       }
     };
     var domain = {
