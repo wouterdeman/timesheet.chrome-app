@@ -13,7 +13,6 @@ angular.module('timesheetApp').run(function ($rootScope, $state, $http) {
                         devicename: deviceName
                     };
 
-                    alert('startup called ' + token);
                     backgroundservice.start(objectdetails, token, clientToken, true);
                 });
             });
