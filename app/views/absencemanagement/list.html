@@ -1,0 +1,35 @@
+<ion-view title="Absence management">
+    <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absencemanagement.add()"></a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div ng-repeat="g in groups">
+            <div class="item item-divider item-button-right" style="background-color: #444;color: white">
+                <button class="button button-clear" style="top: 3px;right: 19px;" ui-sref="gretel.absencemanagement.add({entity:g.entity })">
+                    <i class="icon ion-ios7-plus-outline"></i>
+                </button>
+                <b>{{g.user.firstname}} {{g.user.lastname}}</b>
+            </div>            
+            <div class="item item-divider" ng-show="g.futureSum > 0" ng-click="g.showFutureGroups = !g.showFutureGroups"><span ng-class="g.showFutureGroups ? 'ion-arrow-down-b' : 'ion-arrow-right-b'"/> Future <span class="badge badge-stable">{{g.futureSum}} days</span></div>
+            <div class="item item-button-right" ng-show="g.showFutureGroups" ng-repeat="group in g.futureGroups">
+                {{group.startdateFormatted}}
+                <span ng-show="group.startdateFormatted !== group.enddateFormatted">- {{group.enddateFormatted}}</span>
+                <span class="badge badge-stable" style="right: 145px" ng-show="group.amount === 0.5">{{group.prenoon ? 'P' : 'A'}}</span>
+                <span class="badge badge-royal">{{group.amount}} {{group.amount === 1 ? 'day' : 'days' }}</span>
+                <div class="buttons">
+                    <button type="button" class="button button-clear" ng-click="remove(group.absences)">
+                        <i class="icon ion-trash-a"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="item item-divider" ng-show="g.pastSum > 0" ng-click="g.showPastGroups = !g.showPastGroups"><span ng-class="g.showPastGroups ? 'ion-arrow-down-b' : 'ion-arrow-right-b'"/> Past <span class="badge badge-stable">{{g.pastSum}} days</span></div>
+            <div class="item item-button-right" ng-show="g.showPastGroups" ng-repeat="group in g.pastGroups">
+                {{group.startdateFormatted}}
+                <span ng-show="group.startdateFormatted !== group.enddateFormatted">- {{group.enddateFormatted}}</span>
+                <span class="badge badge-royal">{{group.amount}} {{group.amount === 1 ? 'day' : 'days' }}</span>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

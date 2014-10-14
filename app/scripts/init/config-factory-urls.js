@@ -30,6 +30,12 @@ angular.module('timesheetApp').config(function ($provide) {
       timesheet: {
         info: 'timeandwork/timesheet',
         download: 'timeandwork/timesheet/download'
+      },
+      absencemanagement: {
+        index: 'timeandwork/absencemanagement',
+        detail: 'timeandwork/absencemanagement/',
+        freeze: 'timeandwork/absencemanagement/freeze',
+        getFrozen: 'timeandwork/absencemanagement/frozen'
       }
     };
     var domain = {

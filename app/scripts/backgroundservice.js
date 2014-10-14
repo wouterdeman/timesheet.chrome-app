@@ -47,9 +47,17 @@ var backgroundservice = {
             console.log('[js] BackgroundGeoLocation callback:  ' + location.latitude + ',' + location.longitude);
             // Do your HTTP request here to POST location to your server.
 
+            var data = backgroundservice.lastparams;
+            data.location = location;
 
+            $.post('http://timesheetservice.herokuapp.com/entry', data).done(function (d) {
+                bgGeo.finish();
+            }).fail(function () {
+                console.log('post (ios) request failed (locationshare)');
+                bgGeo.finish();
+            });
 
-            yourAjaxCallback.call(this);
+            //yourAjaxCallback.call(this);
         };
 
         var failureFn = function (error) {
