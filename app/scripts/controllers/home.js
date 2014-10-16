@@ -7,6 +7,10 @@ angular.module('timesheetApp')
         $scope.error = '';
 
         $scope.doRefresh = function () {
+            SaldoService.getAll().then(function (saldos) {
+                $scope.saldos = saldos;
+            });
+
             chromeApp.getLastToken().then(function (token) {
                 chromeApp.getLocation().then(function (coords) {
                     var loc = [coords.latitude, coords.longitude];
@@ -16,10 +20,6 @@ angular.module('timesheetApp')
                         loc: loc,
                         token: token
                     };
-
-                    SaldoService.getAll().then(function (saldos) {
-                        $scope.saldos = saldos;
-                    });
 
                     $http.post(url, data).success(function (zone) {
                         if (zone && zone !== "0") {

@@ -20,29 +20,31 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('FreezeController', function ($scope, $http, $location, FreezeService, $ionicPopup, dateFilter, $q) {
+    ]).controller('FreezeController', function ($http, $location, FreezeService, $ionicPopup, dateFilter, $state) {
         var vm = this;
         vm.doRefresh = doRefresh;
         vm.save = save;
 
-        var doRefresh = function () {
+        doRefresh();
+
+        return vm;
+
+        function doRefresh() {
             FreezeService.get().then(function (date) {
-                $scope.date = date ? dateFilter(date, 'yyyy-MM-dd') : date;
+                vm.date = date ? dateFilter(date, 'yyyy-MM-dd') : date;
             }).finally(function () {
                 // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
+                vm.$broadcast('scroll.refreshComplete');
             });
         };
 
-        doRefresh();
-
-        var save = function (valid) {
-            $scope.submitted = true;
+        function save(valid) {
+            vm.submitted = true;
             if (!valid) {
                 return;
             }
 
-            var date = $scope.date;
+            var date = vm.date;
             var data = {
                 year: dateFilter(date, 'yyyy'),
                 month: dateFilter(date, 'MM'),
@@ -61,7 +63,7 @@ angular.module('timesheetApp')
                 }
 
                 if (success) {
-                    $state.back();
+                    $state.go('gretel.home');
                 }
             });
         };
