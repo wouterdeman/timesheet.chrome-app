@@ -15,6 +15,9 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+        vars: {
+            appjs: ['**/*.module.js', '**/*.run.js', '**/*.config.js', '**/*.controller.js', '**/*.helper.js', '**/*.lib.js']
+        },
         //http://www.rrharvey.com/2013/12/insert-script-tags-automatically-using-grunt/
         fileblocks: {
             options: {
@@ -23,13 +26,13 @@ module.exports = function (grunt) {
             },
             timesheetapp: {
                 options: {
-                    flatten: 'app/'
+
                 },
                 src: 'app/index.html',
                 blocks: {
-                    'controllers': {
-                        src: 'app/scripts/controllers/*.js',
-                        prefix: 'scripts/controllers/'
+                    'appjs': {
+                        cwd: 'app/',
+                        src: '<%= vars.appjs %>'
                     }
                 }
             }
@@ -234,18 +237,12 @@ module.exports = function (grunt) {
                         'bower_components/ionic/js/ionic.bundle.js',
                         'bower_components/ionic/fonts/ionicons.ttf',
                         'styles/main.css',
-                        'scripts/lib/sha256.js',
-                        'scripts/backgroundservice.js',
                         'bower_components/jquery/dist/jquery.min.js',
                         'bower_components/moment/min/moment.min.js',
-                        'bower_components/lodash/dist/lodash.js',
-                        'scripts/index.js',
-                        'scripts/app.js',
-                        'scripts/chromeApp.js',
-                        'scripts/init/*.js',
-                        'scripts/controllers/*.js',
+                        'bower_components/lodash/dist/lodash.min.js',
                         'bower_components/angular/angular-csp.css',
-                        'views/{,*/}*.html'
+                        'views/{,*/}*.html',
+                        '<%= vars.appjs %>'
                     ]
                 }]
             }

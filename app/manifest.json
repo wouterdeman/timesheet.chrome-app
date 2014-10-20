@@ -1,7 +1,7 @@
 {
     "name": "Gretel",
     "description": "Gretel drops crumbles",
-    "version": "2.0.31",
+    "version": "2.0.34",
     "manifest_version": 2,
     "minimum_chrome_version": "29",
     "default_locale": "en",
@@ -38,14 +38,14 @@
                 "bower_components/jquery/dist/jquery.min.js",
                 "bower_components/moment/min/moment.min.js",
                 "bower_components/geolib/dist/geolib.min.js",
-                "scripts/chromeApp.js",
+                "scripts/chromeApp.helper.js",
                 "scripts/chromereload.js",
-                "scripts/lib/sha256.js",
-                "scripts/backgroundservice.js",
+                "scripts/lib/sha256.lib.js",
+                "scripts/backgroundservice.helper.js",
                 "scripts/background.js",
-                "scripts/locationdetection.js",
-                "scripts/activitylogging.js",
-                "scripts/main.js"
+                "scripts/locationdetection.helper.js",
+                "scripts/activitylogging.helper.js",
+                "scripts/main.background.js"
             ]
         }
     }
