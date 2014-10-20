@@ -54,12 +54,12 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.livereload.options.livereload %>'
                 },
                 files: [
-                    '<%= yeoman.app %>/{,*/}*.html',
+                    '<%= yeoman.app %>/**/*.html',
                     '<%= yeoman.app %>/styles/{,*/}*.css',
-                    '<%= yeoman.app %>/scripts/{,*/}*.js',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                     '<%= yeoman.app %>/manifest.json',
-                    '<%= yeoman.app %>/_locales/{,*/}*.json'
+                    '<%= yeoman.app %>/_locales/{,*/}*.json',
+                    '<%= vars.appjs %>'
                 ]
             }
         },
@@ -150,7 +150,7 @@ module.exports = function (grunt) {
             options: {
                 dirs: ['<%= yeoman.dist %>']
             },
-            html: ['<%= yeoman.dist %>/{,*/}*.html'],
+            html: ['<%= yeoman.dist %>/**/*.html'],
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
         },
         imagemin: {
@@ -241,7 +241,7 @@ module.exports = function (grunt) {
                         'bower_components/moment/min/moment.min.js',
                         'bower_components/lodash/dist/lodash.min.js',
                         'bower_components/angular/angular-csp.css',
-                        'views/{,*/}*.html',
+                        '**/*.html',
                         '<%= vars.appjs %>'
                     ]
                 }]

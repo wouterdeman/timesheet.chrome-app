@@ -1,6 +1,6 @@
 (function () {
     //private helper function
-    var condigCrudRoutes = function (stateprovider, name) {
+    var condigCrudRoutes = function (stateprovider, name, dir) {
         var nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
 
         //http://codepen.io/darrenahunter/pen/oDKid?editors=101
@@ -12,23 +12,23 @@
                 url: '/' + name,
                 views: {
                     'mainContent': {
-                        templateUrl: 'views/' + name + '/' + name + '.html'
+                        templateUrl: dir + '/' + name + '/' + name + '.html'
                     }
                 }
             })
             .state('gretel.' + name + '.list', {
                 url: "",
-                templateUrl: 'views/' + name + '/list.html',
+                templateUrl: dir + '/' + name + '/list.html',
                 controller: nameCapitalized + 'Controller'
             })
             .state('gretel.' + name + '.edit', {
                 url: "/edit/:id",
-                templateUrl: 'views/' + name + '/edit.html',
+                templateUrl: dir + '/' + name + '/edit.html',
                 controller: nameCapitalized + 'DetailController'
             })
             .state('gretel.' + name + '.add', {
                 url: "/add/:entity",
-                templateUrl: 'views/' + name + '/edit.html',
+                templateUrl: dir + '/' + name + '/edit.html',
                 controller: nameCapitalized + 'DetailController'
             });
     };
@@ -37,13 +37,13 @@
             .state('gretel', {
                 url: "/gretel",
                 abstract: true,
-                templateUrl: "views/menu.html"
+                templateUrl: "gretel/menu/menu.html"
             })
             .state('gretel.home', {
                 url: "/home",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/home.html",
+                        templateUrl: "gretel/home/home.html",
                         controller: "HomeController"
                     }
                 }
@@ -52,7 +52,7 @@
                 url: "/locationdetails",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/locationDetails.html",
+                        templateUrl: "gretel/locationdetails/locationDetails.html",
                         controller: "LocationDetailsController"
                     }
                 }
@@ -61,7 +61,7 @@
                 url: "/manageactivities",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/manageActivities.html",
+                        templateUrl: "gretel/manageactivities/manageActivities.html",
                         controller: "ManageActivitiesController"
                     }
                 }
@@ -70,7 +70,7 @@
                 url: "/settings",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/settings.html",
+                        templateUrl: "gretel/settings/settings.html",
                         controller: "settingsController"
                     }
                 }
@@ -79,7 +79,7 @@
                 url: "/registerzone",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/registerzone.html",
+                        templateUrl: "zonemanagement/registerzone.html",
                         controller: "RegisterZoneController"
                     }
                 }
@@ -88,7 +88,7 @@
                 url: "/changecustomer",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/changecustomer.html",
+                        templateUrl: "zonemanagement/changecustomer.html",
                         controller: "ChangeCustomerController"
                     }
                 }
@@ -97,7 +97,7 @@
                 url: "/changezone",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/changezone.html",
+                        templateUrl: "zonemanagement/changezone.html",
                         controller: "ChangeZoneController"
                     }
                 }
@@ -106,7 +106,7 @@
                 url: "/timesheet/summary",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/timesheet/summary.html",
+                        templateUrl: "timeandwork/timesheet/summary.html",
                         controller: "TimesheetController"
                     }
                 }
@@ -115,7 +115,7 @@
                 url: "/error/:message",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/error.html",
+                        templateUrl: "gretel/error/error.html",
                         controller: "ErrorController"
                     }
                 }
@@ -124,7 +124,7 @@
                 url: "/activitylog",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/activitylog.html",
+                        templateUrl: "gretel/activitylog/activitylog.html",
                         controller: "ActivityLogController"
                     }
                 }
@@ -133,7 +133,7 @@
                 url: "/saldo",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/saldo.html",
+                        templateUrl: "timeandwork/saldo/saldo.html",
                         controller: "SaldoController"
                     }
                 }
@@ -142,18 +142,18 @@
                 url: "/freeze",
                 views: {
                     'mainContent': {
-                        templateUrl: "views/freeze.html",
+                        templateUrl: "timeandwork/freeze/freeze.html",
                         controller: "FreezeController",
                         controllerAs: "vm"
                     }
                 }
             });
 
-        condigCrudRoutes($stateProvider, 'holidays');
-        condigCrudRoutes($stateProvider, 'users');
-        condigCrudRoutes($stateProvider, 'absencerights');
-        condigCrudRoutes($stateProvider, 'absences');
-        condigCrudRoutes($stateProvider, 'absencemanagement');
+        condigCrudRoutes($stateProvider, 'holidays', 'timeandwork');
+        condigCrudRoutes($stateProvider, 'users', 'gretel');
+        condigCrudRoutes($stateProvider, 'absencerights', 'timeandwork');
+        condigCrudRoutes($stateProvider, 'absences', 'timeandwork');
+        condigCrudRoutes($stateProvider, 'absencemanagement', 'timeandwork');
 
         $urlRouterProvider.otherwise("/gretel/home");
 
