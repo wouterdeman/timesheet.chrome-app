@@ -1,11 +1,15 @@
 <ion-view title="Activity log">
-    <ion-content>
+    <ion-content ng-controller="ActivityLogController">
+        <ion-nav-buttons side="right">
+            <a class="button button-icon button-clear ion-shuffle" ng-click="swapChartType()"> Line/Bar</a>
+        </ion-nav-buttons>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        <ul class="list" ng-controller="ActivityLogController">
-             <a ng-repeat="item in activitylog" class="item item-icon-left item-icon-right" href="http://maps.google.com/maps?z=15&t=m&q={{item.loc[0]}},{{item.loc[1]}}" target="_blank">
-                <i class="icon ion-map"></i>
-                {{item.formattedTime}} <b class="royal">{{item.zonedetails.name}}</b>
+
+        <highchart config="highchartsNG"></highchart>
+        <ul class="list">
+            <a ng-repeat="item in activitylog" class="item item-icon-left item-icon-right" href="http://maps.google.com/maps?z=15&t=m&q={{item.loc[0]}},{{item.loc[1]}}" target="_blank">
+                <i class="icon ion-map"></i> {{item.formattedTime}} <b class="royal">{{item.zonedetails.name}}</b>
                 <i class="icon ion-arrow-right-c"></i>
             </a>
         </ul>

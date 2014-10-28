@@ -241,6 +241,8 @@ module.exports = function (grunt) {
                         'bower_components/moment/min/moment.min.js',
                         'bower_components/lodash/dist/lodash.min.js',
                         'bower_components/angular/angular-csp.css',
+                        'bower_components/highcharts-ng/dist/highcharts-ng.min.js',
+                        'bower_components/highcharts/highcharts.js',
                         '**/*.html',
                         '<%= vars.appjs %>'
                     ]

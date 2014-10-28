@@ -19,12 +19,23 @@ var chromeApp = {
     },
     getLocation: function getLocation() {
         var dfd = new $.Deferred();
-        navigator.geolocation.getCurrentPosition(function (position) {
-            dfd.resolve(position.coords);
-        }, function (err) {
-            dfd.reject(err);
-            console.log('Error getting current position', err);
+
+        chromeApp.retrieveLocally('lastlocation').done(function (result) {
+            if (result && result.coords && moment().diff(moment(result.timestamp), 'minutes') < 5) {
+                dfd.resolve(result.coords);
+            } else {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    chromeApp.storeLocally({
+                        'lastlocation': JSON.stringify(position)
+                    });
+                    dfd.resolve(position.coords);
+                }, function (err) {
+                    dfd.reject(err);
+                    console.log('Error getting current position', err);
+                });
+            }
         });
+
         return dfd;
     },
     showMessage: function showMessage(title, message) {
@@ -74,12 +85,10 @@ var chromeApp = {
 
         return dfd;
     },
-    storeLocally: function storeLocally(key, data) {
+    storeLocally: function storeLocally(data) {
         var dfd = new $.Deferred();
 
-        chrome.storage.local.set({
-            key: JSON.stringify(data)
-        }, function () {
+        chrome.storage.local.set(data, function () {
             console.log('localStorage set');
         });
 
@@ -89,7 +98,10 @@ var chromeApp = {
         var dfd = new $.Deferred();
 
         chrome.storage.local.get(key, function (result) {
-            dfd.resolve(JSON.parse(result[key]));
+            if (result && result[key]) {
+                dfd.resolve(JSON.parse(result[key]));
+            }
+            dfd.resolve(result[key]);
         });
 
         return dfd;

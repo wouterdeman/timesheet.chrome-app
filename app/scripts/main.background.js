@@ -1,6 +1,6 @@
 'use strict';
 
-var startupApp = function() {
+var startupApp = function () {
     var width = 1024;
     var height = 768;
 
@@ -10,9 +10,9 @@ var startupApp = function() {
             width: width,
             height: height,
             left: Math.round((screen.availWidth - width) / 2),
-            top: Math.round((screen.availHeight - height) /2)
+            top: Math.round((screen.availHeight - height) / 2)
         },
-        frame: 'none'
+        frame: 'chrome'
     });
 };
 

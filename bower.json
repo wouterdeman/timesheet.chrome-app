@@ -5,7 +5,9 @@
     "geolib": "~2.0.9",
     "moment": "~2.7.0",
     "lodash": "~2.4.1",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "highcharts-ng": "~0.0.7",
+    "highcharts": "~4.0.4"
   },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#master"

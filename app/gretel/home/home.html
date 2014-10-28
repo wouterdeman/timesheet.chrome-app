@@ -12,8 +12,7 @@
             </div>
 
             <a class="item item-icon-left royal" href="#/gretel/registerzone">
-                <i class="icon ion-compose"></i>
-                Register zone
+                <i class="icon ion-compose"></i> Register zone
             </a>
         </div>
 
@@ -40,7 +39,7 @@
             </a>
         </div>
 
-        <div class="list card">
+        <div class="list card" ng-show="saldos.length > 0">
             <div class="item" ng-repeat="saldo in saldos | orderBy: 'seqnr'">
             {{saldo.name}}
             <span class="badge badge-royal">{{saldo.amount - saldo.used}} days left</span>
@@ -48,11 +47,6 @@
         </div>
 
     </div>
-
-        <div  ng-if="error">
-               
-            <a ui-sref="gretel.error" > {{error}}</a> 
-        </div>
 
     </ion-content>
 </ion-view>

@@ -2,6 +2,6 @@
 
 
 
-angular.module('timesheetApp', ['ionic']).factory('chromeApp', function () {
-  return chromeApp;
+angular.module('timesheetApp', ['ionic', 'highcharts-ng']).factory('chromeApp', function () {
+    return chromeApp;
 });
