@@ -1,6 +1,7 @@
 <ion-view title="Welcome {{deviceName}}" class="stable-bg">
     <ion-nav-buttons side="right">
-        <a href="#/gretel/settings" class="button button-icon button-clear ion-gear-b" ng-class="{ 'button-balanced': currentlyTracking, 'button-assertive': !currentlyTracking }"></a>
+        <a class="button button-icon button-clear" ng-show="backgroundServiceAvailable" ng-click="toggleTrackingService()" ng-class="{ 'button-balanced ion-happy': currentlyTracking, 'button-assertive ion-sad': !currentlyTracking }"></a>
+        <a href="#/gretel/settings" class="button button-icon button-clear ion-gear-b"></a>
     </ion-nav-buttons>
     <ion-content padding="true">
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">

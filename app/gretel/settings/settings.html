@@ -3,10 +3,10 @@
         <div ng-controller="settingsController">
             <ul class="list">
                 <div class="item item-divider">
-                    Tracking hours
+                    Tracking hours (Feature returning soon!)
                 </div>
 
-                <li class="item item-toggle">
+                <!--li class="item item-toggle">
                     Weekdays
                     <label class="toggle toggle-positive">
                         <input type="checkbox" ng-model="weekdays.track">
@@ -31,7 +31,7 @@
                 <li class="item item-input" ng-class="{ 'hide': !weekend.track }">
                     <input type="number" ng-model="weekend.from" />&nbsp;to&nbsp;
                     <input type="number" ng-model="weekend.to" />
-                </li>
+                </li-->
                 <div class="item item-divider">
                     Other
                 </div>
@@ -39,7 +39,7 @@
                     <span class="input-label">Device name</span>
                     <input type="text" ng-model="devicename" placeholder="Enter a device name..." />
                 </li>
-                 <li class="item item-toggle">
+                <li class="item item-toggle">
                     Debug
                     <label class="toggle toggle-positive">
                         <input type="checkbox" ng-model="debug">

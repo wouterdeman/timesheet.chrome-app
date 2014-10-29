@@ -1,15 +1,32 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .controller('ContentController', function($scope, $http, $location, chromeApp, $ionicSideMenuDelegate) {
-        $scope.currentlyTracking = false;
+    .controller('ContentController', function ($scope, $http, $location, chromeApp, $ionicSideMenuDelegate) {
+        $scope.currentlyTracking = true;
+        $scope.backgroundServiceAvailable = true; // backgroundservice.available();
         $scope.deviceName = '';
 
-        $scope.toggleLeft = function() {
+        $scope.toggleLeft = function () {
             $ionicSideMenuDelegate.toggleLeft();
         };
 
-        var shouldSend=function(s){
+        setTimeout(function () {
+            chromeApp.retrieveLocally('backgroundservicerunning').done(function (running) {
+                $scope.currentlyTracking = running === true;
+            });
+        }, 1000);
+
+
+        $scope.toggleTrackingService = function () {
+            if ($scope.currentlyTracking) {
+                backgroundservice.stop();
+            } else {
+                backgroundservice.start();
+            }
+            $scope.currentlyTracking = !$scope.currentlyTracking;
+        };
+
+        /*var shouldSend=function(s){
             var currentDate=new Date();
             var currentDay=currentDate.getDay();
             var currentHour=currentDate.getHours();
@@ -36,6 +53,6 @@ angular.module('timesheetApp')
         chrome.storage.local.get("devicename",function(value){
             var val=value["devicename"];
             $scope.deviceName=val || "";
-        });
+        });*/
 
     });

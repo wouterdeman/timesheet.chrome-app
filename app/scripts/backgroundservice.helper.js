@@ -11,6 +11,7 @@ var backgroundservice = {
         return result;
     },
     debug: true,
+    running: false,
     start: function (objectdetails, token, clientToken, debug) {
         if (!backgroundservice.available()) {
             console.log('Backgroundservice not initialised, backgroundGeoLocation is not available (phonegap)');
@@ -102,6 +103,10 @@ var backgroundservice = {
         // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
         bgGeo.start();
 
+        chromeApp.storeLocally({
+            'backgroundservicerunning': true
+        });
+
         // If you wish to turn OFF background-tracking, call the #stop method.
         // bgGeo.stop()
     },
@@ -119,5 +124,9 @@ var backgroundservice = {
 
         var bgGeo = window.plugins.backgroundGeoLocation;
         bgGeo.stop();
+
+        chromeApp.storeLocally({
+            'backgroundservicerunning': false
+        });
     }
 }
