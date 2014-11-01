@@ -1,5 +1,7 @@
-<ion-view title="Absence rights">
+<ion-view title="Absence rights {{year}}">
     <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-arrow-left-a" ng-click="prevYear()"></a>
+        <a class="button button-icon button-clear ion-arrow-right-a" ng-click="nextYear()"></a>
         <a class="button button-icon button-clear ion-shuffle" ng-click="showReorder = !showReorder"></a>
         <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absencerights.add()"></a>
     </ion-nav-buttons>
@@ -16,7 +18,7 @@
         <div ng-repeat-end>
             <ion-list show-reorder="showReorder">
                 <ion-item style="padding-right: 0px;" class="item item-button-right" ng-repeat="right in absenceright.rights | orderBy: 'seqnr' track by $index">
-                    {{right.name}} {{right.year}}
+                    {{right.name}}
                     <span class="badge badge-stable" style="right: 95px;">{{right.amount}} d</span>
                     <span ng-show="right.monthly" class="badge badge-royal" style="right: 140px;">M</span>
                     <div class="buttons">

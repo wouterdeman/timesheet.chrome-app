@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         vars: {
-            appjs: ['**/*.module.js', '**/*.run.js', '**/*.config.js', '**/*.controller.js', '**/*.helper.js', '**/*.lib.js']
+            appjs: ['**/*.module.js', '**/*.run.js', '**/*.config.js', '**/*.service.js', '**/*.controller.js', '**/*.helper.js', '**/*.lib.js']
         },
         //http://www.rrharvey.com/2013/12/insert-script-tags-automatically-using-grunt/
         fileblocks: {
