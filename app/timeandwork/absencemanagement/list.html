@@ -1,5 +1,7 @@
-<ion-view title="Absence management">
+<ion-view title="Absence management {{year}}">
     <ion-nav-buttons side="right">
+        <a class="button button-icon button-clear ion-arrow-left-a" ng-click="prevYear()"></a>
+        <a class="button button-icon button-clear ion-arrow-right-a" ng-click="nextYear()"></a>
         <a class="button button-icon button-clear ion-ios7-plus-outline" ui-sref="gretel.absencemanagement.add()"></a>
     </ion-nav-buttons>
     <ion-content>
@@ -11,6 +13,7 @@
                     <i class="icon ion-ios7-plus-outline"></i>
                 </button>
                 <b>{{g.user.firstname}} {{g.user.lastname}}</b>
+                <span class="badge badge-positive" style="right: 95px;">{{g.totalAvailable}} days left</span>
             </div>
             <div class="item item-divider" ng-show="g.futureSum > 0" ng-click="g.showFutureGroups = !g.showFutureGroups"><span ng-class="g.showFutureGroups ? 'ion-arrow-down-b' : 'ion-arrow-right-b'" /> Future <span class="badge badge-stable">{{g.futureSum}} days</span>
             </div>

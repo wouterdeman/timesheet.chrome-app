@@ -11,7 +11,7 @@ angular.module('timesheetApp').config(function ($provide) {
             },
             absencerights: {
                 index: 'timeandwork/absencerights',
-                detail: 'timeandwork/absencerights/'
+                detail: 'timeandwork/absenceright/'
             },
             holidays: {
                 index: 'timeandwork/holidays',
@@ -33,7 +33,7 @@ angular.module('timesheetApp').config(function ($provide) {
                 download: 'timeandwork/timesheet/download'
             },
             absencemanagement: {
-                index: 'timeandwork/absencemanagement',
+                index: 'timeandwork/absencesmanagement',
                 detail: 'timeandwork/absencemanagement/',
                 freeze: 'timeandwork/absencemanagement/freeze',
                 getFrozen: 'timeandwork/absencemanagement/frozen'

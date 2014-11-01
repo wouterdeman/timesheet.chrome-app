@@ -1,136 +1,144 @@
 'use strict';
 
 angular.module('timesheetApp')
-    .service('AbsencemanagementService', ['$http', '$q', 'urls',
-        function ($http, $q, urls) {
-            var index = urls.absencemanagement.index;
-            var detail = urls.absencemanagement.detail;
-            return {
-                getAll: function () {
-                    var deferred = $q.defer();
-                    $http.get(index).success(function (absences) {
-                        deferred.resolve(absences);
-                    }).error(function (err) {
-                        deferred.reject(err);
-                    });
-                    return deferred.promise;
-                },
-                save: function (absence) {
-                    return $http.post(index, absence);
-                },
-                remove: function (absences) {
-                    var promises = absences.map(function (absence) {
-                        return $http.delete(detail + absence._id);
-                    });
-                    return $q.all(promises);
-                }
-            };
-        }
-    ]).controller('AbsencemanagementController', function ($scope, $http, $location, AbsencemanagementService, UserService, $ionicPopup, dateFilter, $q) {
-        $scope.doRefresh = function () {
-            AbsencemanagementService.getAll().then(function (absences) {
+    .controller('AbsencemanagementController', function ($scope, $http, $location, AbsencemanagementService, UserService, AbsenceRightService, $ionicPopup, dateFilter, $q) {
+        $scope.year = parseInt(moment().format('YYYY'));
+        $scope.doRefresh = doRefresh;
+        $scope.prevYear = prevYear;
+        $scope.nextYear = nextYear;
+        $scope.remove = remove;
+
+        activate();
+
+        function activate() {
+            $scope.doRefresh();
+        };
+
+        function doRefresh() {
+            AbsenceRightService.getAll($scope.year).then(function (absencerights) {
                 UserService.getAll().then(function (users) {
-                    absences = _.map(absences, function (absence) {
-                        absence.user = _.find(users, {
-                            '_id': absence.entity
-                        });
-                        return absence;
-                    });
+                    AbsencemanagementService.getAll($scope.year).then(function (absences) {
+                        UserService.getAll().then(function (users) {
+                            absencerights = _.groupBy(absencerights, function (absenceright) {
+                                return absenceright.entity;
+                            });
 
-                    absences = _.sortBy(absences, function (absence) {
-                        var t = new Date(absence.date);
-                        return t.getTime();
-                    });
+                            absences = _.map(absences, function (absence) {
+                                absence.user = _.find(users, {
+                                    '_id': absence.entity
+                                });
+                                return absence;
+                            });
 
-                    var groupedAbsences = _.groupBy(absences, function (absence) {
-                        return absence.entity;
-                    });
+                            absences = _.sortBy(absences, function (absence) {
+                                var t = new Date(absence.date);
+                                return t.getTime();
+                            });
 
-                    var entityGroups = [];
-                    _.forEach(groupedAbsences, function (groupedAbsences) {
-                        entityGroups.push({
-                            entity: groupedAbsences[0].entity,
-                            user: groupedAbsences[0].user,
-                            absences: groupedAbsences,
-                            futureGroups: [],
-                            pastGroups: [],
-                            showFutureGroups: false,
-                            showPastGroups: false
-                        });
-                    });
+                            var groupedAbsences = _.groupBy(absences, function (absence) {
+                                return absence.entity;
+                            });
 
-                    _.forEach(entityGroups, function (entityGroup) {
-                        var groups = [];
-                        var lastAbsence;
-                        var group = {};
+                            var entityGroups = [];
+                            _.forEach(groupedAbsences, function (groupedAbsences) {
+                                var totalAvailable = absencerights[groupedAbsences[0].entity].reduce(function (sum, right) {
+                                    return sum + (right.amount - right.used);
+                                }, 0);
 
-                        var initGroup = function (absence) {
-                            lastAbsence = absence;
-                            group = {};
-                            group.startdate = absence.date;
-                            group.amount = absence.amount;
-                            group.enddate = absence.date;
-                            group.prenoon = absence.prenoon;
-                            group.absences = [];
-                            group.absences.push(absence);
-                            groups.push(group);
-                        };
+                                entityGroups.push({
+                                    entity: groupedAbsences[0].entity,
+                                    user: groupedAbsences[0].user,
+                                    absences: groupedAbsences,
+                                    futureGroups: [],
+                                    pastGroups: [],
+                                    showFutureGroups: false,
+                                    showPastGroups: false,
+                                    totalAvailable: totalAvailable
+                                });
+                            });
 
-                        _.forEach(entityGroup.absences, function (absence) {
-                            if (!lastAbsence) {
-                                initGroup(absence);
-                            } else {
-                                var a = moment(group.enddate);
-                                var b = moment(absence.date);
-                                if (b.diff(a, 'days') === 1 && absence.amount === 1) {
+                            _.forEach(entityGroups, function (entityGroup) {
+                                var groups = [];
+                                var lastAbsence;
+                                var group = {};
+
+                                var initGroup = function (absence) {
+                                    lastAbsence = absence;
+                                    group = {};
+                                    group.startdate = absence.date;
+                                    group.amount = absence.amount;
                                     group.enddate = absence.date;
-                                    group.amount += absence.amount;
+                                    group.prenoon = absence.prenoon;
+                                    group.absences = [];
                                     group.absences.push(absence);
-                                } else {
-                                    initGroup(absence);
-                                }
-                            }
-                        });
+                                    groups.push(group);
+                                };
 
-                        groups = _.map(groups, function (group) {
-                            group.startdateFormatted = dateFilter(group.startdate, 'EEE dd/MM/yy');
-                            group.enddateFormatted = dateFilter(group.enddate, 'EEE dd/MM/yy');
-                            return group;
-                        });
+                                _.forEach(entityGroup.absences, function (absence) {
+                                    if (!lastAbsence) {
+                                        initGroup(absence);
+                                    } else {
+                                        var a = moment(group.enddate);
+                                        var b = moment(absence.date);
+                                        if (b.diff(a, 'days') === 1 && absence.amount === 1) {
+                                            group.enddate = absence.date;
+                                            group.amount += absence.amount;
+                                            group.absences.push(absence);
+                                        } else {
+                                            initGroup(absence);
+                                        }
+                                    }
+                                });
 
-                        groups = _.sortBy(groups, function (group) {
-                            var t = new Date(group.startdate);
-                            return -t.getTime();
-                        });
+                                groups = _.map(groups, function (group) {
+                                    group.startdateFormatted = dateFilter(group.startdate, 'EEE dd/MM/yy');
+                                    group.enddateFormatted = dateFilter(group.enddate, 'EEE dd/MM/yy');
+                                    return group;
+                                });
 
-                        var today = moment().startOf('day');
+                                groups = _.sortBy(groups, function (group) {
+                                    var t = new Date(group.startdate);
+                                    return -t.getTime();
+                                });
 
-                        entityGroup.futureGroups = _.filter(groups, function (group) {
-                            return new Date(group.startdate) >= today || new Date(group.enddate) >= today;
-                        });
-                        entityGroup.futureSum = _.reduce(entityGroup.futureGroups, function (sum, item) {
-                            return sum + item.amount;
-                        }, 0);
+                                var today = moment().startOf('day');
 
-                        entityGroup.pastGroups = _.filter(groups, function (group) {
-                            return new Date(group.startdate) < today && new Date(group.enddate) && today;
+                                entityGroup.futureGroups = _.filter(groups, function (group) {
+                                    return new Date(group.startdate) >= today || new Date(group.enddate) >= today;
+                                });
+                                entityGroup.futureSum = _.reduce(entityGroup.futureGroups, function (sum, item) {
+                                    return sum + item.amount;
+                                }, 0);
+
+                                entityGroup.pastGroups = _.filter(groups, function (group) {
+                                    return new Date(group.startdate) < today && new Date(group.enddate) && today;
+                                });
+                                entityGroup.pastSum = _.reduce(entityGroup.pastGroups, function (sum, item) {
+                                    return sum + item.amount;
+                                }, 0);
+                            });
+
+                            $scope.groups = entityGroups;
+                        }).finally(function () {
+                            // Stop the ion-refresher from spinning
+                            $scope.$broadcast('scroll.refreshComplete');
                         });
-                        entityGroup.pastSum = _.reduce(entityGroup.pastGroups, function (sum, item) {
-                            return sum + item.amount;
-                        }, 0);
                     });
-
-                    $scope.groups = entityGroups;
                 });
-            }).finally(function () {
-                // Stop the ion-refresher from spinning
-                $scope.$broadcast('scroll.refreshComplete');
             });
         };
 
-        $scope.doRefresh();
+        function prevYear() {
+            $scope.year--;
+            $scope.doRefresh();
+        };
 
-        $scope.remove = function (absences) {
+        function nextYear() {
+            $scope.year++;
+            $scope.doRefresh();
+        };
+
+        function remove(absences) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Delete',
                 template: 'Are you sure you want to delete this absence?'
@@ -140,59 +148,6 @@ angular.module('timesheetApp')
                     AbsencemanagementService.remove(absences).then(function () {
                         $scope.doRefresh();
                     });
-                }
-            });
-        };
-    }).controller('AbsencemanagementDetailController', function ($stateParams, $scope, AbsencemanagementService, UserService, dateFilter, $state, $ionicPopup) {
-        var entity = $stateParams.entity;
-        $scope.absence = {
-            from: dateFilter(new Date(), 'yyyy-MM-dd'),
-            to: dateFilter(new Date(), 'yyyy-MM-dd'),
-            halfday: false,
-            prenoon: "true",
-            entity: entity
-        };
-
-        UserService.getAll().then(function (users) {
-            $scope.users = users;
-        });
-
-        $scope.save = function (valid) {
-            $scope.submitted = true;
-            if (!valid) {
-                return;
-            }
-
-            var absence = $scope.absence;
-            var absenceToSave = {
-                fromYear: dateFilter(absence.from, 'yyyy'),
-                fromMonth: dateFilter(absence.from, 'MM'),
-                fromDay: dateFilter(absence.from, 'dd'),
-                toYear: dateFilter(absence.to, 'yyyy'),
-                toMonth: dateFilter(absence.to, 'MM'),
-                toDay: dateFilter(absence.to, 'dd'),
-                amount: 1,
-                entity: absence.entity
-            };
-
-            if (absence.halfday) {
-                absenceToSave.amount = 0.5;
-                absenceToSave.prenoon = absence.prenoon;
-            }
-
-            AbsencemanagementService.save(absenceToSave).then(function (result) {
-                var success = true;
-
-                if (!result.data.success) {
-                    success = false;
-                    $ionicPopup.alert({
-                        title: 'Absence registration failed',
-                        template: result.data.message
-                    });
-                }
-
-                if (success) {
-                    $state.go('gretel.absencemanagement.list');
                 }
             });
         };
