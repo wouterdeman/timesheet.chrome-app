@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 
 angular.module('timesheetApp')
     .controller('settingsController', function ($scope, $http, $location) {

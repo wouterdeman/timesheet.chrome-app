@@ -48,6 +48,15 @@
                     }
                 }
             })
+            .state('gretel.intro', {
+                url: "/intro",
+                views: {
+                    'mainContent': {
+                        templateUrl: "gretel/intro/intro.html",
+                        controller: "IntroController"
+                    }
+                }
+            })
             .state('gretel.locationdetails', {
                 url: "/locationdetails",
                 views: {

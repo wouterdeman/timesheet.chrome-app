@@ -44,12 +44,19 @@ angular.module('timesheetApp')
             });
         };
 
-        if (!$scope.zone) {
-            $scope.doRefresh();
-        }
+        chromeApp.retrieveLocally('introran').done(function (introran) {
+            if (!introran || $http.defaults.headers.common.token === 'dummy') {
+                $state.go('gretel.intro');
+                return;
+            }
 
-        chrome.storage.local.get("devicename", function (value) {
-            var val = value["devicename"];
-            $scope.deviceName = val || "";
+            if (!$scope.zone) {
+                $scope.doRefresh();
+            }
+
+            chrome.storage.local.get("devicename", function (value) {
+                var val = value["devicename"];
+                $scope.deviceName = val || "";
+            });
         });
     });

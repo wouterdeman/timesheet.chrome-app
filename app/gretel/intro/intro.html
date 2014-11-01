@@ -1,0 +1,60 @@
+<ion-view title="Thank you">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear no-animation" ng-click="startApp()" ng-if="!slideIndex">
+            Skip Intro
+        </button>
+        <button class="button button-clear no-animation" ng-click="previous()" ng-if="slideIndex > 0">
+            Previous Slide
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear no-animation" ng-click="next()" ng-if="slideIndex != 3">
+            Next
+        </button>
+        <button class="button button-clear no-animation" ng-click="startApp()" ng-if="slideIndex == 3">
+            Start using Gretel
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-slide-box on-slide-changed="slideChanged($index)">
+            <ion-slide>
+                <h3>Thank you for choosing the Awesome Gretel App!</h3>
+                <div id="logo">
+                    <img src="../../images/icon-144.png">
+                </div>
+                <p>
+                    We've worked super hard to make you happy.
+                </p>
+                <p>
+                    But if you are angry, too bad.
+                </p>
+            </ion-slide>
+            <ion-slide>
+                <h3>Using Gretel</h3>
+
+                <div id="list">
+                    <h5>Just three steps:</h5>
+                    <ol>
+                        <li>Be awesome</li>
+                        <li>Stay awesome</li>
+                        <li>There is no step 3</li>
+                    </ol>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <h3>We still need to know you're device name</h3>
+
+                <div id="list">
+                    <input type="text" style="text-align: center;" ng-model="introDeviceName" ng-change="updateDeviceName(introDeviceName)" placeholder="Just enter a device name..." />
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <h3>Any questions?</h3>
+                <p>
+                    Too bad!
+                </p>
+            </ion-slide>
+            <ion-slide-pager ng-click="go(index)"></ion-slide-pager>
+        </ion-slide-box>
+    </ion-content>
+</ion-view>
