@@ -6,9 +6,9 @@ angular.module('timesheetApp')
             var index = urls.absencerights.index;
             var detail = urls.absencerights.detail;
             return {
-                getAll: function () {
+                getAll: function (year) {
                     var deferred = q.defer();
-                    $http.get(index).success(function (absencerights) {
+                    $http.get(index + '/' + year).success(function (absencerights) {
                         deferred.resolve(absencerights);
                     }).error(function (err) {
                         deferred.reject(err);
@@ -54,8 +54,9 @@ angular.module('timesheetApp')
             };
         }
     ]).controller('AbsencerightsController', function ($scope, $http, $location, AbsenceRightService, $ionicPopup, UserService) {
+        $scope.year = moment().format('YYYY');
         $scope.doRefresh = function () {
-            AbsenceRightService.getAll().then(function (absencerights) {
+            AbsenceRightService.getAll($scope.year).then(function (absencerights) {
                 UserService.getAll().then(function (users) {
                     absencerights = _.map(absencerights, function (absenceright) {
                         absenceright.user = _.find(users, {
@@ -72,7 +73,10 @@ angular.module('timesheetApp')
                     for (var k in absencerights) {
                         result.push({
                             user: k,
-                            rights: absencerights[k]
+                            rights: absencerights[k],
+                            sumAvailable: absencerights[k].reduce(function (sum, right) {
+                                return sum + (right.amount - right.used);
+                            }, 0)
                         });
                     }
 

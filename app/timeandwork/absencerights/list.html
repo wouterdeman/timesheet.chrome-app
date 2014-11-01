@@ -10,6 +10,7 @@
             <button class="button button-clear" style="top: 3px;right: 19px;" ui-sref="gretel.absencerights.add({entity:absenceright.rights[0].entity })">
                 <i class="icon ion-ios7-plus-outline"></i>
             </button>
+            <span class="badge badge-positive" style="right: 95px;">{{absenceright.sumAvailable}} days left</span>
             <b>{{absenceright.user}}</b>
         </div>
         <div ng-repeat-end>
