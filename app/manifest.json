@@ -15,7 +15,9 @@
         "http://timesheetservice.herokuapp.com/*",
         "storage",
         "idle",
-        "notifications"
+        "notifications",
+        "https://maps.googleapis.com/maps/api/*",
+        "https://api.foursquare.com/v2/*"
     ],
     "icons": {
         "16": "images/icon-16.png",

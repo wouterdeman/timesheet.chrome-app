@@ -16,6 +16,12 @@
                 </label>
                 <label class="item item-input item-select">
                     <div class="input-label">
+                        Suggested places
+                    </div>
+                    <select ng-model="place" ng-options="c.name for c in suggestedPlaces" placeholder="Suggested place"></select>
+                </label>
+                <label class="item item-input item-select">
+                    <div class="input-label">
                         Customer
                     </div>
                     <select ng-model="customer" ng-options="c.name for c in customers" placeholder="Customer"></select>

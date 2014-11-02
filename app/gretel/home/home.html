@@ -6,6 +6,13 @@
     <ion-content padding="true">
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
+
+        <div class="list card" ng-show="currentAddress">
+            <div class="item item-icon-left dark">
+                <i class="icon ion-location"></i> {{currentAddress}}
+            </div>
+        </div>
+
         <div class="list card" ng-if="!zone && !loading">
             <div class="item">
                 <h2>You're current location is not a registered zone.</h2>

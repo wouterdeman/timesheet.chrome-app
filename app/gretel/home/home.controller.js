@@ -5,6 +5,7 @@ angular.module('timesheetApp')
         $scope.loading = false;
         $scope.deviceName = '';
         $scope.error = '';
+        $scope.currentAddress = '';
 
         $scope.doRefresh = function () {
             SaldoService.getAll().then(function (saldos) {
@@ -39,6 +40,12 @@ angular.module('timesheetApp')
                     }).finally(function () {
                         // Stop the ion-refresher from spinning
                         $scope.$broadcast('scroll.refreshComplete');
+                    });
+
+                    $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + coords.latitude + "," + coords.longitude + "&key=AIzaSyBrxt1UXQXNNfpPAkBJBLKeUj9XN2tZXlo").success(function (data) {
+                        if (data.status === "OK") {
+                            $scope.currentAddress = data.results[0].formatted_address;
+                        }
                     });
                 });
             });
