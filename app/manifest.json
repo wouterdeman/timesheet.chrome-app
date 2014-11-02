@@ -17,7 +17,9 @@
         "idle",
         "notifications",
         "https://maps.googleapis.com/maps/api/*",
-        "https://api.foursquare.com/v2/*"
+        "https://api.foursquare.com/v2/*",
+        "https://ss3.4sqi.net/img/categories_v2/*",
+        "http://maps.gstatic.com/mapfiles/place_api/*"
     ],
     "icons": {
         "16": "images/icon-16.png",

@@ -66,6 +66,15 @@
                     }
                 }
             })
+            .state('gretel.places', {
+                url: "/places",
+                views: {
+                    'mainContent': {
+                        templateUrl: "gretel/places/places.html",
+                        controller: "PlacesController"
+                    }
+                }
+            })
             .state('gretel.manageactivities', {
                 url: "/manageactivities",
                 views: {
