@@ -1,12 +1,12 @@
 <ion-view title="Places in the neighborhood">
     <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
         <ul class="list">
-            <li class="item item-icon-left" ng-repeat="place in places">
+            <li class="item item-icon-left" ng-repeat="place in places" ng-click="showPlace(place)">
                 <div ng-show="place.icon" class="icon" fetchicon="{{place.icon}}"></div>
                 <i ng-show="!place.icon" class="icon ion-android-earth"></i> {{place.name}}
-                <span class="item-note">
-                    {{place.address}}
-                </span>
+                <span class="item-note" ng-repeat="category in place.categories">{{category}}&nbsp;</span>
             </li>
 
         </ul>

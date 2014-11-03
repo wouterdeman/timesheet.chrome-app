@@ -1,0 +1,37 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">{{place.name}}</h1>
+        <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="list">
+            <li class="item item-icon-left" ng-show="place.address">
+                <i class="icon ion-location"></i> Address
+                <span class="item-note">
+                    {{place.address}}
+                </span>
+            </li>
+            <li class="item item-icon-left" ng-show="place.contact && place.contact.formattedPhone">
+                <i class="icon ion-ios7-telephone"></i> Phone
+                <span class="item-note">
+                    <a href="tel:{{place.contact.phone}}" target="_blank">{{place.contact.formattedPhone}}</a>
+                </span>
+            </li>
+            <li class="item item-icon-left" ng-show="place.categories.length > 0">
+                <i class="icon ion-information"></i> Category
+                <span class="item-note" ng-repeat="category in place.categories">
+                    {{category}}&nbsp;
+                </span>
+            </li>
+            <li class="item item-icon-left" ng-show="place.url">
+                <i class="icon ion-android-earth"></i> Website
+                <span class="item-note">
+                  <a href="{{place.url}}" target="_blank" style="white-space: nowrap;width: 250px;overflow: hidden;text-overflow: ellipsis;display: block;text-align:right">{{place.url}}</a>
+                </span>
+            </li>
+            <a class="item item-icon-left" href="http://www.google.com/search?q={{place.originalname}}" target="_blank">
+                <i class="icon ion-search"></i> Search on google
+            </a>
+        </div>
+    </ion-content>
+</ion-modal-view>
