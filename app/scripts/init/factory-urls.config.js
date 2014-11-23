@@ -26,7 +26,8 @@ angular.module('timesheetApp').config(function ($provide) {
             },
             absences: {
                 index: 'timeandwork/absences',
-                detail: 'timeandwork/absences/'
+                detail: 'timeandwork/absences/',
+                ical: 'timeandwork/ical/'
             },
             timesheet: {
                 info: 'timeandwork/timesheet',

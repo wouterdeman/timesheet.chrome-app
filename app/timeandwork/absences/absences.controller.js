@@ -26,7 +26,7 @@ angular.module('timesheetApp')
                 }
             };
         }
-    ]).controller('AbsencesController', function ($scope, $http, $location, AbsenceService, $ionicPopup, dateFilter, $q) {
+    ]).controller('AbsencesController', function ($scope, $http, $location, AbsenceService, $ionicPopup, dateFilter, $q, urls) {
         $scope.doRefresh = function () {
             AbsenceService.getAll().then(function (absences) {
                 absences = _.sortBy(absences, function (absence) {
@@ -109,6 +109,27 @@ angular.module('timesheetApp')
                     });
                 }
             });
+        };
+
+        $scope.downloadIcal = function (group) {
+            var url = urls.absences.ical;
+            var startdate = new Date(group.startdate);
+            var enddate = new Date(group.enddate);
+            startdate.setHours(8);
+            enddate.setHours(16);
+
+            if (group.amount == 0.5) {
+                if (group.prenoon) {
+                    enddate.setHours(12);
+                } else {
+                    startdate.setHours(12);
+                }
+            }
+
+            url += startdate.toISOString() + '/' + enddate.toISOString();
+            url += '/' + $http.defaults.headers.common.token;
+
+            window.open(url, '_system');
         };
     }).controller('AbsencesDetailController', function ($stateParams, $scope, AbsenceService, dateFilter, $state, $ionicPopup) {
         $scope.absence = {
