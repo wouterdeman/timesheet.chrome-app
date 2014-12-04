@@ -9,6 +9,9 @@ angular.module('timesheetApp')
 
         $scope.doRefresh = function () {
             SaldoService.getAll().then(function (saldos) {
+                saldos = _.filter(saldos, function (saldo) {
+                    return saldo.amount - saldo.used > 0;
+                });
                 $scope.saldos = saldos;
             });
 
