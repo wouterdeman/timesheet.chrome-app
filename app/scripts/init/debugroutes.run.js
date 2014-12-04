@@ -31,13 +31,13 @@ angular.module('timesheetApp').run(function ($rootScope, $state, $http) {
 
 
     //automaticly go to latest route (handy when debugging with livereload)
-    chrome.storage.local.get('latestState', function (result) {
+    /*chrome.storage.local.get('latestState', function (result) {
         chrome.storage.local.get('latestParms', function (res) {
             if (res['latestParms']) {
                 $state.go(result.latestState, JSON.parse(res['latestParms']));
             }
         });
-    });
+    });*/
     //when you screwed up, go back to default state :)
-    //$state.go("gretel.home");
+    $state.go("gretel.home");
 });
